@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <title>Mock InvimÁgil — página de ensayo</title>
+  <style>
+    body { font: 14px/1.4 system-ui; max-width: 720px; margin: 24px auto; padding: 0 16px; color: #222; }
+    h1 { color: #003366; }
+    fieldset { margin: 12px 0; border: 1px solid #ccc; padding: 12px; }
+    legend { color: #003366; font-weight: bold; }
+    label { display: block; margin: 8px 0 4px; font-size: 13px; }
+    input, select, textarea { width: 100%; padding: 6px; font: 13px system-ui; box-sizing: border-box; }
+    .combo-wrap { position: relative; }
+    .combo-list {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 5;
+      background: #fff; border: 1px solid #999; max-height: 180px; overflow: auto;
+      display: none;
+    }
+    .combo-list.on { display: block; }
+    .combo-list .opt { padding: 4px 8px; cursor: pointer; }
+    .combo-list .opt:hover, .combo-list .opt.sel { background: #003366; color: #fff; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 4px; font-size: 12px; text-align: left; }
+    th { background: #f4f4f4; }
+    button { padding: 6px 12px; }
+    .note { color: #666; font-size: 12px; margin: 8px 0; }
+    .danger { color: #a30000; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Mock InvimÁgil</h1>
+  <p class="note">Página local de ensayo para <code>tools/mapper.js</code>. Los ids <b>no</b> imitan los de Odoo — la idea es probar el flujo del mapper (captura, prueba de inyección, sonda del combobox), no replicar la plataforma real.</p>
+  <p class="note danger">Nada de lo que aquí se escribe sale de esta página. Sin scripts remotos, sin red.</p>
+
+  <input type="search" placeholder="Buscar registro..." aria-label="Buscar" style="max-width:280px">
+
+  <fieldset>
+    <legend>Identificación</legend>
+    <label for="nombre">Nombre del producto</label>
+    <input id="nombre" name="nombre_producto" type="text" aria-label="Nombre del producto">
+
+    <label for="marca">Marca</label>
+    <input id="marca" name="marca" type="text">
+
+    <label for="forma">Forma cosmética</label>
+    <select id="forma" name="forma_cosmetica">
+      <option value="">— seleccionar —</option>
+      <option>Crema</option>
+      <option>Loción</option>
+      <option>Gel</option>
+      <option>Champú</option>
+    </select>
+
+    <label for="uso">Uso previsto</label>
+    <textarea id="uso" name="uso_previsto" rows="2"></textarea>
+  </fieldset>
+
+  <fieldset>
+    <legend>Fórmula (combobox asíncrono)</legend>
+    <p class="note">Escriba en el campo — las opciones aparecen tras 300 ms, filtradas.</p>
+    <div class="combo-wrap">
+      <input id="inci" name="inci_buscar" type="text" role="combobox" aria-autocomplete="list" aria-label="Buscar INCI" placeholder="Ej: aqua">
+      <div id="inci_list" class="combo-list" role="listbox"></div>
+    </div>
+    <input id="inci_id" name="inci_id" type="hidden">
+
+    <table id="tabla_formula" style="margin-top:12px">
+      <thead><tr><th>#</th><th>INCI</th><th>%</th></tr></thead>
+      <tbody id="tabla_body"><tr><td colspan="3" class="note">(vacío)</td></tr></tbody>
+    </table>
+  </fieldset>
+
+  <fieldset>
+    <legend>Condiciones</legend>
+    <label for="pais">País de origen</label>
+    <input id="pais" name="pais_origen" type="text">
+
+    <label><input type="checkbox" name="acepta"> Declaro que la información es veraz</label>
+  </fieldset>
+
+  <p>
+    <button type="button" onclick="alert('Este botón es solo un placeholder. El mapper NO debe hacer clic aquí en producción.')">Enviar (bloqueado por diseño)</button>
+  </p>
+
+<script>
+// Local-only async combobox. No network.
+const INCI_SEED = ['Aqua','Alcohol Denat.','Glycerin','Sodium Chloride','Parfum','Xanthan Gum','Citric Acid','Tocopherol','Cetyl Alcohol','Stearyl Alcohol','Panthenol','Sodium Lauryl Sulfate','Cocamidopropyl Betaine','Dimethicone','Phenoxyethanol','Ethylhexylglycerin','Aloe Barbadensis Leaf Juice','Butyrospermum Parkii Butter','Argania Spinosa Kernel Oil','Retinol'];
+const inci = document.getElementById('inci');
+const list = document.getElementById('inci_list');
+let debounce;
+inci.addEventListener('input', () => {
+  clearTimeout(debounce);
+  const q = inci.value.trim().toLowerCase();
+  list.classList.remove('on');
+  if (!q) return;
+  debounce = setTimeout(() => {
+    const opts = INCI_SEED.filter(n => n.toLowerCase().includes(q)).slice(0, 8);
+    list.innerHTML = '';
+    for (const o of opts) {
+      const d = document.createElement('div');
+      d.className = 'opt';
+      d.setAttribute('role', 'option');
+      d.textContent = o;
+      d.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        inci.value = o;
+        document.getElementById('inci_id').value = 'id_' + o.replace(/\s+/g,'_');
+        list.classList.remove('on');
+        // Add to the formula table
+        const body = document.getElementById('tabla_body');
+        if (body.querySelector('.note')) body.innerHTML = '';
+        const row = document.createElement('tr');
+        row.innerHTML = '<td>'+(body.children.length+1)+'</td><td>'+o+'</td><td><input type="number" step="0.01" value="1.00"></td>';
+        body.appendChild(row);
+      });
+      list.appendChild(d);
+    }
+    if (opts.length) list.classList.add('on');
+  }, 300);
+});
+document.addEventListener('click', (e) => {
+  if (e.target !== inci && !list.contains(e.target)) list.classList.remove('on');
+});
+</script>
+</body>
+</html>

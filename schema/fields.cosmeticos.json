@@ -1,0 +1,303 @@
+{
+  "version": "0.1.0-seed",
+  "producto": "cosmeticos",
+  "notas": "Seed schema. Fields will be added or renamed during the live mapping session with the analyst. Ad-hoc fields captured in-session are marked origen: 'sesion' and reconciled here afterwards.",
+  "secciones": [
+    { "id": "identificacion", "orden": 1, "nombre_es": "Identificación del producto" },
+    { "id": "titular_responsables", "orden": 2, "nombre_es": "Titular y responsables" },
+    { "id": "formula", "orden": 3, "nombre_es": "Fórmula cuali-cuantitativa" },
+    { "id": "presentacion_envase", "orden": 4, "nombre_es": "Presentación y envase" },
+    { "id": "condiciones", "orden": 5, "nombre_es": "Condiciones" }
+  ],
+  "campos": [
+    {
+      "key": "nombre_producto",
+      "label_es": "Nombre del producto",
+      "section": "identificacion",
+      "order": 1,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "marca",
+      "label_es": "Marca",
+      "section": "identificacion",
+      "order": 2,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "presentaciones",
+      "label_es": "Referencias / presentaciones",
+      "section": "identificacion",
+      "order": 3,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "forma_cosmetica",
+      "label_es": "Forma cosmética",
+      "section": "identificacion",
+      "order": 4,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "categoria",
+      "label_es": "Categoría",
+      "section": "identificacion",
+      "order": 5,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "uso_previsto",
+      "label_es": "Uso previsto",
+      "section": "identificacion",
+      "order": 6,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "expediente",
+      "label_es": "Número de expediente",
+      "section": "identificacion",
+      "order": 7,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "nso_vigente",
+      "label_es": "Número de registro / NSO vigente",
+      "section": "identificacion",
+      "order": 8,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "fecha_vencimiento_registro",
+      "label_es": "Fecha de vencimiento del registro",
+      "section": "identificacion",
+      "order": 9,
+      "type": "date",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+
+    {
+      "key": "titular_razon_social",
+      "label_es": "Titular — razón social",
+      "section": "titular_responsables",
+      "order": 1,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "titular_id",
+      "label_es": "Titular — NIT / identificación",
+      "section": "titular_responsables",
+      "order": 2,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "titular_pais",
+      "label_es": "Titular — país",
+      "section": "titular_responsables",
+      "order": 3,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "titular_direccion",
+      "label_es": "Titular — dirección",
+      "section": "titular_responsables",
+      "order": 4,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "fabricante_razon_social",
+      "label_es": "Fabricante — razón social",
+      "section": "titular_responsables",
+      "order": 5,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "fabricante_pais",
+      "label_es": "Fabricante — país",
+      "section": "titular_responsables",
+      "order": 6,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "fabricante_direccion",
+      "label_es": "Fabricante — dirección",
+      "section": "titular_responsables",
+      "order": 7,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "fabricante_rol",
+      "label_es": "Fabricante — rol",
+      "section": "titular_responsables",
+      "order": 8,
+      "type": "enum",
+      "enum_values": ["fabricante", "acondicionador", "fabricante_y_acondicionador"],
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "importador_razon_social",
+      "label_es": "Importador — razón social",
+      "section": "titular_responsables",
+      "order": 9,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "apoderado",
+      "label_es": "Apoderado",
+      "section": "titular_responsables",
+      "order": 10,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+
+    {
+      "key": "formula",
+      "label_es": "Fórmula cuali-cuantitativa",
+      "section": "formula",
+      "order": 1,
+      "type": "table",
+      "required": true,
+      "row_schema": [
+        { "key": "orden", "label_es": "Orden", "type": "number" },
+        { "key": "nombre_inci", "label_es": "Nombre INCI", "type": "text" },
+        { "key": "nombre_comun", "label_es": "Nombre común", "type": "text" },
+        { "key": "cas", "label_es": "CAS", "type": "text" },
+        { "key": "funcion", "label_es": "Función", "type": "text" },
+        { "key": "concentracion_pct", "label_es": "Concentración (%)", "type": "number" }
+      ],
+      "extraction": { "patterns": [] },
+      "validation": {
+        "suma_pct_min": 98.0,
+        "suma_pct_max": 102.0,
+        "sin_duplicados_inci": true,
+        "concentracion_no_negativa": true,
+        "concentracion_max_100": true
+      }
+    },
+
+    {
+      "key": "envase_tipo",
+      "label_es": "Tipo de envase",
+      "section": "presentacion_envase",
+      "order": 1,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "envase_material",
+      "label_es": "Material del envase",
+      "section": "presentacion_envase",
+      "order": 2,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "contenido",
+      "label_es": "Contenido / capacidad",
+      "section": "presentacion_envase",
+      "order": 3,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "unidades",
+      "label_es": "Unidades",
+      "section": "presentacion_envase",
+      "order": 4,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+
+    {
+      "key": "vida_util",
+      "label_es": "Vida útil",
+      "section": "condiciones",
+      "order": 1,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "condiciones_almacenamiento",
+      "label_es": "Condiciones de almacenamiento",
+      "section": "condiciones",
+      "order": 2,
+      "type": "text",
+      "required": false,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    },
+    {
+      "key": "pais_origen",
+      "label_es": "País de origen",
+      "section": "condiciones",
+      "order": 3,
+      "type": "text",
+      "required": true,
+      "extraction": { "patterns": [] },
+      "validation": {}
+    }
+  ]
+}

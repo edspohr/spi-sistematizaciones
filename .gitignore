@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.eggs/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+
+# Confidential
+samples/
+*.pdf
+mapeo-invimagil-*.json
+bitacora.json
+InvimAgil-Evidencia/
+ficha.json
+planilla.xlsx
+extraccion.log
+
+# Local settings
+.env
+.env.local
