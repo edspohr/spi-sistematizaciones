@@ -1,7 +1,7 @@
 {
   "version": "0.1.0-seed",
   "producto": "cosmeticos",
-  "notas": "Seed schema. Fields will be added or renamed during the live mapping session with the analyst. Ad-hoc fields captured in-session are marked origen: 'sesion' and reconciled here afterwards.",
+  "notas": "Seed schema. Fields will be added or renamed during the live mapping session with the analyst. Ad-hoc fields captured in-session are marked origen: 'sesion', carry the raw visible label as labelRaw, and get their section from the currently-marked screen id (see SCREEN_SEQUENCE in tools/mapper.js). Reconcile ad-hoc entries into this file after the session.",
   "secciones": [
     { "id": "identificacion", "orden": 1, "nombre_es": "Identificación del producto" },
     { "id": "titular_responsables", "orden": 2, "nombre_es": "Titular y responsables" },

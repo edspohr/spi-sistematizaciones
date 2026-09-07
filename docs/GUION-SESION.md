@@ -1,149 +1,209 @@
-# Guion de la sesión de mapeo — InvimÁgil
+# Guion de la sesión de mapeo — InvimÁgil (Microsoft Edge, Windows 11)
 
-Este guion describe el orden exacto en que se debe ejecutar la sesión con la analista.
-El objetivo es capturar todo lo necesario para diseñar el llenado asistido **sin
-volver a molestarla** para una segunda sesión.
+Este guion se escribe para **Microsoft Edge en Windows 11 sin permisos de
+administrador**. La analista trabaja sola, sobre un **borrador de sistematización
+de una consulta existente** creado con un usuario de prueba. **Nunca se envía**
+el trámite.
 
-Nada de lo que hace este mapper se envía a Internet. Todo queda en `localStorage`
-del navegador y en el JSON que se descarga al final.
+Nada de lo que hace el mapper viaja a Internet. Todo se guarda en
+`localStorage` del propio navegador y en el archivo JSON que se descarga al
+final de la sesión.
+
+> Si por algún motivo se usara Chrome, la ruta es la misma pero los menús
+> están en inglés: **Sources → Snippets** en vez de **Orígenes → Fragmentos**.
 
 ---
 
 ## 0. Antes de empezar
 
-- Abrir el sitio InvimÁgil en Chrome y **iniciar sesión como siempre**.
-  El mapper NO maneja usuarios ni contraseñas.
-- Tener a mano el archivo `tools/mapper.js`.
+- Iniciar sesión en InvimÁgil como siempre. El mapper **no** maneja usuarios
+  ni contraseñas.
+- Entrar al **borrador de sistematización** creado con el usuario de prueba
+  (no un expediente real). Confirmar que aparece la primera pantalla
+  (`sistematizacion`).
+- Tener a mano el archivo `tools/mapper.js`. Se abre con el Bloc de notas
+  para copiar su contenido.
 
 ---
 
-## 1. Cargar el mapper (una sola vez)
+## 1. Cargar el mapper (una sola vez por sesión)
 
-**Camino recomendado — DevTools Snippet**:
+**Ruta recomendada — Fragmentos de código de Edge DevTools:**
 
-1. Presionar `F12` para abrir DevTools.
-2. Ir a la pestaña **Sources** (Fuentes) → panel **Snippets**.
-   - Si el panel Snippets no aparece, hacer clic en el `»` para expandirlo.
-3. Clic derecho en **Snippets** → **New snippet** → nombrarlo `invimagil-mapper`.
-4. Si Chrome pide autorización al pegar, escribir literalmente **`allow pasting`**
-   en la pestaña **Console** y presionar Enter.
-5. Pegar todo el contenido de `tools/mapper.js` en el snippet.
-6. Presionar **Ctrl+Enter** (o el botón ▶) para ejecutarlo.
-7. Aparece un panel abajo a la derecha titulado **InvimÁgil — Mapeo**.
+1. Presionar **F12** para abrir DevTools.
+2. Ir a la pestaña **Orígenes** (equivalente a *Sources*).
+   - Si no la ve arriba, hacer clic en el **`»`** de desbordamiento y
+     seleccionar *Orígenes*.
+3. En el panel lateral izquierdo hay tres subpaneles: **Página**,
+   **Sistema de archivos** y **Fragmentos de código** (*Snippets*).
+   - Si **Fragmentos de código** no está visible, abrirlo también desde el
+     **`»`** dentro del panel lateral.
+4. Clic derecho en **Fragmentos de código → Nuevo fragmento**. Nombrarlo
+   `invimagil-mapper`.
+5. Abrir `tools/mapper.js` en el Bloc de notas, seleccionar todo (Ctrl+A),
+   copiar (Ctrl+C).
+6. Pegar en el fragmento (Ctrl+V). Si Edge pide permiso, ir a la pestaña
+   **Consola** y escribir literalmente **`allow pasting`** + Enter, luego
+   volver al fragmento y pegar.
+7. Presionar **Ctrl+Enter** para ejecutar el fragmento (también sirve el
+   botón ▶ arriba a la derecha del editor de fragmentos).
+8. Abajo a la derecha aparece un panel titulado **InvimÁgil — Mapeo**.
 
-**Camino fallback — bookmarklet** (usar solo si el panel Sources está bloqueado
-por política):
+**Ruta fallback — bookmarklet:**
 
 - Abrir `tools/mapper.bookmarklet.txt`, copiar toda la línea, crear un
-  marcador nuevo en Chrome y pegarla como URL.
-- Hacer clic en el marcador mientras se esté en la página de InvimÁgil.
-- **Advertencia:** muchas plataformas empresariales bloquean los bookmarklets
-  con Content-Security-Policy. Si no aparece el panel, use el Snippet.
+  favorito nuevo en Edge y pegarla como URL.
+- Hacer clic en el favorito estando en la página de InvimÁgil.
+- **Advertencia:** muchas plataformas empresariales bloquean los
+  bookmarklets vía Content-Security-Policy. Si no aparece el panel,
+  usar la ruta de Fragmentos.
 
-**Después de una navegación** (la plataforma es un SPA, así que el mapper
-detecta cambios de pantalla automáticamente): si el panel no reaparece,
-volver a Sources → Snippets → clic derecho en `invimagil-mapper` → **Run**
-(o Ctrl+Enter). El estado se restaura desde `localStorage` — no se pierde nada.
-
----
-
-## 2. Marcar la pantalla actual
-
-- Botón **Marcar pantalla** en la sección "Pantalla y flujo". Aceptar el
-  nombre sugerido o escribir uno mejor (ej. `identificacion`, `formula`,
-  `revision_final`).
-- Botón **Guardar snapshot**. Deja un HTML sanitizado de la pantalla en
-  `localStorage` para que podamos reconstruir selectores fuera de línea.
-  El indicador dice **Sanitizado: sí** por defecto — mantener así salvo
-  que sea absolutamente necesario un snapshot completo.
+**Después de una navegación:** InvimÁgil es un SPA. El mapper detecta
+cambios y los registra como eventos de navegación (informativos). Si el
+panel desaparece, volver a *Orígenes → Fragmentos → invimagil-mapper*,
+clic derecho → **Ejecutar** (o Ctrl+Enter). El estado se restaura solo
+desde `localStorage`; **no se pierde nada** de lo mapeado antes.
 
 ---
 
-## 3. Prueba de inyección (crítica — hacer primero)
+## 2. Secuencia de pantallas del trámite de sistematización
 
-**Esta prueba solo debe correrse sobre un borrador NUEVO o sobre un campo
-de búsqueda/filtro.** InvimÁgil autoguarda al modificar campos: escribir
-en un registro real podría dejar datos de prueba en el expediente del cliente.
+El mapper viene precargado con la secuencia esperada. Los ids son los que
+usaremos para amarrar cada campo a su pantalla:
 
-- Si hay un registro borrador, abrirlo. Si no, ir a la lista y ejecutar la
-  prueba sobre el buscador.
+| Orden | Id                | Nombre en pantalla    |
+|------:|-------------------|-----------------------|
+|     1 | `sistematizacion` | Sistematización       |
+|     2 | `responsables`    | Responsables          |
+|     3 | `producto`        | Producto              |
+|     4 | `presentacion`    | Presentación          |
+|     5 | `formula`         | Fórmula               |
+|     6 | `instrucciones`   | Instrucciones         |
+|     7 | `organolepticas`  | Organolépticas        |
+|     8 | `fisicoquimicos`  | Fisicoquímicos        |
+|     9 | `adjuntos`        | Adjuntos              |
+|    10 | `revision`        | Revisión              |
+
+En el panel, la tira superior muestra el estado de cada una:
+
+- gris → **pendiente**
+- azul claro → **marcada**
+- verde → **con snapshot**
+- azul oscuro con número → **N campos mapeados**
+- borde naranja → **pantalla actual**
+
+Si InvimÁgil tiene una pantalla que no está en la lista, usar el desplegable
+opción **«otra…»** y escribir un nombre. Se normaliza automáticamente
+(minúsculas, sin tildes, espacios como `_`).
+
+---
+
+## 3. Regla de oro por pantalla
+
+**Una pantalla a la vez:**
+
+1. **Marcar** la pantalla (desplegable → botón «Marcar pantalla»).
+2. **Guardar snapshot** de la pantalla completa (queda sanitizado por
+   defecto — no incluye valores).
+3. **Mapear todos los campos visibles** antes de avanzar. Los campos que
+   ya vienen en el esquema tienen su botón «Mapear»; los que no aparecen se
+   agregan con **＋ Campo nuevo**.
+4. **Avanzar** a la siguiente pantalla en InvimÁgil y repetir.
+
+Marcar una pantalla que ya se marcó no borra nada: el mapper solo actualiza
+la última marca. Las capturas y snapshots previos se conservan.
+
+---
+
+## 4. Prueba de inyección — hacer primero, una sola vez
+
+**Solo sobre este borrador de prueba**, en un campo de texto cualquiera
+(ideal: un campo del que se pueda restaurar el valor original).
+
 - Botón **Probar inyección** → confirmar la advertencia.
-- Si el mapper detecta un campo de búsqueda en la página, ofrecerá usarlo
-  directamente. Aceptar si aplica.
-- Si no, entrar en modo captura y **hacer clic en el campo de texto objetivo**.
-- El mapper escribe, verifica y **restaura el valor original**. Al final avisa:
-  - `El valor se mantuvo. Combinación efectiva: …` — vamos bien, la extensión
-    funcionará.
-  - `El valor fue revertido por la plataforma` — cambiamos de enfoque
-    (Playwright), necesitamos saberlo hoy.
-  - Si dice `[ATENCIÓN] No se pudo confirmar la restauración`, **revisar el
-    campo manualmente** antes de seguir.
+- Si el mapper detecta un campo de búsqueda, ofrece usarlo. Aceptar si aplica.
+- Si no, entrar en modo captura y **clic en el campo de texto objetivo**.
+- El mapper escribe un valor de prueba, verifica y **restaura el original**.
+  Lee el resultado:
+  - **«El valor se mantuvo. Combinación efectiva: …»** — la estrategia
+    funciona; la extensión podrá llenar campos.
+  - **«El valor fue revertido por la plataforma»** — la estrategia estándar
+    no basta; cambiaremos de enfoque (Playwright). Es información valiosa,
+    conviene saberlo hoy.
+  - **«[ATENCIÓN] No se pudo confirmar la restauración»** — revisar el
+    campo manualmente antes de seguir.
 
 ---
 
-## 4. Mapear los campos de la pantalla
+## 5. Mapear los campos de cada pantalla
 
-- La sección **Campos del esquema** lista los campos conocidos, agrupados por
-  sección. Cada fila muestra `mapeado` / `sin mapear` y un botón **Mapear**.
-- Clic en **Mapear** → clic en el control correspondiente en el formulario.
-- Si el campo no existe en el esquema (esto es esperable, el esquema es semilla):
-  botón **＋ Campo nuevo** al final de la lista. Capturar el elemento primero,
-  luego el mapper pregunta el nombre y la sección.
-- Cada captura se guarda automáticamente. No hace falta guardar manualmente.
+- Sección **Campos del esquema** — cada fila tiene botón **Mapear**.
+- Clic en **Mapear** → clic en el control correspondiente del formulario.
 - Para cancelar la captura: **Escape**.
+- Para campos que no aparecen en el esquema: botón **＋ Campo nuevo** al
+  final. El flujo es:
+  1. Clic en el elemento en la página.
+  2. El mapper propone un nombre a partir de la etiqueta visible (ya
+     normalizado). Aceptar o corregir.
+  3. Propone la sección con el id de la pantalla actual. Aceptar o cambiar.
+- Todo se guarda solo al capturar. No hace falta guardar a mano.
 
 ---
 
-## 5. Sonda del combobox de ingredientes (crítica — solo en la sección de fórmula)
+## 6. Sonda del combobox de INCI (pantalla «formula»)
 
-- Ir a la pantalla donde se agregan ingredientes (Fórmula).
-- Botón **Sondear autocompletado** → clic en el campo de búsqueda de INCI.
-- **Escribir un INCI real como lo haría en la operación normal** (por ejemplo
-  `Aqua`), esperar la lista, seleccionar una opción.
-- Botón **Detener sonda**. El JSON de exportación contendrá todos los eventos,
-  las mutaciones del DOM, los selectores de la lista y las opciones, y la
-  latencia. Esto es lo que necesita el llenado automático para funcionar.
+En la sección Fórmula, el mapper ofrece cuatro casos. **Ejecutar los
+cuatro**, presionando «Detener sonda» entre uno y otro:
 
----
+| Caso   | Qué hacer                                                       |
+|--------|-----------------------------------------------------------------|
+| caso1  | INCI corto con muchas opciones — escribir `Aqua`, elegir uno.  |
+| caso2  | INCI largo exacto — escribir un INCI completo, elegir el match.|
+| caso3  | INCI inexistente — escribir algo que no existe, ver la respuesta. |
+| caso4  | Crear una mezcla — abrir el flujo de mezcla y completarlo.     |
 
-## 6. Repetir por cada pantalla
-
-- Cada vez que la analista avance un paso: **Marcar pantalla**, snapshot, mapear
-  los campos visibles. El mapper también detecta cambios automáticamente y los
-  registra como `(auto) …` — mejor confirmar con nombres claros.
+Cada caso queda etiquetado en el JSON. Si el mismo caso se repite, se
+guarda una entrada nueva; nada se sobrescribe.
 
 ---
 
-## 7. Cierre de la sesión
+## 7. Cierre de la sesión — exportar siempre
 
-1. Botón **Descargar JSON**. Confirmar el aviso de contenido.
-   - Nombre del archivo: `mapeo-invimagil-YYYYMMDD-HHmm.json`.
-   - Si la descarga está bloqueada, el mapper ofrece **Copiar al portapapeles**;
-     pegar en un archivo de texto o en el canal acordado.
-2. Verificar que el archivo se abrió bien (contiene `mapeos`, `pantallas`,
-   `pruebasInyeccion`, `sondaCombobox`, `snapshots`).
-3. Opcional — si la analista prefiere no dejar nada en la máquina:
-   **Borrar todo** en el panel. Esto limpia `localStorage`.
-4. Cerrar el snippet no borra nada; cerrar el navegador tampoco.
+**Exportar al final de cada sesión, incluso si quedó incompleta.**
+
+1. Botón **Descargar JSON**. Antes de guardar, el panel muestra un
+   **resumen** con:
+   - pantallas marcadas y pendientes,
+   - campos mapeados por pantalla,
+   - resultado de la última prueba de inyección,
+   - casos de sonda hechos y pendientes.
+2. Confirmar la descarga. El archivo se llama
+   `mapeo-invimagil-<primera-pantalla>-YYYYMMDD-HHmm.json`.
+3. Si la descarga está bloqueada por política, el mapper ofrece **Copiar al
+   portapapeles**; pegar en un archivo de texto y enviarlo por el canal
+   acordado.
+4. Enviar el JSON según la instrucción de `LEEME.txt`.
+
+Opcional: si prefiere no dejar nada en la máquina, botón **Borrar todo**
+en el panel. Solo hágalo **después** de exportar.
 
 ---
 
 ## Problemas comunes
 
-- **"El panel no aparece."** ¿Ejecutó el snippet con Ctrl+Enter? ¿La página
-  cargó completamente antes de pegar? Recargar y volver a ejecutar.
-- **"Chrome pide `allow pasting`."** Escribir esas dos palabras en la Console
-  y volver a pegar. Es una protección contra ingeniería social.
-- **"Modo captura no reacciona."** Puede que un modal de InvimÁgil esté capturando
-  clics. Presionar Escape, cerrar el modal, reintentar.
-- **"El sitio se ve raro cuando el panel está abierto."** El panel está en
-  Shadow DOM, no debería afectar la página. Arrastrarlo por la cabecera o
-  minimizar con ▁ si estorba.
-- **"La descarga no aparece."** La política del navegador puede bloquearla.
+- **«El panel no aparece.»** ¿Ejecutó el fragmento con Ctrl+Enter?
+  ¿La página terminó de cargar antes de pegar? Recargar y reintentar.
+- **«Edge pide `allow pasting`.»** Escribir esas dos palabras en la
+  Consola y volver a pegar. Es una protección contra ingeniería social.
+- **«El desplegable de pantallas está vacío.»** No debería —
+  vienen precargadas. Si pasa, recargar la página y volver a ejecutar el
+  fragmento (el estado se conserva).
+- **«Modo captura no reacciona.»** Puede haber un modal encima. Presionar
+  Escape, cerrar el modal, reintentar.
+- **«La descarga no aparece.»** La política del navegador puede bloquearla.
   Usar **Copiar al portapapeles**.
-- **"Perdí una captura."** Muy raramente pasa: el mapper guarda después de
-  cada captura. Revisar la sección de errores en el panel
-  (botón **Ver errores**).
+- **«Perdí una captura.»** El mapper guarda tras cada acción. Revisar la
+  sección de errores en el panel (botón **Ver errores**).
 
 ---
 
@@ -153,5 +213,5 @@ en un registro real podría dejar datos de prueba en el expediente del cliente.
 - No maneja usuario ni contraseña.
 - No hace clic en Enviar / Radicar / Firmar / Confirmar / Pagar.
 - No modifica registros reales — la prueba de inyección restaura el valor.
-- No captura datos del cliente en los snapshots (a menos que la analista
-  desactive explícitamente la sanitización).
+- No captura datos del cliente en los snapshots (a menos que se desactive
+  explícitamente la sanitización).

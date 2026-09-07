@@ -70,6 +70,46 @@
     ]
   };
 
+  // Expected screen sequence for a sistematización draft. The panel shows this
+  // list with per-screen progress and uses it as the "Marcar pantalla" dropdown.
+  const SCREEN_SEQUENCE = [
+    { id: 'sistematizacion', nombre_es: 'Sistematización' },
+    { id: 'responsables',    nombre_es: 'Responsables' },
+    { id: 'producto',        nombre_es: 'Producto' },
+    { id: 'presentacion',    nombre_es: 'Presentación' },
+    { id: 'formula',         nombre_es: 'Fórmula' },
+    { id: 'instrucciones',   nombre_es: 'Instrucciones' },
+    { id: 'organolepticas',  nombre_es: 'Organolépticas' },
+    { id: 'fisicoquimicos',  nombre_es: 'Fisicoquímicos' },
+    { id: 'adjuntos',        nombre_es: 'Adjuntos' },
+    { id: 'revision',        nombre_es: 'Revisión' }
+  ];
+
+  // Formula-probe test cases. The analyst runs each one from the panel; the
+  // sonda record stores the case id so we can compare timings later.
+  const PROBE_CASES = [
+    { id: 'caso1', desc: 'INCI corto con muchas opciones (ej. Aqua)' },
+    { id: 'caso2', desc: 'INCI largo exacto' },
+    { id: 'caso3', desc: 'INCI inexistente' },
+    { id: 'caso4', desc: 'Crear una mezcla' }
+  ];
+
+  // Normalize a user-typed name to a canonical id: lowercase, strip accents,
+  // spaces -> underscore, drop anything that isn't a-z 0-9 _.
+  function normalizeId(s) {
+    return String(s == null ? '' : s)
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '')
+      .replace(/_+/g, '_')
+      .replace(/^_+|_+$/g, '');
+  }
+  function labelToKey(label) {
+    const k = normalizeId(label);
+    return k.slice(0, 60);
+  }
+
   const STORAGE_KEY = 'invimagil.mapper.v1';
   const MAX_OUTER_HTML = 4000;
   const LARGE_TEXT_NODE = 40;         // for snapshot sanitization
@@ -89,13 +129,14 @@
     plataforma_url: location.href,
     plataforma_title: document.title,
     sanitizarSnapshots: true,
-    pantallaActual: null,
-    pantallas: [],
-    mapeos: {},          // key -> mapping entry
-    camposAdHoc: [],     // extra fields captured in-session
+    pantallaActual: null,          // canonical id of currently-marked screen
+    pantallas: [],                 // deduped by id; append-only per id
+    navegacionLog: [],             // auto-detected navigation events (informational)
+    mapeos: {},                    // key -> mapping entry
+    camposAdHoc: [],               // extra fields captured in-session
     pruebasInyeccion: [],
-    sondaCombobox: null,
-    snapshots: [],       // {id, pantalla, sanitizado, ts, html}
+    sondas: [],                    // one entry per formula-probe run, tagged with caso
+    snapshots: [],                 // {id, pantalla, sanitizado, ts, html}
     errores: [],
     ultimaExportacionCapturas: 0
   });
@@ -407,36 +448,69 @@
   let lastUrl = location.href;
   let lastTitle = document.title;
 
-  function noteScreen(nombre, opts) {
-    const entry = {
-      id: 'p' + Date.now(),
-      nombre: nombre || document.title || location.pathname,
+  // Mark (or re-mark) a screen. Never overwrites an existing entry: on
+  // subsequent marks with the same id we bump ultimaMarca / marcasCount so any
+  // metadata (raw label, first-marked timestamp) is preserved. The current
+  // screen id is what gets attached to captures made after this call.
+  function markScreen(id, opts) {
+    opts = opts || {};
+    const canonical = normalizeId(id);
+    if (!canonical) return;
+    const seq = SCREEN_SEQUENCE.find(s => s.id === canonical);
+    const label = opts.nombre_es || (seq && seq.nombre_es) || canonical;
+    const raw = opts.raw != null ? String(opts.raw) : null;
+    const now = new Date().toISOString();
+    let entry = state.pantallas.find(p => p.id === canonical);
+    if (entry) {
+      entry.ultimaMarca = now;
+      entry.marcasCount = (entry.marcasCount || 1) + 1;
+      if (raw && !entry.raw) entry.raw = raw;
+    } else {
+      state.pantallas.push({
+        id: canonical,
+        nombre_es: label,
+        url: location.href,
+        title: document.title,
+        primeraMarca: now,
+        ultimaMarca: now,
+        marcasCount: 1,
+        raw: raw,
+        enSecuencia: !!seq
+      });
+    }
+    state.pantallaActual = canonical;
+    save();
+    ui.render();
+  }
+
+  // Auto-nav events are informational only; they do not change pantallaActual
+  // (which must be picked deliberately from the dropdown or free-text).
+  function logNavigation(reason) {
+    state.navegacionLog.push({
+      ts: new Date().toISOString(),
       url: location.href,
       title: document.title,
-      ts: new Date().toISOString(),
-      auto: !!(opts && opts.auto)
-    };
-    state.pantallas.push(entry);
-    state.pantallaActual = entry.nombre;
+      reason: reason || null
+    });
+    if (state.navegacionLog.length > 200) {
+      state.navegacionLog.splice(0, state.navegacionLog.length - 200);
+    }
     save();
-    ui.renderStatus();
   }
 
   function watchNavigation() {
-    // Observe title changes
     const mo = new MutationObserver(() => {
       if (document.title !== lastTitle) {
         lastTitle = document.title;
-        noteScreen('(auto) ' + document.title, { auto: true });
+        logNavigation('title');
       }
     });
     const titleEl = document.querySelector('head > title');
     if (titleEl) mo.observe(titleEl, { childList: true, subtree: true, characterData: true });
-    // Poll location
     setInterval(() => {
       if (location.href !== lastUrl) {
         lastUrl = location.href;
-        noteScreen('(auto) ' + location.pathname, { auto: true });
+        logNavigation('url');
       }
     }, 800);
   }
@@ -529,17 +603,28 @@
 
   function addAdHocField() {
     startCapture((el) => {
-      const nombre = prompt('Nombre del campo (ej. numero_lote):');
-      if (!nombre) return;
-      const seccion = prompt(
-        'Sección: ' + FIELDS.secciones.map(s => s.id).join(' | ') + '\n(o escriba una nueva)',
-        state.pantallaActual ? '' : ''
+      const labelRaw = labelTextFor(el) || '';
+      const suggestedKey = labelToKey(labelRaw) || 'campo_' + Date.now();
+      const nombre = prompt(
+        'Nombre del campo (se guardará normalizado):\n\nEtiqueta visible: ' +
+          (labelRaw || '(sin etiqueta detectada)'),
+        suggestedKey
       );
+      if (!nombre) return;
+      const key = normalizeId(nombre) || suggestedKey;
+      const seccionDefault = state.pantallaActual || '';
+      const seccion = prompt(
+        'Sección (id de pantalla):\n' + SCREEN_SEQUENCE.map(s => s.id).join(' | ') +
+          '\n\n(o escriba una nueva; se normalizará)',
+        seccionDefault
+      );
+      const section = normalizeId(seccion || '') || 'sin_seccion';
       const fp = elementFingerprint(el);
       const entry = Object.assign({
-        key: nombre,
-        section: seccion || 'sin_seccion',
+        key,
+        section,
         origen: 'sesion',
+        labelRaw,
         ts: new Date().toISOString()
       }, fp);
       state.camposAdHoc.push(entry);
@@ -680,11 +765,21 @@
   // ------------------------------------------------------------------
   let probe = null;
 
-  function startComboboxProbe() {
-    if (probe) return;
-    alert('Modo sonda del combobox: haga clic en el campo de búsqueda de ingredientes y escriba un INCI.\n\nCuando termine, use el botón "Detener sonda".');
+  function startComboboxProbe(casoId) {
+    if (probe) {
+      alert('Ya hay una sonda activa. Deténgala antes de iniciar otra.');
+      return;
+    }
+    const caso = PROBE_CASES.find(c => c.id === casoId) || null;
+    alert(
+      'Sonda del combobox — ' + (caso ? caso.desc : 'caso libre') + '\n\n' +
+      'Al cerrar este aviso, haga clic en el campo de búsqueda de INCI y escriba ' +
+      'como lo haría normalmente. Cuando termine, use "Detener sonda".'
+    );
     startCapture((el) => {
       probe = {
+        casoId: caso ? caso.id : null,
+        casoDesc: caso ? caso.desc : null,
         objetivo: elementFingerprint(el),
         eventos: [],
         mutaciones: [],
@@ -748,6 +843,9 @@
       probe._mo.disconnect();
     } catch (_) {}
     const snapshot = {
+      ts: new Date().toISOString(),
+      casoId: probe.casoId,
+      casoDesc: probe.casoDesc,
       objetivo: probe.objetivo,
       pantalla: probe.pantalla,
       totalEventos: probe.eventos.length,
@@ -758,11 +856,17 @@
       selectorLista: probe.selectorLista,
       selectorOpciones: probe.selectorOpciones
     };
-    state.sondaCombobox = snapshot;
+    state.sondas.push(snapshot);
     save();
     probe = null;
     ui.render();
-    alert('Sonda detenida. Datos guardados y exportables.');
+    alert('Sonda detenida. Datos guardados y exportables.\n\nRecuerde: presione "Detener sonda" entre cada caso.');
+  }
+
+  function probeCasesDone() {
+    const done = new Set();
+    for (const s of state.sondas) if (s && s.casoId) done.add(s.casoId);
+    return done;
   }
 
   // ------------------------------------------------------------------
@@ -822,6 +926,87 @@
     return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes());
   }
 
+  function fieldsMappedByScreen() {
+    const counts = {};
+    const bump = (id) => { const k = id || 'sin_pantalla'; counts[k] = (counts[k] || 0) + 1; };
+    for (const key of Object.keys(state.mapeos)) bump(state.mapeos[key].pantalla);
+    for (const c of state.camposAdHoc) bump(c.pantalla);
+    return counts;
+  }
+
+  function pendingScreens() {
+    const marked = new Set(state.pantallas.map(p => p.id));
+    return SCREEN_SEQUENCE.filter(s => !marked.has(s.id)).map(s => s.id);
+  }
+
+  function lastInjectionResult() {
+    const arr = state.pruebasInyeccion;
+    if (!arr.length) return null;
+    const last = arr[arr.length - 1];
+    return {
+      ts: last.ts,
+      valorSeMantuvo: !!last.valorSeMantuvo,
+      restauracionExitosa: !!last.restauracionExitosa,
+      combinacionQueFunciono: last.combinacionQueFunciono || null
+    };
+  }
+
+  function buildSummary() {
+    const done = probeCasesDone();
+    return {
+      pantallasMarcadas: state.pantallas.map(p => ({
+        id: p.id,
+        nombre_es: p.nombre_es,
+        marcasCount: p.marcasCount,
+        primeraMarca: p.primeraMarca,
+        ultimaMarca: p.ultimaMarca,
+        enSecuencia: !!p.enSecuencia
+      })),
+      pantallasPendientes: pendingScreens(),
+      camposMapeadosPorPantalla: fieldsMappedByScreen(),
+      totalMapeos: Object.keys(state.mapeos).length,
+      totalAdHoc: state.camposAdHoc.length,
+      totalSnapshots: state.snapshots.length,
+      pruebaInyeccionUltima: lastInjectionResult(),
+      totalPruebasInyeccion: state.pruebasInyeccion.length,
+      sondaCasosHechos: PROBE_CASES.filter(c => done.has(c.id)).map(c => c.id),
+      sondaCasosPendientes: PROBE_CASES.filter(c => !done.has(c.id)).map(c => c.id),
+      totalSondas: state.sondas.length,
+      errores: state.errores.length
+    };
+  }
+
+  function summaryText(sum) {
+    const seq = SCREEN_SEQUENCE.map(s => {
+      const marked = sum.pantallasMarcadas.find(p => p.id === s.id);
+      const n = sum.camposMapeadosPorPantalla[s.id] || 0;
+      const flag = marked ? '✓' : '·';
+      return '  ' + flag + ' ' + s.id + (n ? ' (' + n + ' campos)' : '');
+    }).join('\n');
+    const inj = sum.pruebaInyeccionUltima;
+    const injTxt = inj
+      ? (inj.valorSeMantuvo ? 'OK (' + (inj.combinacionQueFunciono || '?') + ')' : 'REVERTIDA')
+      : 'sin pruebas';
+    return [
+      'RESUMEN DE LA SESIÓN',
+      '',
+      'Pantallas (secuencia esperada):',
+      seq,
+      '',
+      'Pantallas fuera de secuencia: ' +
+        (sum.pantallasMarcadas.filter(p => !p.enSecuencia).map(p => p.id).join(', ') || 'ninguna'),
+      'Pantallas pendientes: ' + (sum.pantallasPendientes.join(', ') || 'ninguna'),
+      '',
+      'Mapeos: ' + sum.totalMapeos + '  •  Ad-hoc: ' + sum.totalAdHoc +
+        '  •  Snapshots: ' + sum.totalSnapshots,
+      'Prueba de inyección: ' + injTxt +
+        '  (' + sum.totalPruebasInyeccion + ' pruebas)',
+      'Sonda de fórmula: hechos [' + sum.sondaCasosHechos.join(', ') +
+        '], pendientes [' + sum.sondaCasosPendientes.join(', ') + ']',
+      'Errores registrados: ' + sum.errores
+    ].join('\n');
+  }
+
   function buildExportPayload() {
     return {
       perfil: state.perfil,
@@ -832,13 +1017,17 @@
         title: state.plataforma_title,
         urlActual: location.href
       },
+      resumen: buildSummary(),
+      secuenciaEsperada: SCREEN_SEQUENCE,
+      casosSondaEsperados: PROBE_CASES,
       schemaSeed: FIELDS,
       sanitizarSnapshots: state.sanitizarSnapshots,
       pantallas: state.pantallas,
+      navegacionLog: state.navegacionLog,
       mapeos: state.mapeos,
       camposAdHoc: state.camposAdHoc,
       pruebasInyeccion: state.pruebasInyeccion,
-      sondaCombobox: state.sondaCombobox,
+      sondas: state.sondas,
       snapshots: state.snapshots,
       errores: state.errores
     };
@@ -888,7 +1077,18 @@
   function exportJson(useClipboard) {
     const payload = buildExportPayload();
     const text = JSON.stringify(payload, null, 2);
-    const filename = 'mapeo-invimagil-' + nowStamp() + '.json';
+    const first = state.pantallas[0];
+    const firstSlug = first ? first.id : 'sin-pantalla';
+    const filename = 'mapeo-invimagil-' + firstSlug + '-' + nowStamp() + '.json';
+
+    // Show the summary before download so the analyst sees what is missing.
+    const proceed = confirm(
+      summaryText(payload.resumen) +
+      '\n\n----\nArchivo: ' + filename +
+      '\n\n¿Continuar con la exportación?'
+    );
+    if (!proceed) return;
+
     const unsanit = state.snapshots.some(s => !s.sanitizado);
     const warn = 'El archivo contiene la estructura de la plataforma' +
                  (unsanit ? ' Y snapshots SIN sanitizar (posibles datos de cliente)' : '') +
@@ -1013,6 +1213,31 @@
         summary { cursor: pointer; font-weight: bold; color: #003366; }
         .kv { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; row-gap: 2px; font-size: 11px; margin-top: 4px; }
         .kv b { color: #333; }
+        select.pick {
+          all: initial; display: inline-block;
+          background: #fff; color: #1a1a1a;
+          padding: 3px 4px; border: 1px solid #ccc; border-radius: 3px;
+          font: 12px system-ui; margin: 2px 4px 2px 0; max-width: 180px;
+        }
+        .strip { display: flex; flex-wrap: wrap; gap: 3px; margin: 4px 0 6px 0; }
+        .chip {
+          font-size: 10px; padding: 2px 6px; border-radius: 10px;
+          border: 1px solid transparent; white-space: nowrap;
+        }
+        .chip.pending  { background: #f2f2f2; color: #666; border-color: #ddd; }
+        .chip.marcada  { background: #dde7f2; color: #003366; border-color: #b7c8de; }
+        .chip.snap     { background: #e6f2d3; color: #204a20; border-color: #bcdda0; }
+        .chip.mapped   { background: #003366; color: #fff; border-color: #003366; }
+        .chip .n       { font-weight: bold; margin-left: 4px; }
+        .chip.current  { outline: 2px solid #ff6b00; outline-offset: 1px; }
+        .caso {
+          display: flex; align-items: center; gap: 6px;
+          padding: 3px 0; border-bottom: 1px dotted #eee; font-size: 11px;
+        }
+        .caso .mark { width: 12px; text-align: center; }
+        .caso .mark.done { color: #204a20; }
+        .caso .mark.todo { color: #a35800; }
+        .caso .desc { flex: 1; }
       </style>
       <div class="banner" id="banner">Modo captura activo — clic en un elemento (Esc para cancelar)</div>
       <div class="panel" id="panel">
@@ -1073,6 +1298,7 @@
       if (opts) {
         for (const [k, v] of Object.entries(opts)) {
           if (k === 'onclick') el.addEventListener('click', v);
+          else if (k === 'onchange') el.addEventListener('change', v);
           else if (k === 'class') el.className = v;
           else if (k === 'title') el.title = v;
           else if (k === 'style') el.style.cssText = v;
@@ -1107,15 +1333,69 @@
       if (reminderOn) status.append(h('div', { class: 'reminder' }, 'Sugerencia: exporte el JSON para no perder trabajo.'));
       body.append(status);
 
-      // Screens
+      // Progress strip: shows each screen from SCREEN_SEQUENCE with its state.
+      const mappedCounts = fieldsMappedByScreen();
+      const markedIds = new Set(state.pantallas.map(p => p.id));
+      const snapshotIds = new Set(state.snapshots.map(s => s.pantalla).filter(Boolean));
+      const strip = h('div', { class: 'strip' });
+      for (const s of SCREEN_SEQUENCE) {
+        const marked = markedIds.has(s.id);
+        const hasSnap = snapshotIds.has(s.id);
+        const n = mappedCounts[s.id] || 0;
+        let cls = 'chip pending';
+        if (n > 0) cls = 'chip mapped';
+        else if (hasSnap) cls = 'chip snap';
+        else if (marked) cls = 'chip marcada';
+        if (state.pantallaActual === s.id) cls += ' current';
+        const chip = h('span', { class: cls, title:
+          (marked ? 'marcada' : 'pendiente') +
+          (hasSnap ? ' · con snapshot' : '') +
+          (n ? ' · ' + n + ' campos' : '')
+        }, s.id, n ? h('span', { class: 'n' }, String(n)) : null);
+        strip.append(chip);
+      }
+      // Off-sequence screens (custom names) at the end
+      for (const p of state.pantallas.filter(p => !SCREEN_SEQUENCE.some(s => s.id === p.id))) {
+        const hasSnap = snapshotIds.has(p.id);
+        const n = mappedCounts[p.id] || 0;
+        let cls = 'chip mapped';
+        if (n === 0) cls = hasSnap ? 'chip snap' : 'chip marcada';
+        if (state.pantallaActual === p.id) cls += ' current';
+        strip.append(h('span', { class: cls, title: 'fuera de secuencia' },
+          p.id, n ? h('span', { class: 'n' }, String(n)) : null));
+      }
+      body.append(strip);
+
+      // Screens section: dropdown-based marking
       const screensSec = h('details', { open: '' });
       screensSec.append(h('summary', null, 'Pantalla y flujo'));
+      const pickerId = '__inv_screen_pick__';
+      const select = h('select', { class: 'pick', id: pickerId });
+      const placeholder = h('option', { value: '' }, '— seleccionar pantalla —');
+      select.append(placeholder);
+      for (const s of SCREEN_SEQUENCE) {
+        const opt = h('option', { value: s.id },
+          s.id + (markedIds.has(s.id) ? ' ✓' : ''));
+        select.append(opt);
+      }
+      select.append(h('option', { value: '__other__' }, 'otra… (texto libre)'));
+      const markBtn = h('button', { class: 'act primary', onclick: guarded('marcarPantalla', () => {
+        const sel = select.value;
+        if (!sel) { alert('Elija una pantalla del listado.'); return; }
+        if (sel === '__other__') {
+          const raw = prompt('Nombre libre de la pantalla (se normalizará):');
+          if (!raw) return;
+          const canonical = normalizeId(raw);
+          if (!canonical) { alert('Nombre inválido después de normalizar.'); return; }
+          markScreen(canonical, { nombre_es: raw.trim(), raw });
+        } else {
+          markScreen(sel);
+        }
+      }) }, 'Marcar pantalla');
+      screensSec.append(h('div', null, select, markBtn));
+      screensSec.append(h('div', { class: 'reminder' },
+        'Regla: una pantalla a la vez → marcar → snapshot → mapear todo → avanzar.'));
       const scrRow = h('div', null,
-        h('button', { class: 'act', onclick: guarded('marcarPantalla', () => {
-          const suggested = document.title || location.pathname;
-          const name = prompt('Nombre de la pantalla:', suggested);
-          if (name) noteScreen(name, {});
-        }) }, 'Marcar pantalla'),
         h('button', { class: 'act', onclick: guarded('snapshot', takeSnapshot) }, 'Guardar snapshot'),
         h('button', { class: 'act', onclick: guarded('toggleSanit', () => {
           state.sanitizarSnapshots = !state.sanitizarSnapshots;
@@ -1139,14 +1419,30 @@
       ));
       body.append(injSec);
 
-      // Combobox probe
+      // Combobox probe with per-case checklist
       const probeSec = h('details', { open: '' });
-      probeSec.append(h('summary', null, 'Sonda del combobox de ingredientes'));
-      probeSec.append(h('div', null,
+      probeSec.append(h('summary', null, 'Sonda del combobox de ingredientes (fórmula)'));
+      probeSec.append(h('div', { class: 'reminder' },
+        'Ejecute cada caso y presione «Detener sonda» entre uno y otro.'));
+      const doneCases = probeCasesDone();
+      for (const caso of PROBE_CASES) {
+        const isDone = doneCases.has(caso.id);
+        const row = h('div', { class: 'caso' },
+          h('span', { class: 'mark ' + (isDone ? 'done' : 'todo') }, isDone ? '✓' : '☐'),
+          h('span', { class: 'desc' }, caso.id + ': ' + caso.desc),
+          probe
+            ? null
+            : h('button', { class: 'act', onclick: guarded('iniciarSonda', () => startComboboxProbe(caso.id)) },
+                isDone ? 'Repetir' : 'Iniciar')
+        );
+        probeSec.append(row);
+      }
+      probeSec.append(h('div', { style: 'margin-top:6px' },
         probe
           ? h('button', { class: 'act danger', onclick: guarded('detenerSonda', stopComboboxProbe) }, 'Detener sonda')
-          : h('button', { class: 'act', onclick: guarded('iniciarSonda', startComboboxProbe) }, 'Sondear autocompletado'),
-        ' ', state.sondaCombobox ? 'sonda guardada' : 'sin sonda'
+          : null,
+        ' ',
+        state.sondas.length + ' sondas guardadas.'
       ));
       body.append(probeSec);
 
@@ -1219,7 +1515,7 @@
   // Public sentinel API (for re-injection)
   // ------------------------------------------------------------------
   window[SENTINEL] = {
-    version: '0.1.0',
+    version: '0.2.0',
     reactivate() {
       // Show the panel again if hidden; refresh from storage.
       const fresh = load();
@@ -1229,15 +1525,14 @@
       console.log('[InvimAgil] reactivado');
     },
     dump() { return buildExportPayload(); },
+    resumen() { return buildSummary(); },
     state
   };
 
-  // Boot
+  // Boot: do NOT auto-mark. Captures made before the analyst picks a screen
+  // from the dropdown will carry pantalla=null and be counted under
+  // "sin_pantalla" in the export summary.
   watchNavigation();
   ui.render();
-  if (!state.pantallaActual) {
-    // Auto-mark the initial screen so early captures have a pantalla value.
-    noteScreen(document.title || location.pathname, { auto: true });
-  }
   console.log('[InvimAgil] mapper cargado. window.' + SENTINEL + ' expuesto.');
 })();
