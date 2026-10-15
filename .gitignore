@@ -29,3 +29,4 @@ extraccion.log
 # Local settings
 .env
 .env.local
+dist/.cache/

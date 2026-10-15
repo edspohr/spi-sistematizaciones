@@ -1,0 +1,10 @@
+InvimAgil Base - genera el archivo base (Excel maestro) de una carpeta de producto.
+
+1. Descomprimir este zip dentro de Documentos. No mover la carpeta despues.
+2. Doble clic en Instalar.bat y pegar la clave que envio Edmundo.
+3. Clic derecho sobre la carpeta de un producto -> "Generar archivo base InvimAgil".
+4. Responder la hoja Decisiones del Excel (columna amarilla), guardar, cerrar,
+   y clic derecho -> "Aplicar decisiones InvimAgil".
+
+Instrucciones completas: INSTRUCCIONES-LAURA-BASE.md
+Ante cualquier duda o error: captura de pantalla y mensaje a Edmundo.

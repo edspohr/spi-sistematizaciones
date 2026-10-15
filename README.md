@@ -13,7 +13,9 @@ Two modules share a single field schema:
 
 ## Non-negotiable constraints
 
-- Fully offline. No network calls, ever. No LLM APIs, no cloud OCR, no telemetry.
+- The only network traffic allowed is the Anthropic API (organization configured
+  with zero data retention, agreed with SPI on 2026-09-15). No other cloud services,
+  no telemetry. The mapping kit (`tools/`) stays fully offline.
 - The extension fills; the human approves and submits.
 - No credentials. The extension uses the analyst's already-open session.
 - All user-facing text in Spanish (Colombia). Code, comments, commits in English.
@@ -22,13 +24,36 @@ Two modules share a single field schema:
 ## Repository layout
 
 ```
-tools/     Live-session mapping kit (Slice 0)
+tools/     Live-session mapping kit (Slice 0) + package build script
 schema/    Shared field schema (data, not code)
-extractor/ Python CLI (Slice 2)
+extractor/ InvimÁgil Base: product folder -> planilla.json + Excel maestro (Slice 2)
 extension/ Chrome MV3 extension (Slices 1 and 3)
 docs/      User-facing documentation, Spanish
+dist/      Hand-off packages (zips are gitignored)
 samples/   Sample dossiers (gitignored, never committed)
 ```
+
+## Slice 2 — InvimÁgil Base (extractor)
+
+Windows tool for the analyst, no admin rights: right-click a product folder →
+**Generar archivo base InvimÁgil**. Reads every PDF/DOCX/XLSX/image in the folder,
+sends them in one call to `claude-opus-5-5` with structured output (schema in
+`extractor/invimagil_base/esquema.py`, rules in `extractor/recursos/prompt_fase_a.md`),
+validates every `{slug, name}` against `extractor/recursos/invimagil-catalogos.txt`,
+and writes to `<folder>/_invimagil/`: `planilla.json`, `MAESTRO NSO - <producto>.xlsx`
+(one sheet per wizard step + Decisiones sheet) and `log-nso.md`. A second entry,
+**Aplicar decisiones InvimÁgil**, reads the analyst's answers from the yellow column
+of the Decisiones sheet and regenerates both files.
+
+- Run locally on macOS/Linux for development:
+  `ANTHROPIC_API_KEY=... python3 extractor/generar_base.py "<carpeta>"`
+  (`INVIMAGIL_SIMULAR=<planilla.json>` skips the API call; useful for layout work).
+- Build the hand-off zip (embeddable Python 3.12 + wheels, nothing compiled):
+  `tools/build-windows-package.sh` → `dist/InvimagilBase-<date>.zip`.
+- SPI defaults (titular, apoderado, unidad, listado de referencia):
+  `extractor/recursos/criterios_spi.json`.
+- Analyst docs: `docs/INSTRUCCIONES-LAURA-BASE.md`.
+
 
 ## Slice 0 — Live Mapping Kit (this repo, right now)
 

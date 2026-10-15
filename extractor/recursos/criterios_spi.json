@@ -1,0 +1,14 @@
+{
+  "_comentario": "Criterios fijos de SPI que la herramienta aplica a todos los productos. Editar con cuidado: los slugs deben existir en invimagil-catalogos.txt.",
+  "titular_nso": "SERVICIOS DE PROPIEDAD INDUSTRIAL S.A.S.",
+  "representante_legal": "ALVARO E. RINCON MAUTNER",
+  "responsable_tecnico": null,
+  "unidad_composicion": {"slug": "wwcom", "name": "% (w/w)"},
+  "listado_referencia": {"slug": "LREF-PCPC", "name": "PCPC"},
+  "fabricante_tipo_por_defecto": "tercero",
+  "tamano_maximo_adjunto_mb": 10,
+  "notas": [
+    "Si el COCC trae cantidades en % p/p o %Wt/Wt se usa wwcom | % (w/w).",
+    "El responsable técnico se elige en la plataforma de la lista de SPI; si está vacío aquí queda como decisión."
+  ]
+}

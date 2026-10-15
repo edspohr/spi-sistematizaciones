@@ -1,0 +1,2388 @@
+===  cosmFor Formas Cosmeticas (NSO) 19
+aceite | ACEITE
+aeroso | AEROSOL
+barra1 | BARRA
+solido | SÓLIDO COMPACTO
+cera | CERA
+emulsi | EMULSIÓN
+cremag | CREMA GEL
+esmalt | ESMALTE
+gel | GEL
+granul | GRANULADO
+lapiz1 | LÁPIZ
+locion | LOCIÓN
+soport | SOPORTE IMPREGNADO
+pasta1 | PASTA
+perlas | PERLAS
+polvo1 | POLVO
+pomada | POMADA
+soluci | SOLUCIÓN
+suspen | SUSPENSIÓN
+===  prodCat Categorias de Producto (NSO) 15
+acosme | (a) COSMÉTICOS PARA NIÑOS
+bcosme | (b) COSMÉTICOS PARA EL ÁREA DE LOS OJOS
+ccosme | (c) COSMÉTICOS PARA LA PIEL
+dcosme | (d) COSMÉTICOS PARA LOS LABIOS
+ecosme | (e) COSMÉTICOS PARA EL ASEO E HIGIENE CORPORAL . (INCLUYE TAMBIÉN A LOS PAÑOS HÚMEDOS Y GELES ANTIBACTERIALES, ESTOS ÚLTIMOS CON UNA CONCENTRACIÓN MENOR DEL 70 % DE ALCOHOL )
+fdesod | (f) DESODORANTES Y ANTITRANSPIRANTES
+gcosme | (g) COSMÉTICOS CAPILARES
+hcosme | (h) COSMÉTICOS PARA LAS UÑAS
+icosme | (i) COSMÉTICOS DE PERFUMERÍA
+jprodu | (j) PRODUCTOS PARA HIGIENE BUCAL Y DENTAL
+kprodu | (k) PRODUCTOS PARA Y DESPUÉS DEL AFEITADO
+lprodu | (l) PRODUCTOS PARA EL BRONCEADO, PROTECCIÓN SOLAR Y AUTOBRONCEADORES
+mdepil | (m) DEPILATORIOS
+nprodu | (n) PRODUCTOS PARA ACLARAR LA PIEL
+oprodu | (o) PRODUCTOS REPELENTES DE INSECTOS QUE VAN SOBRE LA PIEL
+===  presUni Unidades de Medida Presentacion Comercial 7
+kgpre | Kg
+gpres | g
+lpres | L
+mlpre | mL
+ccpre | cc
+unpre | Unidad
+ozpre | Oz
+===  compUni Unidades de Medida Composicion 7
+gramo | g
+grlit | g/l
+mgcom | mg
+ppmco | ppm
+vvcom | % (v/v)
+wvcom | % (w/v)
+wwcom | % (w/w)
+===  refList Listado de referencia 3
+LREF-PCPC | PCPC
+LREF-UE | Union Europea (UE)
+LREF-FDA | FDA
+===  cosmFun Funcion del Ingrediente 86
+FNC-ABRA | ABRASIVO COSMÉTICO
+FNC-AB-AD | ABSORBENTE - ADSORBENTE
+FNC-AB-UV | ABSORBENTE UV
+FNC-AC-BL | ACLARANTE O BLANQUEADOR COSMÉTICO
+FNC-AC-CA | ACONDICIONADOR CAPILAR COSMÉTICO
+FNC-AC-CT | ACONDICIONADOR CUTÁNEO
+FNC-AC-CU | ACONDICIONADOR CUTÁNEO COSMÉTICO
+FNC-AC-EM | ACONDICIONADOR CUTÁNEO - EMOLIENTE
+FNC-AC-HU | ACONDICIONADOR CUTÁNEO - HUMECTANTE
+FNC-AC-MI | ACONDICIONADOR CUTÁNEO - MISCELÁNEO
+FNC-AC-OC | ACONDICIONADOR CUTÁNEO - OCLUSIVO
+FNC-AC-PE | ACONDICIONADOR DE PESTAÑAS COSMÉTICO
+FNC-AC-UÑ | ACONDICIONADOR DE UÑAS COSMÉTICO
+FNC-ADHE | ADHESIVO
+FNC-AG-CB | AGENTE DE CUIDADO BUCAL COSMÉTICO
+FNC-AG-LI | AGENTE LÍTICO
+FNC-AG-AG | AGLOMERANTE O AGLUTINANTE
+FNC-AJ-PH | AJUSTADOR DE PH
+FNC-AL-SU | ALISADOR O SUAVIZANTE CUTÁNEO
+FNC-AL-ON | ALISADOR U ONDULADOR CAPILAR
+FNC-AM-BU | AMORTIGUADOR O BUFFER
+FNC-A-AGL | ANTIAGLOMERANTE
+FNC-A-CAS | ANTICASPA COSMÉTICO
+FNC-A-COR | ANTICORROSIVO
+FNC-A-ESP | ANTIESPUMANTE
+FNC-A-EST | ANTIESTÁTICO
+FNC-A-MOB | ANTIMICROBIANO O BIOCIDA COSMÉTICO
+FNC-A-OXI | ANTIOXIDANTE
+FNC-A-PLA | ANTIPLACA COSMÉTICO
+FNC-A-SEB | ANTISEBO COSMÉTICO
+FNC-A-TRA | ANTITRANSPIRANTE COSMÉTICO
+FNC-ASTR | ASTRINGENTE COSMÉTICO
+FNC-BRON | BRONCEADOR COSMÉTICO
+FNC-CALM | CALMANTE COSMÉTICO
+FNC-COLO | COLORANTE
+FNC-CO-PR | CONSERVANTE O PRESERVANTE
+FNC-CO-ES | CONSTRUCTOR O ESCULPIDOR DE UÑAS COSMÉTICO
+FNC-DEPI | DEPILANTE COSMÉTICO
+FNC-D-ENR | DESENREDANTE CAPILAR COSMÉTICO
+FNC-D-NAT | DESNATURALIZANTE
+FNC-D-ODO | DESODORANTE COSMÉTICO
+FNC-DI-NT | DISPERSANTE - NO TENSOACTIVO
+FNC-EL-ED | ELIMINADOR DE ESCAMAS Y DUREZAS COSMÉTICO
+FNC-EPIL | EPILANTE COSMÉTICO
+FNC-ESPU | ESPUMANTE
+FNC-ES-EM | ESTABILIZANTE DE EMULSIÓN
+FNC-ES-LU | ESTABILIZANTE DE LUZ
+FNC-EXFO | EXFOLIANTE COSMÉTICO
+FNC-FI-CA | FIJADOR CAPILAR
+FNC-FO-PE | FORMADOR DE PELÍCULA
+FNC-FRAG | FRAGANCIA
+FNC-GELI | GELIFICANTE
+FNC-HI-CU | HIDRATANTE CUTÁNEO
+FNC-HUME | HUMECTANTE
+FNC-LIMP | LIMPIADOR COSMÉTICO
+FNC-MO-DE | MODIFICADOR DE DESLIZAMIENTO
+FNC-MO-SU | MODIFICADOR DE SUPERFICIE
+FNC-MC-VI | MODIFICADOR O CONTROLADOR DE VISCOSIDAD
+FNC-OPAC | OPACIFICANTE
+FNC-OXID | OXIDANTE
+FNC-PERF | PERFUMANTE
+FNC-PE-NA | PERLANTE O NACARANTE
+FNC-PLAS | PLASTIFICANTE
+FNC-PROP | PROPELENTE
+FNC-PR-CL | PROTECTOR CUTÁNEO O DE LABIOS COSMÉTICO
+FNC-PR-SO | PROTECTOR SOLAR UV
+FNC-QE-SE | QUELANTE O SECUESTRANTE
+FNC-QUER | QUERATOLÍTICO COSMÉTICO
+FNC-RE-QU | REDUCTOR QUÍMICO
+FNC-REFR | REFRESCANTE COSMÉTICO
+FNC-R-ACV | RELLENANTE - AGENTE DE CARGA O VOLUMEN
+FNC-RENG | RENGRASANTE COSMÉTICO
+FNC-REP-I | REPELENTE DE INSECTOS COSMÉTICO
+FNC-SABO | SABORIZANTE
+FNC-SOLV | SOLVENTE
+FNC-TENS | TENSOACTIVO
+FNC-TE-DI | TENSOACTIVO - DISPERSANTE
+FNC-TE-EM | TENSOACTIVO - EMULSIFICANTE
+FNC-TE-HI | TENSOACTIVO - HIDROTROPO
+FNC-TE-LI | TENSOACTIVO - LIMPIADOR
+FNC-TE-PE | TENSOACTIVO - POTENCIADOR DE ESPUMA
+FNC-TE-SO | TENSOACTIVO - SOLUBILIZANTE
+FNC-TC-CA | TINTE O COLORANTE CAPILAR
+FNC-TONI | TÓNICO COSMÉTICO
+FNC-NO-RE | SIN FUNCIÓN REPORTADA
+FNC-SK-CO | SKIN CONDITIONNING
+===  secoCon Tipo de Envase Secundario 35
+blist1 | Blíster
+bolsa1 | Bolsa
+bolsa2 | Bolsa con cierre "zipper"
+caja | Caja
+cajapl | Caja plegadiza
+cajei | Cajetilla
+canast | Canasta
+cerai | Cerámica
+corcho | Corcho
+cubie | Cubierta
+doypa2 | Doy pack
+empaqu | empaque
+enva21 | Envase
+envolt | Envoltura
+estuc5 | Estuche
+foil1 | Foil
+frasc | Frasco
+fras16 | Frasco con tapa
+funaa | Funda
+fcuna | Funda capuchón
+jaraa | Jarra
+jarra1 | Jarra con tapa
+lamin | Lámina
+lonal | Lona
+malla | Malla
+papll | Papel
+paque2 | Paquete / empaque
+pelic1 | Película
+pteli | Película termoencogible
+sache | Sachet
+sccac | Sachet con cierre
+sacol1 | Saco / lona
+sobre | Sobre
+tarjet | Tarjeta
+termo1 | Termoencogible
+===  primCon Tipo de Envase Primario 146
+airle | Airless
+actir | Airless con tapa
+actyb | Airless con tapa y bolsa interna
+actyo | Airless con tapa y bomba
+actyp | Airless con tapa y piston
+ampoll | Ampolla / Vial
+bliste | Blíster
+bolsa | Bolsa
+bccol | Bolsa con cierre
+bolsac | Bolsa con cierre "zipper"
+bolsad | Bolsa doy pack
+bote | Bote
+botell | Botella
+bcaot | Botella con atomizador
+botel3 | Botella con atomizador spray a presión
+botel1 | Botella con  atomizador spray de gatillo (trigger)
+bcdot | Botella con dispensador
+botel4 | Botella con dispensador de bomba / bomba dosificadora.
+botel5 | Botella con sistema "airless"
+bote11 | Botella con sistema de bolsa y válvula (BOV) aerosol
+bote12 | Botella con sistema de dispensación en aerosol
+bote13 | Botella con sistema de dispensación en espuma
+bctot | Botella con tapa
+botel8 | Botella con tapa abatible
+botel9 | Botella con tapa de boquilla
+botel6 | Botella con tapa "disc top"
+botel2 | Botella con  tapa "flip top"
+botel7 | Botella con tapa "push pull"
+bote10 | Botella con tapa roscada
+bcvot | Botella con válvula
+cajac | Caja
+cajet | Cajetilla
+capsul | Cápsulas o perlas
+ceram | Cerámica
+charol | Charolas/canastillas/celdas
+cojin | Cojín
+cojinc | Cojín con tapa a presión
+cunete | Cuñete
+doypac | Doy pack
+doypa1 | Doy pack con tapa a presión
+envase | Envase
+envas1 | Envase con atomizador spray a presión
+envas2 | Envase con dispensador de bomba / bomba dosificadora.
+envas3 | Envase con sistema "airless"
+envas4 | Envase con sistema de bolsa y válvula (BOV) aerosol
+envas5 | Envase con sistema de dispensación en aerosol
+envas6 | Envase con sistema de dispensación en espuma
+envas7 | Envase con sistema de empuje "push up"
+envas8 | Envase con sistema giratorio "twist up"
+enva12 | Envase con tapa abatible
+enva13 | Envase con tapa de boquilla
+envas9 | Envase con tapa "disc top"
+enva10 | Envase con tapa "flip top"
+enva14 | Envase con tapa gotero/cuentagotas
+enva11 | Envase con tapa "push pull"
+enva15 | Envase con tapa roscada
+enva16 | Envase con tapón
+enva17 | Envase con válvula a presión
+enva18 | Envase Roll-on
+enva19 | Envase talquero con tapa dispensadora (para polvo)
+enva20 | Envase y tapa con aplicador
+estuch | Estuche
+estuc1 | Estuche compacto con compartimentos y tapa
+estuc2 | Estuche compacto con tapa
+estuc3 | Estuche con sistema de empuje "push up"
+estuc4 | Estuche con sistema giratorio "twist up"
+foil | Foil
+frasco | Frasco
+fcara | Frasco con atomizador
+frasc1 | Frasco con atomizador spray a presión
+fcdra | Frasco con dispensador
+frasc2 | Frasco con dispensador de bomba / bomba dosificadora.
+frasc3 | Frasco con sistema "airless"
+frasc4 | Frasco con sistema de bolsa y válvula (BOV) aerosol
+frasc5 | Frasco con sistema de dispensación en aerosol
+frasc6 | Frasco con sistema de dispensación en espuma
+fctra | Frasco con tapa
+fras10 | Frasco con tapa abatible
+fras11 | Frasco con tapa de boquilla
+frasc7 | Frasco con tapa "disc top"
+frasc8 | Frasco con tapa "flip top"
+fras12 | Frasco con tapa gotero/cuentagotas
+frasc9 | Frasco con tapa "push pull"
+fras13 | Frasco con tapa roscada
+fras14 | Frasco con tapón
+fcvra | Frasco con válvula
+fras15 | Frasco con válvula a presión
+funda | Funda
+fcund | Funda capuchón
+galon | Galón
+galonc | Galón con tapa
+gctys | Galón con tapa y subtapa
+gctyt | Galón con tapa y tapón
+jarra | Jarra
+jarrac | Jarra con tapa
+lapiz2 | Lápiz
+lapizc | Lápiz con tapa
+paleta | Paleta
+pcaal | Paleta con aplicador
+palet1 | Paleta con tapa
+paquet | Paquete / empaque
+paque1 | Paquete / empaque con dispensador de paños
+pelicu | Película
+pote | Pote
+pctot | Pote con tapa
+poteco | Pote con tapa rosca
+recip | Recipiente/envase
+rcdec | Recipiente/envase con dispensador
+rctec | Recipiente/envase con tapa
+recipi | Recipiente/envase con tapa dispensadora (para polvo)
+rcvec | Recipiente/envase con válvula
+sachet | Sachet / Sobre
+sscca | Sachet / Sobre con cierre
+sbach | Sachet bilaminado
+scach | Sachet colaminado
+sache1 | Sachet con tapa a presión
+sache2 | Sachet foil
+stach | Sachet trilaminado
+sacolo | Saco / lona
+tarro | Tarro
+tctar | Tarro con tapa
+termoe | Termoencogible
+tubo | Tubo
+tuboco | Tubo colapsible
+tuboc1 | Tubo colapsible con tapa roscada
+tcaub | Tubo con atomizador
+tuboc2 | Tubo con atomizador spray a presión
+tuboc3 | Tubo con atomizador spray de gatillo (trigger)
+tcdub | Tubo con dispensador
+tuboc4 | Tubo con dispensador de bomba / bomba dosificadora.
+tuboc5 | Tubo con sistema "airless"
+tuboc6 | Tubo con sistema de dispensación en aerosol
+tuboc7 | Tubo con sistema de dispensación en espuma
+tuboc8 | Tubo con sistema de empuje "push up"
+tuboc9 | Tubo con sistema giratorio "twist up"
+tctub | Tubo con tapa
+tubo13 | Tubo con tapa abatible
+tubo14 | Tubo con tapa de boquilla
+tubo10 | Tubo con tapa "disc top"
+tubo11 | Tubo con tapa "flip top"
+tubo15 | Tubo con tapa gotero/cuentagotas
+tubo12 | Tubo con tapa "push pull"
+tubo16 | Tubo con tapón
+tcvub | Tubo con válvula
+tubo17 | Tubo con válvula a presión
+tuboyt | Tubo y tapa con aplicador
+===  primMat Material de Envase Primario 131
+aceroi | Acero inoxidable
+acetat | Acetato
+acrili | Acrílico o Polimetil metacrilato (PMMA)
+acrilo | Acrilonitrilo
+acril1 | Acrilonitrilo butadieno estireno (ABS)
+acrie1 | Acrilonitrilo estireno
+acril5 | Acrilonitrilo etileno estireno (AES)
+aleac | Aleación
+adale | Aleación de aluminio
+adacm | Aleación de aluminio con Magnesio y Manganeso
+adzle | Aleación de zinc
+alumin | Aluminio
+bambu | Bambú
+bilam | Bilaminado
+bilape | Bilaminado (Poliéster/Polietileno)
+bbila | Bilaminado: BOPP/PE
+bilami | Bilaminado: Papel kraft/Nylon
+bilam1 | Bilaminado: Papel sulfito/Poliester (PS).
+bppei | Bilaminado: PEAD-PELBD / EVOH
+bilam2 | Bilaminado: Polietilen tereftalato (PET) / Polietileno (PE)
+bilam3 | Bilaminado: Polietilen Tereftalato (PET)/Polietileno de baja densidad (PEBD)
+bilam4 | Bilaminado: Polietileno (PE) / Aluminio
+bilam5 | Bilaminado: Polietileno (PE)/Etilvinil alcohol (EVOH)
+bilam6 | Bilaminado: Polietileno (PEAD) / Aluminio
+bpdbd | Bilaminado: Polietileno de baja densidad (PEBD) / Polietileno de alta densidad (PEAD)
+bpila | Bilaminado: Polietileno+EVOH
+bilam7 | Bilaminado: Polipropileno (PP) / Aluminio
+bilam8 | Bilaminado: Polipropileno (PP) / Polietileno (PE)
+bilam9 | Bilaminado: Polipropileno (PP) / Polietileno de alta densidad (PEAD)
+bila10 | Bilaminado: Propalcote/Polipropileno biorientado (BOPP)
+carton | Cartón
+cartul | Cartulina
+caucho | Caucho nitrilo butadieno
+celulo | Celulosa
+copol | Copolímero
+copoli | Copolímero PET/Glicol (PET-G)
+copol1 | Copolímero Polietileno-acetato de vinilo (PEVA)
+copol4 | Copolímero termoplástico tereftalato de policiclohexilendimetileno (PCT-G)
+estano | Estaño
+estire | Estireno acrilonitrilo (SAN)
+etilen | Etileno vinil acetato (EVA)
+etile1 | Etilenvinilalcohol (EVOH)
+fibran | Fibra natural (Mimbre, palma, junco, ratán, palma, esparto, etc).
+fibra1 | Fibra natural (Yute, fique).
+fsibr | Fibra sintética
+hojala | Hojalata
+hojal1 | Hojalata con recubrimiento o laca
+latex | Látex
+madera | Madera
+petppl | Mezcla de PET/PP/LDPE
+rhdpel | Mezcla de Polietileno de Alta Densidad Reciclado (r-HDPE) y Polietileno de Baja Densidad (LDPE)
+mmult | Multicapa (Multilaminado)
+mmpul | Multicapa (Multilaminado): PEBD/ADMER/EVOH/ADMER/PEBD
+mmput | Multicapa (Multilaminado): PET/Adhesivo/Coextruido
+mmphp | Multicapa (Multilaminado): PET/Adhesivo/Coextruido HBA (PE-EVOH)
+mmpap | Multicapa (Multilaminado): PET/Adhesivo/PE ABL  (PE/Aluminium/PE)
+nylon | Nylon
+papel | Papel
+papelc | Papel celofán
+papelk | Papel Kraft
+pctapo | PCTA (policiclohexanodimetileno tereftalato glicol modificado con isoftalato)
+petgp | PETG
+pokali | POK (policetona alifática)
+poliam | Poliamida (PA)
+polica | Policarbonato
+polies | Poliester metalizado (VMPET)
+polie1 | Poliestireno (PS)
+polie2 | Poliestireno cristal (PS cristal)
+polie3 | Poliestireno de alto impacto (HIPS)
+polie4 | Poliestireno extruido (ext-PS)
+poliet | Polietilen tereftalato (PET)
+polie5 | Polietileno (PE)
+peabar | Polietileno de Alta Barrera (PEAB)
+polie6 | Polietileno de alta densidad (PEAD)
+polie7 | Polietileno de baja densidad (PEBD)
+polie8 | Polietileno de mediana densidad (PEMD)
+polie9 | Polietileno mezcla (PEAD/PEBD)
+poliim | Poliimida (PI)
+poliox | Polioximetilo (POM)
+polipr | Polipropileno (PP)
+ppacer | Polipropileno (PP) + Acero
+polip1 | Polipropileno biorientado (BOPP)
+polip2 | Polipropileno copolímero
+polip3 | Polipropileno homopolimero
+poliur | Poliuretano
+polivi | Polivinil cloruro (PVC)
+poliv1 | Polivinil cloruro flexible (PVC-P)
+propal | Propalcote
+rpetre | R-PET (Polietilen tereftalato reciclado)
+resina | Resina Epoxi
+satin | Satin
+silico | Silicona
+pbtter | Tereftalato de polibutileno (PBT)
+tetra | Tetralaminado
+tetral | Tetralaminado: Poliester (PS)/Aluminio/Poliester (PS)/Polietileno de baja densidad (PEBD)
+tetra1 | Tetralaminado: Polipropileno biorientado (BOPP)/Polietileno (PE)/Papel sulfito/Poliestireno (PS)
+texti | Textil
+textil | Textil en algodón
+texti1 | Textil en nylon
+texti2 | Textil en poliéster
+texti3 | Textil en yute o fique
+tpupol | TPU (poliuretano termoplástico)
+tpupam | TPU-Poliamida
+trila | Trilaminado
+tpril | TRILAMINADO PAPEL/PE/PET
+trilam | Trilaminado: BOPP/AL/PE
+trila1 | Trilaminado: OPP/AL/CPP
+trila2 | Trilaminado: PA/EVOH/PE
+tril20 | Trilaminado: PE/Aluminio/PE
+tril21 | Trilaminado: PE/EVOH/PE
+tpria | Trilaminado: PET/Adhesivo/AL
+tprim | Trilaminado: PET/Adhesivo/PE
+trila3 | Trilaminado: PET/AL/PE
+tprii | Trilaminado: PET/PE/EVOH
+trila4 | Trilaminado: PET/VMPET/PE
+trila5 | Trilaminado: Poliéster (PS)/Aluminio/Polietileno (PE)
+trila6 | Trilaminado: Polietilen Tereftalato (PET)/ Aluminio/ Polietileno de baja densidad (PEBD)
+trila7 | Trilaminado: Polietilen Tereftalato (PET)/PET metalizado (VMPET)/ Polietileno de baja densidad (PEBD)
+trila8 | Trilaminado: POLIETILENO COEXTRUIDO/ PROPALCOTE/ BOPP
+trila9 | Trilaminado: PP/AL/PE
+vidrio | Vidrio
+vidri1 | Vidrio ambar
+vidri2 | Vidrio ambar tipo I
+vidri3 | Vidrio ambar tipo II
+vidri4 | Vidrio ambar tipo III
+vidri5 | Vidrio ambar tipo IV
+vidri6 | Vidrio esmerilado (mateado)
+vidri7 | Vidrio tipo I
+vidri8 | Vidrio tipo II
+vidri9 | Vidrio tipo III
+vidr10 | Vidrio tipo IV
+===  secoMat Material de Envase Secundario 120
+acero1 | Acero inoxidable
+aceta1 | Acetato
+acril2 | Acrílico o Polimetil metacrilato (PMMA)
+acril3 | Acrilonitrilo
+acril4 | Acrilonitrilo butadieno estireno (ABS)
+acrie2 | Acrilonitrilo estireno
+acril6 | Acrilonitrilo etileno estireno (AES)
+aleai | Aleación
+adala | Aleación de aluminio
+adaca | Aleación de aluminio con Magnesio y Manganeso
+adzla | Aleación de zinc
+alumi1 | Aluminio
+bambu1 | Bambú
+bilai | Bilaminado
+bbilm | Bilaminado: BOPP/PE
+bila11 | Bilaminado: Papel kraft/Nylon
+bila12 | Bilaminado: Papel sulfito/Poliester (PS).
+bppel | Bilaminado: PEAD-PELBD / EVOH
+bila13 | Bilaminado: Polietilen tereftalato (PET) / Polietileno (PE)
+bila14 | Bilaminado: Polietilen Tereftalato (PET)/Polietileno de baja densidad (PEBD)
+bila15 | Bilaminado: Polietileno (PE) / Aluminio
+bila16 | Bilaminado: Polietileno (PE)/Etilvinil alcohol (EVOH)
+bila17 | Bilaminado: Polietileno (PEAD) / Aluminio
+bpdbe | Bilaminado: Polietileno de baja densidad (PEBD) / Polietileno de alta densidad (PEAD)
+bpilm | Bilaminado: Polietileno+EVOH
+bila18 | Bilaminado: Polipropileno (PP) / Aluminio
+bila19 | Bilaminado: Polipropileno (PP) / Polietileno (PE)
+bila20 | Bilaminado: Polipropileno (PP) / Polietileno de alta densidad (PEAD)
+bila21 | Bilaminado: Propalcote/Polipropileno biorientado (BOPP)
+carto1 | Cartón
+cartu1 | Cartulina
+cauch1 | Caucho nitrilo butadieno
+celul1 | Celulosa
+copoi | Copolímero
+copol2 | Copolímero PET/Glicol (PET-G)
+copol3 | Copolímero Polietileno-acetato de vinilo (PEVA)
+copol5 | Copolímero termoplástico tereftalato de policiclohexilendimetileno (PCT-G)
+estan1 | Estaño
+estir1 | Estireno acrilonitrilo (SAN)
+etile2 | Etileno vinil acetato (EVA)
+etile3 | Etilenvinilalcohol (EVOH)
+fibra2 | Fibra natural (Mimbre, palma, junco, ratán, palma, esparto, etc).
+fibra3 | Fibra natural (Yute, fique).
+fsiba | Fibra sintética
+hojal2 | Hojalata
+hojal3 | Hojalata con recubrimiento o laca
+latex1 | Látex
+mader1 | Madera
+mmuli | Multicapa (Multilaminado)
+mmpui | Multicapa (Multilaminado): PEBD/ADMER/EVOH/ADMER/PEBD
+mmpuc | Multicapa (Multilaminado): PET/Adhesivo/Coextruido
+mmphe | Multicapa (Multilaminado): PET/Adhesivo/Coextruido HBA (PE-EVOH)
+mmpae | Multicapa (Multilaminado): PET/Adhesivo/PE ABL  (PE/Aluminium/PE)
+nylon1 | Nylon
+papel1 | Papel
+papel2 | Papel celofán
+papel3 | Papel Kraft
+eegge | PETG
+pokal1 | POK (policetona alifática)
+polia1 | Poliamida (PA)
+polic1 | Policarbonato
+poli10 | Poliester metalizado (VMPET)
+poli11 | Poliestireno (PS)
+poli12 | Poliestireno cristal (PS cristal)
+poli13 | Poliestireno de alto impacto (HIPS)
+poli14 | Poliestireno extruido (ext-PS)
+poli15 | Polietilen tereftalato (PET)
+poli16 | Polietileno (PE)
+peaba1 | Polietileno de Alta Barrera (PEAB)
+poli17 | Polietileno de alta densidad (PEAD)
+poli18 | Polietileno de baja densidad (PEBD)
+poli19 | Polietileno de mediana densidad (PEMD)
+poli20 | Polietileno mezcla (PEAD/PEBD)
+polio1 | Polioximetilo (POM)
+polip4 | Polipropileno (PP)
+polip5 | Polipropileno biorientado (BOPP)
+polip6 | Polipropileno copolímero
+polip7 | Polipropileno homopolimero
+poliu1 | Poliuretano
+poliv2 | Polivinil cloruro (PVC)
+poliv3 | Polivinil cloruro flexible (PVC-P)
+propa1 | Propalcote
+resin1 | Resina Epoxi
+satin1 | Satin
+silic1 | Silicona
+tetrl | Tetralaminado
+tetra2 | Tetralaminado: Poliester (PS)/Aluminio/Poliester (PS)/Polietileno de baja densidad (PEBD)
+tetra3 | Tetralaminado: Polipropileno biorientado (BOPP)/Polietileno (PE)/Papel sulfito/Poliestireno (PS)
+textl | Textil
+texti4 | Textil en algodón
+texti5 | Textil en nylon
+texti6 | Textil en poliéster
+texti7 | Textil en yute o fique
+tpupo1 | TPU (poliuretano termoplástico)
+tpupa1 | TPU-Poliamida
+trilm | Trilaminado
+tril10 | Trilaminado: BOPP/AL/PE
+tril11 | Trilaminado: OPP/AL/CPP
+tril12 | Trilaminado: PA/EVOH/PE
+tprin | Trilaminado: PET/Adhesivo/AL
+tprid | Trilaminado: PET/Adhesivo/PE
+tril13 | Trilaminado: PET/AL/PE
+tprio | Trilaminado: PET/PE/EVOH
+tril14 | Trilaminado: PET/VMPET/PE
+tril15 | Trilaminado: Poliéster (PS)/Aluminio/Polietileno (PE)
+tril16 | Trilaminado: Polietilen Tereftalato (PET)/ Aluminio/ Polietileno de baja densidad (PEBD)
+tril17 | Trilaminado: Polietilen Tereftalato (PET)/PET metalizado (VMPET)/ Polietileno de baja densidad (PEBD)
+tril18 | Trilaminado: POLIETILENO COEXTRUIDO/ PROPALCOTE/ BOPP
+tril19 | Trilaminado: PP/AL/PE
+vidr11 | Vidrio
+vidr12 | Vidrio ambar
+vidr13 | Vidrio ambar tipo I
+vidr14 | Vidrio ambar tipo II
+vidr15 | Vidrio ambar tipo III
+vidr16 | Vidrio ambar tipo IV
+vidr17 | Vidrio esmerilado (mateado)
+vidr18 | Vidrio tipo I
+vidr19 | Vidrio tipo II
+vidr20 | Vidrio tipo III
+vidr21 | Vidrio tipo IV
+===  parType Tipo de Parametro 1791
+fqp008 | Abrasividad - Dental
+  fqu008 | UNIDADES DE MEDIDA
+    fq008u01 | Número RDA
+    fq008u02 | Número REA
+fqp009 | Abrasividad - Fuerza abrasiva
+  fqu009 | UNIDADES DE MEDIDA
+    fq009u01 | N
+fqp010 | Abrasividad - Índice de abrasividad
+  fqu010 | UNIDADES DE MEDIDA
+    fq010u01 | Índice numérico
+fqp011 | Abrasividad - Tasa de desgaste
+  fqu011 | UNIDADES DE MEDIDA
+    fq011u01 | g/ciclo
+fqp012 | Absorción - Cantidad absorbida o Capacidad de absorción
+  fqu012 | UNIDADES DE MEDIDA
+    fq012u01 | µg/cm²
+    fq012u02 | mg/cm²
+    fq012u03 | µg/g
+    fq012u04 | mg/g
+    fq012u05 | mg/Kg
+fqp013 | Absorción - Coeficiente de permeabilidad
+  fqu013 | UNIDADES DE MEDIDA
+    fq013u01 | cm/h
+fqp014 | Absorción - Flujo de absorción o permeación
+  fqu014 | UNIDADES DE MEDIDA
+    fq014u01 | µg/cm²/h
+    fq014u02 | mg/cm²/h
+fqp158 | Absorción - Permeación
+  fqu158 | UNIDADES DE MEDIDA
+    fq158u01 | µg/cm²
+fqp155 | Absorción - Porcentaje absorbido
+  fqu155 | UNIDADES DE MEDIDA
+    fq155u01 | %
+fqp159 | Absorción - Profundidad de penetración o permeación
+  fqu159 | UNIDADES DE MEDIDA
+    fq159u01 | mm
+    fq159u02 | µm
+    fq159u03 | g
+fqp156 | Absorción - Retención superficial
+  fqu156 | UNIDADES DE MEDIDA
+    fq156u01 | µg/cm²
+    fq156u02 | mg/cm²
+fqp157 | Absorción - Tasa de retención
+  fqu157 | UNIDADES DE MEDIDA
+    fq157u01 | µg/cm²
+    fq157u02 | mg/cm²
+    fq157u03 | µg/g
+    fq157u04 | mg/g
+    fq157u05 | %
+fqp154 | Absorción - Tiempo de absorción
+  fqu154 | UNIDADES DE MEDIDA
+    fq154u01 | s
+fqp275 | Absorción de agua - Incremento de peso por absorción
+  fqu275 | UNIDADES DE MEDIDA
+    fq275u01 | %
+fqp041 | Acidez libre
+  fqu041 | UNIDADES DE MEDIDA
+    fq041u01 | % / mg KOH/g
+fqp090 | Actividad de agua (Aw)
+  fqu090 | UNIDADES DE MEDIDA
+    fq090u01 | Adimensional
+fqp165 | Adhesividad - Fuerza de adhesión
+  fqu165 | UNIDADES DE MEDIDA
+    fq165u01 | N
+fqp164 | Adhesividad - Fuerza de desprendimiento
+  fqu164 | UNIDADES DE MEDIDA
+    fq164u01 | N
+fqp162 | Adhesividad - Trabajo de adhesión
+  fqu162 | UNIDADES DE MEDIDA
+    fq162u01 | mJ
+    fq162u02 | N·mm
+fqp287 | Afilabilidad - Pérdida de masa por afilado
+  fqu287 | UNIDADES DE MEDIDA
+    fq287u01 | mg
+fqp288 | Afilabilidad - Rotura durante afilado
+  fqu288 | UNIDADES DE MEDIDA
+    fq288u01 | %
+fqp042 | Alcalinidad
+  fqu042 | UNIDADES DE MEDIDA
+    fq042u01 | % / eq/L
+fqp510 | Altura de aspiración horizontal
+  fqu510 | UNIDADES DE MEDIDA
+    fq510u01 | mm/s
+fqp361 | Altura de grafado
+  fqu361 | UNIDADES DE MEDIDA
+    fq361u01 | mm
+fqp240 | Ángulo de pulverización
+  fqu240 | UNIDADES DE MEDIDA
+    fq240u01 | ° (Grados)
+fqp285 | Apelmazamiento - Material aglomerado
+  fqu285 | UNIDADES DE MEDIDA
+    fq285u01 | %
+fqp292 | Área superficial
+  fqu292 | UNIDADES DE MEDIDA
+    fq292u01 | cm²
+fqp085 | Biodegradabilidad 28d (en 28 días)
+  fqu085 | UNIDADES DE MEDIDA
+    fq085u01 | %
+fqp184 | Brillo o reflectancia (20°)
+  fqu184 | UNIDADES DE MEDIDA
+    fq184u01 | GU (Gloss Units)
+fqp185 | Brillo o reflectancia (60°)
+  fqu185 | UNIDADES DE MEDIDA
+    fq185u01 | GU (Gloss Units)
+fqp186 | Brillo o reflectancia (80°)
+  fqu186 | UNIDADES DE MEDIDA
+    fq186u01 | GU (Gloss Units)
+fqp214 | Calorimetría Diferencial de Barrido (DSC) - Entalpía
+  fqu214 | UNIDADES DE MEDIDA
+    fq214u01 | J/g
+fqp278 | Cambio de humedad
+  fqu278 | UNIDADES DE MEDIDA
+    fq278u01 | %
+fqp345 | Cambio de Longitud
+  fqu345 | UNIDADES DE MEDIDA
+    fq345u01 | %
+fqp344 | Cambio de volumen
+  fqu344 | UNIDADES DE MEDIDA
+    fq344u01 | %
+fqp086 | Cambio en la concentración (ΔC)
+  fqu086 | UNIDADES DE MEDIDA
+    fq086u01 | %
+fqp081 | Cambio en Ph (Δ pH)
+  fqu081 | UNIDADES DE MEDIDA
+    fq081u01 | Adimensional
+fqp082 | Cambio en viscosidad
+  fqu082 | UNIDADES DE MEDIDA
+    fq082u01 | %
+fqp337 | Cantidad aplicada
+  fqu337 | UNIDADES DE MEDIDA
+    fq337u01 | g/aplicación
+    fq337u02 | mg/aplicación
+fqp362 | Cantidad descargada
+  fqu362 | UNIDADES DE MEDIDA
+    fq362u01 | g
+    fq362u02 | g/descarga
+    fq362u03 | mg
+    fq362u04 | mg/descarga
+fqp329 | Capacidad antioxidante -  Porcentaje de inhibición de radicales
+  fqu329 | UNIDADES DE MEDIDA
+    fq329u01 | %
+fqp328 | Capacidad antioxidante -  Tasa de neutralización de radicales
+  fqu328 | UNIDADES DE MEDIDA
+    fq328u01 | μmol TE/g
+    fq328u02 | μmol TE/100g
+    fq328u03 | μmol TE/L
+fqp320 | Capacidad barrera - Índice de oclusividad
+  fqu320 | UNIDADES DE MEDIDA
+    fq320u01 | %
+fqp319 | Capacidad barrera - Perdida de agua trans epidérmica (TEWL)
+  fqu319 | UNIDADES DE MEDIDA
+    fq319u01 | g/m²/h
+fqp046 | Cenizas
+  fqu046 | UNIDADES DE MEDIDA
+    fq046u01 | %
+fqp110 | Centrifugación (% separación)
+  fqu110 | UNIDADES DE MEDIDA
+    fq110u01 | %
+fqp111 | Centrifugación (Tiempo de separación)
+  fqu111 | UNIDADES DE MEDIDA
+    fq111u01 | min
+    fq111u02 | días
+    fq111u03 | meses
+fqp225 | Cierre del envase - Prueba de estanqueidad  - Caída de presión(Δ P)
+  fqu225 | UNIDADES DE MEDIDA
+    fq225u01 | KPa
+    fq225u02 | Pa
+fqp226 | Cierre del envase - Prueba de estanqueidad  - Tasa de fuga
+  fqu226 | UNIDADES DE MEDIDA
+    fq226u01 | cm³/min
+    fq226u02 | mL/min
+    fq226u03 | g/min
+fqp169 | Cobertura
+  fqu169 | UNIDADES DE MEDIDA
+    fq169u01 | %
+fqp166 | Cohesividad
+  fqu166 | UNIDADES DE MEDIDA
+    fq166u01 | Adimensional
+fqp016 | Colorimetría - Coordenadas CIELAB *a
+  fqu016 | UNIDADES DE MEDIDA
+    fq016u01 | Adimensional
+fqp017 | Colorimetría - Coordenadas CIELAB *b
+  fqu017 | UNIDADES DE MEDIDA
+    fq017u01 | Adimensional
+fqp015 | Colorimetría - Coordenadas CIELAB *L
+  fqu015 | UNIDADES DE MEDIDA
+    fq015u01 | Adimensional
+fqp018 | Colorimetría - Diferencia de Color (ΔE)
+  fqu018 | UNIDADES DE MEDIDA
+    fq018u01 | Adimensional
+fqp177 | Compactabilidad - Resistencia a la rotura
+  fqu177 | UNIDADES DE MEDIDA
+    fq177u01 | N
+fqp219 | Compatibilidad de envase - Adsorción de producto
+  fqu219 | UNIDADES DE MEDIDA
+    fq219u01 | %
+fqp223 | Compatibilidad de envase - Cambio de densidad o gravedad específica
+  fqu223 | UNIDADES DE MEDIDA
+    fq223u01 | g/cm³
+fqp222 | Compatibilidad de envase - Cambio de pH (Δ pH)
+  fqu222 | UNIDADES DE MEDIDA
+    fq222u01 | mm/año
+fqp220 | Compatibilidad de envase - Pérdida de peso
+  fqu220 | UNIDADES DE MEDIDA
+    fq220u01 | %
+fqp221 | Compatibilidad de envase - Reducción de espesor
+  fqu221 | UNIDADES DE MEDIDA
+    fq221u01 | mm/año
+    fq221u02 | µm/año
+    fq221u03 | µm/mes
+    fq221u04 | mm/mes
+fqp224 | Compatibilidad de envase - Resistencia a la caída o impacto
+  fqu224 | UNIDADES DE MEDIDA
+    fq224u01 | N
+fqp218 | Compatibilidad de envase - Tasa de migración
+  fqu218 | UNIDADES DE MEDIDA
+    fq218u01 | ppm (mg/kg o L)
+    fq218u02 | ppb (µg/kg o L)
+fqp234 | Compuestos residuales
+  fqu234 | UNIDADES DE MEDIDA
+    fq234u01 | ppm
+fqp258 | Concentración micelar crítica
+  fqu258 | UNIDADES DE MEDIDA
+    fq258u01 | mM (mmol/L)
+    fq258u02 | g/L
+    fq258u03 | mg/L
+fqp112 | Conductividad
+  fqu112 | UNIDADES DE MEDIDA
+    fq112u01 | µS/cm
+    fq112u02 | mS/cm
+fqp051 | Contenido alcohólico
+  fqu051 | UNIDADES DE MEDIDA
+    fq051u01 | % v/v
+    fq051u02 | % p/p
+    fq051u03 | °GL (Gay - Lussac)
+    fq051u04 | g/L
+fqp306 | Contenido de abrasivos
+  fqu306 | UNIDADES DE MEDIDA
+    fq306u01 | %
+fqp363 | Contenido de aceite(s) esencial(es)
+  fqu363 | UNIDADES DE MEDIDA
+    fq363u01 | %
+fqp048 | Contenido de aceites
+  fqu048 | UNIDADES DE MEDIDA
+    fq048u01 | %
+fqp364 | Contenido de ácido ascórbico (vitamina c)
+  fqu364 | UNIDADES DE MEDIDA
+    fq364u01 | %
+fqp365 | Contenido de ácido benzoico
+  fqu365 | UNIDADES DE MEDIDA
+    fq365u01 | %
+fqp366 | Contenido de ácido etidrónico
+  fqu366 | UNIDADES DE MEDIDA
+    fq366u01 | %
+fqp367 | Contenido de ácido glicólico
+  fqu367 | UNIDADES DE MEDIDA
+    fq367u01 | %
+fqp368 | Contenido de ácido hialurónico
+  fqu368 | UNIDADES DE MEDIDA
+    fq368u01 | %
+fqp369 | Contenido de Ácido kójico
+  fqu369 | UNIDADES DE MEDIDA
+    fq369u01 | %
+fqp370 | Contenido de ácido láctico
+  fqu370 | UNIDADES DE MEDIDA
+    fq370u01 | %
+fqp371 | Contenido de ácido salicílico
+  fqu371 | UNIDADES DE MEDIDA
+    fq371u01 | %
+fqp372 | Contenido de ácido tioglicólico
+  fqu372 | UNIDADES DE MEDIDA
+    fq372u01 | %
+fqp119 | Contenido de ácidos
+  fqu119 | UNIDADES DE MEDIDA
+    fq119u01 | %
+    fq119u02 | ppm (mg/kg)
+fqp120 | Contenido de ácidos grasos
+  fqu120 | UNIDADES DE MEDIDA
+    fq120u01 | %
+    fq120u02 | ppm (mg/kg)
+fqp373 | Contenido de ácidos grasos libres
+  fqu373 | UNIDADES DE MEDIDA
+    fq373u01 | %
+fqp116 | Contenido de activo repelente
+  fqu116 | UNIDADES DE MEDIDA
+    fq116u01 | %
+    fq116u02 | ppm (mg/kg)
+fqp133 | Contenido de agente anticaspa
+  fqu133 | UNIDADES DE MEDIDA
+    fq133u01 | %
+    fq133u02 | ppm (mg/kg)
+fqp374 | Contenido de agente(s) alcalino(s)
+  fqu374 | UNIDADES DE MEDIDA
+    fq374u01 | %
+fqp375 | Contenido de agente(s) oxidante(s)
+  fqu375 | UNIDADES DE MEDIDA
+    fq375u01 | %
+fqp376 | Contenido de agente(s) reductor(es)
+  fqu376 | UNIDADES DE MEDIDA
+    fq376u01 | %
+fqp129 | Contenido de agentes antimicrobianos
+  fqu129 | UNIDADES DE MEDIDA
+    fq129u01 | %
+    fq129u02 | ppm (mg/kg)
+fqp128 | Contenido de agentes depilatorios
+  fqu128 | UNIDADES DE MEDIDA
+    fq128u01 | %
+    fq128u02 | ppm (mg/kg)
+fqp250 | Contenido de aglomerantes o ligantes
+  fqu250 | UNIDADES DE MEDIDA
+    fq250u01 | %
+fqp043 | Contenido de agua
+  fqu043 | UNIDADES DE MEDIDA
+    fq043u01 | %
+fqp377 | Contenido de alantoína
+  fqu377 | UNIDADES DE MEDIDA
+    fq377u01 | %
+fqp047 | Contenido de alcohol
+  fqu047 | UNIDADES DE MEDIDA
+    fq047u01 | % v/v
+fqp378 | Contenido de Alcohol Benzílico
+  fqu378 | UNIDADES DE MEDIDA
+    fq378u01 | %
+fqp379 | Contenido de alcohol etílico
+  fqu379 | UNIDADES DE MEDIDA
+    fq379u01 | %
+fqp380 | Contenido de alcohol isopropílico
+  fqu380 | UNIDADES DE MEDIDA
+    fq380u01 | %
+fqp132 | Contenido de alérgenos
+  fqu132 | UNIDADES DE MEDIDA
+    fq132u01 | %
+    fq132u02 | ppm (mg/kg)
+fqp134 | Contenido de aminas secundarias
+  fqu134 | UNIDADES DE MEDIDA
+    fq134u01 | %
+    fq134u02 | ppm (mg/kg)
+fqp381 | Contenido de amoniaco
+  fqu381 | UNIDADES DE MEDIDA
+    fq381u01 | %
+fqp121 | Contenido de antioxidantes
+  fqu121 | UNIDADES DE MEDIDA
+    fq121u01 | %
+    fq121u02 | ppm (mg/kg)
+fqp138 | Contenido de antitraspirantes
+  fqu138 | UNIDADES DE MEDIDA
+    fq138u01 | %
+    fq138u02 | ppm (mg/kg)
+fqp382 | Contenido de arbutina
+  fqu382 | UNIDADES DE MEDIDA
+    fq382u01 | %
+fqp383 | Contenido de Arginina
+  fqu383 | UNIDADES DE MEDIDA
+    fq383u01 | %
+fqp140 | Contenido de aromáticos
+  fqu140 | UNIDADES DE MEDIDA
+    fq140u01 | %
+    fq140u02 | ppm (mg/kg)
+fqp182 | Contenido de asbesto
+  fqu182 | UNIDADES DE MEDIDA
+    fq182u01 | ppm (mg/kg)
+fqp384 | Contenido de Avobenzona
+  fqu384 | UNIDADES DE MEDIDA
+    fq384u01 | %
+fqp385 | Contenido de benzoato de sodio
+  fqu385 | UNIDADES DE MEDIDA
+    fq385u01 | %
+fqp386 | Contenido de bisabolol
+  fqu386 | UNIDADES DE MEDIDA
+    fq386u01 | %
+fqp135 | Contenido de blanqueadores capilares
+  fqu135 | UNIDADES DE MEDIDA
+    fq135u01 | %
+    fq135u02 | ppm (mg/kg)
+fqp387 | Contenido de cafeína
+  fqu387 | UNIDADES DE MEDIDA
+    fq387u01 | %
+fqp118 | Contenido de cannabinoides
+  fqu118 | UNIDADES DE MEDIDA
+    fq118u01 | %
+    fq118u02 | ppm (mg/kg)
+fqp388 | Contenido de carbón activado
+  fqu388 | UNIDADES DE MEDIDA
+    fq388u01 | %
+fqp389 | Contenido de CBD (cannabidiol)
+  fqu389 | UNIDADES DE MEDIDA
+    fq389u01 | %
+fqp390 | Contenido de ceramida(s)
+  fqu390 | UNIDADES DE MEDIDA
+    fq390u01 | %
+fqp251 | Contenido de ceras
+  fqu251 | UNIDADES DE MEDIDA
+    fq251u01 | %
+fqp391 | Contenido de Citrato de zinc
+  fqu391 | UNIDADES DE MEDIDA
+    fq391u01 | %
+fqp392 | Contenido de clorhexidina
+  fqu392 | UNIDADES DE MEDIDA
+    fq392u01 | %
+fqp393 | Contenido de clorhidrato de aluminio
+  fqu393 | UNIDADES DE MEDIDA
+    fq393u01 | %
+fqp394 | Contenido de Cloruro de benzalconio
+  fqu394 | UNIDADES DE MEDIDA
+    fq394u01 | %
+fqp395 | Contenido de Cloruro de Cetilpiridinio
+  fqu395 | UNIDADES DE MEDIDA
+    fq395u01 | %
+fqp057 | Contenido de cloruros
+  fqu057 | UNIDADES DE MEDIDA
+    fq057u01 | ppm  (mg/kg)
+    fq057u02 | %
+fqp125 | Contenido de colorantes
+  fqu125 | UNIDADES DE MEDIDA
+    fq125u01 | %
+    fq125u02 | ppm (mg/kg)
+fqp139 | Contenido de desodorante
+  fqu139 | UNIDADES DE MEDIDA
+    fq139u01 | %
+    fq139u02 | ppm (mg/kg)
+fqp126 | Contenido de despigmentantes
+  fqu126 | UNIDADES DE MEDIDA
+    fq126u01 | %
+    fq126u02 | ppm (mg/kg)
+fqp396 | Contenido de Dietiltoluamida (DEET)
+  fqu396 | UNIDADES DE MEDIDA
+    fq396u01 | %
+fqp397 | Contenido de dihidroxiacetona (DHA)
+  fqu397 | UNIDADES DE MEDIDA
+    fq397u01 | %
+fqp398 | Contenido de dimeticona
+  fqu398 | UNIDADES DE MEDIDA
+    fq398u01 | %
+fqp399 | Contenido de Dióxido de titanio
+  fqu399 | UNIDADES DE MEDIDA
+    fq399u01 | %
+fqp400 | Contenido de estaño
+  fqu400 | UNIDADES DE MEDIDA
+    fq400u01 | %
+    fq400u02 | ppm (mg/kg)
+fqp401 | Contenido de Estaño (liberado)
+  fqu401 | UNIDADES DE MEDIDA
+    fq401u01 | %
+fqp402 | Contenido de éster(es)
+  fqu402 | UNIDADES DE MEDIDA
+    fq402u01 | %
+fqp403 | Contenido de Etil Butilacetilaminopropionato
+  fqu403 | UNIDADES DE MEDIDA
+    fq403u01 | %
+fqp127 | Contenido de exfoliantes químicos
+  fqu127 | UNIDADES DE MEDIDA
+    fq127u01 | %
+    fq127u02 | ppm (mg/kg)
+fqp137 | Contenido de extractos vegetales
+  fqu137 | UNIDADES DE MEDIDA
+    fq137u01 | %
+    fq137u02 | ppm (mg/kg)
+fqp404 | Contenido de fenol
+  fqu404 | UNIDADES DE MEDIDA
+    fq404u01 | %
+fqp405 | Contenido de fenoxietanol
+  fqu405 | UNIDADES DE MEDIDA
+    fq405u01 | %
+fqp115 | Contenido de filtros solares
+  fqu115 | UNIDADES DE MEDIDA
+    fq115u01 | %
+    fq115u02 | ppm (mg/kg)
+fqp122 | Contenido de fluor
+  fqu122 | UNIDADES DE MEDIDA
+    fq122u01 | %
+    fq122u02 | ppm (mg/kg)
+fqp406 | Contenido de fluor (soluble)
+  fqu406 | UNIDADES DE MEDIDA
+    fq406u01 | ppm
+fqp407 | Contenido de fluor soluble (liberado)
+  fqu407 | UNIDADES DE MEDIDA
+    fq407u01 | ppm
+fqp298 | Contenido de formulación impregnada
+  fqu298 | UNIDADES DE MEDIDA
+    fq298u01 | g/unidad
+    fq298u02 | mg/unidad
+fqp060 | Contenido de fosfatos
+  fqu060 | UNIDADES DE MEDIDA
+    fq060u01 | ppm (mg/kg)
+    fq060u02 | %
+fqp061 | Contenido de fósforo
+  fqu061 | UNIDADES DE MEDIDA
+    fq061u01 | ppm (mg/kg)
+    fq061u02 | %
+fqp050 | Contenido de Fragancia
+  fqu050 | UNIDADES DE MEDIDA
+    fq050u01 | %
+    fq050u02 | ppm
+fqp408 | Contenido de glicerina
+  fqu408 | UNIDADES DE MEDIDA
+    fq408u01 | %
+fqp409 | Contenido de Gluconato de Clorhexidina
+  fqu409 | UNIDADES DE MEDIDA
+    fq409u01 | %
+fqp160 | Contenido de grasas
+  fqu160 | UNIDADES DE MEDIDA
+    fq160u01 | %
+    fq160u02 | ppm (mg/kg)
+fqp513 | Contenido de ion tioglicolato
+  fqu513 | UNIDADES DE MEDIDA
+    fq513u01 | %
+fqp410 | Contenido de Lauril Sulfato de Sodio
+  fqu410 | UNIDADES DE MEDIDA
+    fq410u01 | %
+fqp411 | Contenido de mentol
+  fqu411 | UNIDADES DE MEDIDA
+    fq411u01 | %
+fqp412 | Contenido de mica
+  fqu412 | UNIDADES DE MEDIDA
+    fq412u01 | %
+fqp413 | Contenido de Niacinamida
+  fqu413 | UNIDADES DE MEDIDA
+    fq413u01 | %
+fqp414 | Contenido de nitrato de potasio
+  fqu414 | UNIDADES DE MEDIDA
+    fq414u01 | %
+fqp059 | Contenido de nitratos
+  fqu059 | UNIDADES DE MEDIDA
+    fq059u01 | ppm (mg/kg)
+    fq059u02 | %
+fqp415 | Contenido de Octiltriazona
+  fqu415 | UNIDADES DE MEDIDA
+    fq415u01 | %
+fqp416 | Contenido de Octocrileno
+  fqu416 | UNIDADES DE MEDIDA
+    fq416u01 | %
+fqp417 | Contenido de Óxido de zinc
+  fqu417 | UNIDADES DE MEDIDA
+    fq417u01 | %
+fqp418 | Contenido de Óxido(s) de hierro
+  fqu418 | UNIDADES DE MEDIDA
+    fq418u01 | %
+fqp419 | Contenido de P-fenilendiamina (PPD)
+  fqu419 | UNIDADES DE MEDIDA
+    fq419u01 | %
+fqp420 | Contenido de pantenol
+  fqu420 | UNIDADES DE MEDIDA
+    fq420u01 | %
+fqp062 | Contenido de pentóxido de fósforo
+  fqu062 | UNIDADES DE MEDIDA
+    fq062u01 | ppm (mg/kg)
+    fq062u02 | %
+fqp142 | Contenido de péptidos
+  fqu142 | UNIDADES DE MEDIDA
+    fq142u01 | %
+    fq142u02 | ppm (mg/kg)
+fqp063 | Contenido de peróxido
+  fqu063 | UNIDADES DE MEDIDA
+    fq063u01 | ppm (mg/kg)
+    fq063u02 | %
+    fq063u03 | volúmenes
+fqp421 | Contenido de peróxido de hidrógeno (libre)
+  fqu421 | UNIDADES DE MEDIDA
+    fq421u01 | %
+fqp124 | Contenido de pigmentos
+  fqu124 | UNIDADES DE MEDIDA
+    fq124u01 | %
+    fq124u02 | ppm (mg/kg)
+fqp422 | Contenido de Piritionato de zinc
+  fqu422 | UNIDADES DE MEDIDA
+    fq422u01 | %
+fqp423 | Contenido de Piroctona olamina
+  fqu423 | UNIDADES DE MEDIDA
+    fq423u01 | %
+fqp424 | Contenido de plastificante(s)
+  fqu424 | UNIDADES DE MEDIDA
+    fq424u01 | %
+fqp130 | Contenido de preservantes o conservantes
+  fqu130 | UNIDADES DE MEDIDA
+    fq130u01 | %
+    fq130u02 | ppm (mg/kg)
+fqp049 | Contenido de principio activo o materia activa
+  fqu049 | UNIDADES DE MEDIDA
+    fq049u01 | % v/v
+    fq049u02 | % p/p
+    fq049u03 | % p/v
+    fq049u04 | ppm
+    fq049u05 | g/Kg
+    fq049u06 | g/L
+    fq049u07 | mg/L
+fqp144 | Contenido de propelente
+  fqu144 | UNIDADES DE MEDIDA
+    fq144u01 | % p/p
+    fq144u02 | % p/v
+fqp425 | Contenido de queratina(s)
+  fqu425 | UNIDADES DE MEDIDA
+    fq425u01 | %
+fqp426 | Contenido de resorcinol
+  fqu426 | UNIDADES DE MEDIDA
+    fq426u01 | %
+fqp427 | Contenido de resveratrol
+  fqu427 | UNIDADES DE MEDIDA
+    fq427u01 | %
+fqp428 | Contenido de silicato(s)
+  fqu428 | UNIDADES DE MEDIDA
+    fq428u01 | %
+fqp429 | Contenido de silicona(s)
+  fqu429 | UNIDADES DE MEDIDA
+    fq429u01 | %
+fqp044 | Contenido de sólidos
+  fqu044 | UNIDADES DE MEDIDA
+    fq044u01 | %
+fqp123 | Contenido de sólidos - Sólidos totales
+  fqu123 | UNIDADES DE MEDIDA
+    fq123u01 | %
+    fq123u02 | ppm (mg/kg)
+fqp141 | Contenido de solventes
+  fqu141 | UNIDADES DE MEDIDA
+    fq141u01 | %
+    fq141u02 | ppm (mg/kg)
+fqp430 | Contenido de Sorbato de potasio
+  fqu430 | UNIDADES DE MEDIDA
+    fq430u01 | %
+fqp058 | Contenido de sulfatos
+  fqu058 | UNIDADES DE MEDIDA
+    fq058u01 | ppm (mg/kg)
+    fq058u02 | %
+fqp181 | Contenido de talco
+  fqu181 | UNIDADES DE MEDIDA
+    fq181u01 | % p/p
+    fq181u02 | ppm (mg/kg)
+fqp114 | Contenido de tensoacativos o surfactantes
+  fqu114 | UNIDADES DE MEDIDA
+    fq114u01 | %
+    fq114u02 | ppm (mg/kg)
+fqp431 | Contenido de tensoactivo(s) anfótero(s)
+  fqu431 | UNIDADES DE MEDIDA
+    fq431u01 | %
+fqp432 | Contenido de tensoactivo(s) aniónico(s)
+  fqu432 | UNIDADES DE MEDIDA
+    fq432u01 | %
+fqp433 | Contenido de tensoactivo(s) catiónico(s)
+  fqu433 | UNIDADES DE MEDIDA
+    fq433u01 | %
+fqp434 | Contenido de tensoactivo(s) no iónico(s)
+  fqu434 | UNIDADES DE MEDIDA
+    fq434u01 | %
+fqp117 | Contenido de THC
+  fqu117 | UNIDADES DE MEDIDA
+    fq117u01 | %
+    fq117u02 | ppm (mg/kg)
+fqp131 | Contenido de tintes capilares
+  fqu131 | UNIDADES DE MEDIDA
+    fq131u01 | %
+    fq131u02 | ppm (mg/kg)
+fqp435 | Contenido de triclocarbán
+  fqu435 | UNIDADES DE MEDIDA
+    fq435u01 | %
+fqp436 | Contenido de triclosán
+  fqu436 | UNIDADES DE MEDIDA
+    fq436u01 | %
+fqp437 | Contenido de trietanolamina
+  fqu437 | UNIDADES DE MEDIDA
+    fq437u01 | %
+fqp438 | Contenido de vitamina e (tocoferol; tocoferil acetato)
+  fqu438 | UNIDADES DE MEDIDA
+    fq438u01 | %
+fqp136 | Contenido de vitaminas
+  fqu136 | UNIDADES DE MEDIDA
+    fq136u01 | %
+    fq136u02 | ppm (mg/kg)
+fqp439 | Contenido de Zinc
+  fqu439 | UNIDADES DE MEDIDA
+    fq439u01 | %
+fqp230 | Contenido en unidades
+  fqu230 | UNIDADES DE MEDIDA
+    fq230u01 | Unidades
+fqp229 | Contenido neto
+  fqu229 | UNIDADES DE MEDIDA
+    fq229u01 | g
+    fq229u02 | mL
+fqp310 | Contenido promedio de activo
+  fqu310 | UNIDADES DE MEDIDA
+    fq310u01 | g/unidad
+    fq310u02 | mg/unidad
+fqp245 | Control de Dimensiones - Altura
+  fqu245 | UNIDADES DE MEDIDA
+    fq245u01 | mm
+    fq245u02 | cm
+fqp246 | Control de Dimensiones - Anchura
+  fqu246 | UNIDADES DE MEDIDA
+    fq246u01 | mm
+    fq246u02 | cm
+fqp248 | Control de Dimensiones - Diámetro
+  fqu248 | UNIDADES DE MEDIDA
+    fq248u01 | mm
+    fq248u02 | cm
+fqp249 | Control de Dimensiones - Espesor
+  fqu249 | UNIDADES DE MEDIDA
+    fq249u01 | mm
+    fq249u02 | cm
+fqp247 | Control de Dimensiones - Longitud
+  fqu247 | UNIDADES DE MEDIDA
+    fq247u01 | mm
+    fq247u02 | cm
+fqp440 | Control de Peso - Porcentaje de variación
+  fqu440 | UNIDADES DE MEDIDA
+    fq440u01 | %
+fqp343 | Corrimiento de producto (smudging)
+  fqu343 | UNIDADES DE MEDIDA
+    fq343u01 | %
+fqp084 | Degradación de activo
+  fqu084 | UNIDADES DE MEDIDA
+    fq084u01 | %
+densid | DENSIDAD
+  umdens | UNIDADES DE MEDIDA
+    gcm3 | g/cm³
+    gl | g/L
+    gml | g/mL
+    kgm | Kg/m³
+fqp023 | Densidad aparente o de bulk
+  fqu023 | UNIDADES DE MEDIDA
+    fq023u01 | g/mL
+    fq023u02 | g/cm³
+    fq023u03 | g/L
+    fq023u04 | Kg/m³
+fqp024 | Densidad compactada
+  fqu024 | UNIDADES DE MEDIDA
+    fq024u01 | g/mL
+    fq024u02 | g/cm³
+    fq024u03 | g/L
+    fq024u04 | Kg/m³
+fqp441 | Densidad Relativa
+  fqu441 | UNIDADES DE MEDIDA
+    fq441u01 | Adimensional
+fqp088 | Desafío microbiológico o Eficacia preservante - Reducción logarítmica
+  fqu088 | UNIDADES DE MEDIDA
+    fq088u01 | Adimensional
+fqp089 | Desafío microbiológico o Eficacia preservante - Reducción microbiana
+  fqu089 | UNIDADES DE MEDIDA
+    fq089u01 | %
+    fq089u02 | UFC/g
+    fq089u03 | UFC/L
+fqp290 | Deslizamiento - Coeficiente de fricción
+  fqu290 | UNIDADES DE MEDIDA
+    fq290u01 | Adimensional
+fqp289 | Deslizamiento - Fuerza de aplicación
+  fqu289 | UNIDADES DE MEDIDA
+    fq289u01 | N
+fqp442 | Diámetro de grafado
+  fqu442 | UNIDADES DE MEDIDA
+    fq442u01 | mm
+fqp074 | Dioxano
+  fqu074 | UNIDADES DE MEDIDA
+    fq074u01 | ppm
+fqp038 | Distribución de tamaño de gota D10
+  fqu038 | UNIDADES DE MEDIDA
+    fq038u01 | µm
+    fq038u02 | nm
+fqp039 | Distribución de tamaño de gota D50
+  fqu039 | UNIDADES DE MEDIDA
+    fq039u01 | µm
+    fq039u02 | nm
+fqp040 | Distribución de tamaño de gota D90
+  fqu040 | UNIDADES DE MEDIDA
+    fq040u01 | µm
+    fq040u02 | nm
+fqp307 | Distribución de tamaño de perla
+  fqu307 | UNIDADES DE MEDIDA
+    fq307u01 | µm
+    fq307u02 | mm
+fqp035 | Distribución granulométrica o de tamaño de partícula D10
+  fqu035 | UNIDADES DE MEDIDA
+    fq035u01 | µm
+    fq035u02 | nm
+fqp036 | Distribución granulométrica o de tamaño de partícula D50
+  fqu036 | UNIDADES DE MEDIDA
+    fq036u01 | µm
+    fq036u02 | nm
+fqp037 | Distribución granulométrica o de tamaño de partícula D90
+  fqu037 | UNIDADES DE MEDIDA
+    fq037u01 | µm
+    fq037u02 | nm
+fqp207 | Duración (Long-Wear) - Tiempo de permanencia
+  fqu207 | UNIDADES DE MEDIDA
+    fq207u01 | min
+    fq207u02 | h
+fqp335 | Duración del efecto
+  fqu335 | UNIDADES DE MEDIDA
+    fq335u01 | s
+    fq335u02 | min
+    fq335u03 | h
+fqp198 | Dureza
+  fqu198 | UNIDADES DE MEDIDA
+    fq198u01 | N
+fqp178 | Dureza - Resistencia a la deformación o penetración
+  fqu178 | UNIDADES DE MEDIDA
+    fq178u01 | N
+fqp304 | Dureza de partícula
+  fqu304 | UNIDADES DE MEDIDA
+    fq304u01 | N
+    fq304u02 | Número Knoop
+    fq304u03 | Número Mohs
+    fq304u04 | Número Vickers
+fqp094 | Eficacia antimicrobiana - Permanencia de la acción antimicrobiana
+  fqu094 | UNIDADES DE MEDIDA
+    fq094u01 | s
+    fq094u02 | min
+    fq094u03 | h
+fqp236 | Eficacia antimicrobiana - Reducción logarítmica
+  fqu236 | UNIDADES DE MEDIDA
+    fq236u01 | Adimensional
+fqp237 | Eficacia antimicrobiana - Reducción microbiana
+  fqu237 | UNIDADES DE MEDIDA
+    fq237u01 | %
+    fq237u02 | UFC/g
+    fq237u03 | UFC/L
+fqp093 | Eficacia antimicrobiana - Tiempo para alcanzar la reducción antimicrobiana
+  fqu093 | UNIDADES DE MEDIDA
+    fq093u01 | s
+    fq093u02 | min
+    fq093u03 | h
+fqp333 | Eficacia antitranspirante
+  fqu333 | UNIDADES DE MEDIDA
+    fq333u01 | %
+fqp340 | Eficacia depilatoria - Remoción de vello
+  fqu340 | UNIDADES DE MEDIDA
+    fq340u01 | %
+fqp341 | Eficacia depilatoria - Tiempo de acción
+  fqu341 | UNIDADES DE MEDIDA
+    fq341u01 | min
+fqp359 | Eficacia exfoliante
+  fqu359 | UNIDADES DE MEDIDA
+    fq359u01 | %
+fqp338 | Eficacia repelente - Tasa de repelencia
+  fqu338 | UNIDADES DE MEDIDA
+    fq338u01 | %
+fqp339 | Eficacia repelente - Tiempo completo de protección
+  fqu339 | UNIDADES DE MEDIDA
+    fq339u01 | h
+fqp316 | Eficiencia de encapsulación
+  fqu316 | UNIDADES DE MEDIDA
+    fq316u01 | %
+fqp314 | Elasticidad - Deformación
+  fqu314 | UNIDADES DE MEDIDA
+    fq314u01 | mm
+fqp313 | Elasticidad - Porcentaje de deformación
+  fqu313 | UNIDADES DE MEDIDA
+    fq313u01 | %
+fqp311 | Elasticidad - Porcentaje de recuperación
+  fqu311 | UNIDADES DE MEDIDA
+    fq311u01 | %
+fqp264 | Elongación - Longitud
+  fqu264 | UNIDADES DE MEDIDA
+    fq264u01 | mm
+fqp265 | Elongación - Porcentaje
+  fqu265 | UNIDADES DE MEDIDA
+    fq265u01 | %
+fqp270 | Elongación a la rotura
+  fqu270 | UNIDADES DE MEDIDA
+    fq270u01 | %
+fqp443 | Ensayo de Penetración - Fuerza
+  fqu443 | UNIDADES DE MEDIDA
+    fq443u01 | g
+    fq443u02 | N
+fqp199 | Ensayo de Penetración - Profundidad
+  fqu199 | UNIDADES DE MEDIDA
+    fq199u01 | mm
+fqp357 | Ensayos de lubricación - Capacidad lubricante
+  fqu357 | UNIDADES DE MEDIDA
+    fq357u01 | %
+    fq357u02 | Adimensional
+fqp355 | Ensayos de lubricación - Coeficiente de fricción
+  fqu355 | UNIDADES DE MEDIDA
+    fq355u01 | Adimensional
+fqp356 | Ensayos de lubricación - Reducción de fricción
+  fqu356 | UNIDADES DE MEDIDA
+    fq356u01 | %
+fqp308 | Esfericidad
+  fqu308 | UNIDADES DE MEDIDA
+    fq308u01 | Adimensional
+fqp103 | Esfuerzo cortante
+  fqu103 | UNIDADES DE MEDIDA
+    fq103u01 | Pa
+fqp444 | Esfuerzo de fluencia (Yield Stress)
+  fqu444 | UNIDADES DE MEDIDA
+    fq444u01 | Pa
+fqp259 | Espesor de película
+  fqu259 | UNIDADES DE MEDIDA
+    fq259u01 | µm
+fqp445 | Estabilidad - Cambio de Peso
+  fqu445 | UNIDADES DE MEDIDA
+    fq445u01 | %
+    fq445u02 | g
+fqp446 | Estabilidad - Cambio de pH
+  fqu446 | UNIDADES DE MEDIDA
+    fq446u01 | %
+    fq446u02 | Adimensional
+fqp447 | Estabilidad - Cambio en concentración
+  fqu447 | UNIDADES DE MEDIDA
+    fq447u01 | %
+fqp448 | Estabilidad - Humedad
+  fqu448 | UNIDADES DE MEDIDA
+    fq448u01 | %
+fqp449 | Estabilidad - Materia liberada
+  fqu449 | UNIDADES DE MEDIDA
+    fq449u01 | %
+fqp450 | Estabilidad - Temperatura
+  fqu450 | UNIDADES DE MEDIDA
+    fq450u01 | °C
+fqp451 | Estabilidad - Viscosidad
+  fqu451 | UNIDADES DE MEDIDA
+    fq451u01 | %
+    fq451u02 | cP
+    fq451u03 | Pa*s
+fqp083 | Estabilidad  colorimétrica - Cambios en color (ΔE)
+  fqu083 | UNIDADES DE MEDIDA
+    fq083u01 | Adimensional
+fqp168 | Estabilidad dimensional - Cambio de longitud o diámetro
+  fqu168 | UNIDADES DE MEDIDA
+    fq168u01 | mm
+    fq168u02 | %
+fqp078 | Estabilidad oxidativa - Tiempo de inducción
+  fqu078 | UNIDADES DE MEDIDA
+    fq078u01 | h
+fqp217 | Estabilidad térmica
+  fqu217 | UNIDADES DE MEDIDA
+    fq217u01 | °C
+fqp151 | Extensibilidad o extendido - Área o superficie cubierta
+  fqu151 | UNIDADES DE MEDIDA
+    fq151u01 | cm²
+fqp150 | Extensibilidad o extendido - Diametro de extención entre placas
+  fqu150 | UNIDADES DE MEDIDA
+    fq150u01 | cm
+    fq150u02 | mm
+fqp152 | Extensibilidad o extendido - Fuerza necesaria para extender (Texturómetro)
+  fqu152 | UNIDADES DE MEDIDA
+    fq152u01 | N
+fqp153 | Extensibilidad o extendido - Índice de extensibilidad (Prueba de deslizamiento)
+  fqu153 | UNIDADES DE MEDIDA
+    fq153u01 | g·cm/s
+    fq153u02 | Adimensional
+fqp253 | Extrudabilidad - Fuerza de extrusión
+  fqu253 | UNIDADES DE MEDIDA
+    fq253u01 | N
+fqp254 | Extrudabilidad - Producto extruido
+  fqu254 | UNIDADES DE MEDIDA
+    fq254u01 | g/s
+fqp204 | Firmeza - Resistencia a la deformación
+  fqu204 | UNIDADES DE MEDIDA
+    fq204u01 | N
+fqp260 | Flexibilidad - Diámetro de doblado sin agrietamiento
+  fqu260 | UNIDADES DE MEDIDA
+    fq260u01 | mm
+fqp263 | Flexibilidad  - Fuerza de estiramiento
+  fqu263 | UNIDADES DE MEDIDA
+    fq263u01 | N
+fqp262 | Flexibilidad - Fuerza de flexión
+  fqu262 | UNIDADES DE MEDIDA
+    fq262u01 | N
+fqp176 | Fluidez de polvos - Ángulo de reposo
+  fqu176 | UNIDADES DE MEDIDA
+    fq176u01 | ° (Grados)
+fqp175 | Fluidez de polvos - Relación de Hausner
+  fqu175 | UNIDADES DE MEDIDA
+    fq175u01 | Adimensional
+fqp174 | Fluidez y compresibilidad de polvos - Índice de Carr
+  fqu174 | UNIDADES DE MEDIDA
+    fq174u01 | %
+fqp073 | Formaldehído
+  fqu073 | UNIDADES DE MEDIDA
+    fq073u01 | ppm
+    fq073u02 | %
+fqp452 | Fosfato activo total
+  fqu452 | UNIDADES DE MEDIDA
+    fq452u01 | %
+fqp352 | Fotoestabilidad - Degradación del filtro
+  fqu352 | UNIDADES DE MEDIDA
+    fq352u01 | %
+fqp354 | Fotoestabilidad - Fotodegradación
+  fqu354 | UNIDADES DE MEDIDA
+    fq354u01 | %
+fqp351 | Fotoestabilidad - Retención de SPF
+  fqu351 | UNIDADES DE MEDIDA
+    fq351u01 | %
+fqp353 | Fotoestabilidad - Retención UVA-PF
+  fqu353 | UNIDADES DE MEDIDA
+    fq353u01 | %
+fqp180 | Friabilidad - Pérdida de material por golpes, vibración o abrasión
+  fqu180 | UNIDADES DE MEDIDA
+    fq180u01 | % p/p
+fqp161 | Fuerza de aplicación - Deslizamiento
+  fqu161 | UNIDADES DE MEDIDA
+    fq161u01 | N
+fqp196 | Fuerza de compresión aplicada
+  fqu196 | UNIDADES DE MEDIDA
+    fq196u01 | MPa
+fqp271 | Fuerza de desgarro
+  fqu271 | UNIDADES DE MEDIDA
+    fq271u01 | N
+fqp358 | Fuerza de deslizamiento
+  fqu358 | UNIDADES DE MEDIDA
+    fq358u01 | N
+fqp312 | Fuerza de ruptura
+  fqu312 | UNIDADES DE MEDIDA
+    fq312u01 | N
+fqp272 | Fuerza de tack
+  fqu272 | UNIDADES DE MEDIDA
+    fq272u01 | N
+fqp163 | Fuerza de tracción perpendicular
+  fqu163 | UNIDADES DE MEDIDA
+    fq163u01 | MPa
+fqp269 | Fuerza máxima
+  fqu269 | UNIDADES DE MEDIDA
+    fq269u01 | N
+fqp075 | Furocumarinas
+  fqu075 | UNIDADES DE MEDIDA
+    fq075u01 | ppm
+fqp453 | Grado Alcohólico
+  fqu453 | UNIDADES DE MEDIDA
+    fq453u01 | °
+fqp293 | Gramaje del material (soporte impregnado)
+  fqu293 | UNIDADES DE MEDIDA
+    fq293u01 | g/m²
+    fq293u02 | g/cm²
+graved | GRAVEDAD ESPECÌFICA
+  umgrav | UNIDADES DE MEDIDA
+    adimen | Adimensional
+fqp170 | Humedad
+  fqu170 | UNIDADES DE MEDIDA
+    fq170u01 | % p/p
+    fq170u02 | g/Kg
+fqp091 | Humedad relativa en equilibrio
+  fqu091 | UNIDADES DE MEDIDA
+    fq091u01 | %
+fqp454 | Identidad por espectroscopia de infrarrojo - Semejanza al estandar
+  fqu454 | UNIDADES DE MEDIDA
+    fq454u01 | %
+fqp233 | Impurezas totales
+  fqu233 | UNIDADES DE MEDIDA
+    fq233u01 | %
+fqp052 | Índice de acidez
+  fqu052 | UNIDADES DE MEDIDA
+    fq052u01 | mg KOH/g
+fqp106 | Índice de coalescencia
+  fqu106 | UNIDADES DE MEDIDA
+    fq106u01 | %
+fqp105 | Índice de creaming
+  fqu105 | UNIDADES DE MEDIDA
+    fq105u01 | %
+fqp087 | Índice de enranciamiento
+  fqu087 | UNIDADES DE MEDIDA
+    fq087u01 | Adimensional
+fqp056 | Índice de ésteres
+  fqu056 | UNIDADES DE MEDIDA
+    fq056u01 | mg KOH/g
+fqp360 | Índice de exfoliación
+  fqu360 | UNIDADES DE MEDIDA
+    fq360u01 | Adimensional
+fqp098 | Índice de flujo
+  fqu098 | UNIDADES DE MEDIDA
+    fq098u01 | Adimensional
+fqp053 | Índice de peróxidos
+  fqu053 | UNIDADES DE MEDIDA
+    fq053u01 | meq O₂/kg
+fqp322 | Índice de Polidispersidad (PDI)
+  fqu322 | UNIDADES DE MEDIDA
+    fq322u01 | Adimensional
+indice | ÌNDICE DE REFRACCIÒN
+  umindi | UNIDADES DE MEDIDA
+    adime1 | Adimensional
+fqp025 | Índice de refracción (nD20)
+  fqu025 | UNIDADES DE MEDIDA
+    fq025u01 | Adimensional
+fqp054 | Índice de saponificación
+  fqu054 | UNIDADES DE MEDIDA
+    fq054u01 | mg KOH/g
+fqp055 | Índice de yodo
+  fqu055 | UNIDADES DE MEDIDA
+    fq055u01 | g I₂/100 g
+fqp148 | Índice HLB
+  fqu148 | UNIDADES DE MEDIDA
+    fq148u01 | Adimensional
+fqp514 | Índice tixotrópico
+  fqu514 | UNIDADES DE MEDIDA
+    fq514u01 | %
+fqp243 | Inflamabilidad - Calor de combustión
+  fqu243 | UNIDADES DE MEDIDA
+    fq243u01 | kJ/g
+fqp244 | Inflamabilidad - Densidad de deflagración
+  fqu244 | UNIDADES DE MEDIDA
+    fq244u01 | g/m³
+    fq244u02 | s/m³
+fqp242 | Inflamabilidad - Longitud de llama o distancia de ignición
+  fqu242 | UNIDADES DE MEDIDA
+    fq242u01 | cm
+fqp241 | Inflamabilidad - Tiempo de combustión
+  fqu241 | UNIDADES DE MEDIDA
+    fq241u01 | s
+    fq241u02 | min
+fqp300 | Liberación de producto - Cantidad liberada
+  fqu300 | UNIDADES DE MEDIDA
+    fq300u01 | %
+    fq300u02 | g
+    fq300u03 | g/s
+    fq300u04 | g/cm²
+fqp302 | Liberación de producto - Tiempo de liberación
+  fqu302 | UNIDADES DE MEDIDA
+    fq302u01 | s
+    fq302u02 | min
+fqp303 | Liberación de producto - Velocidad de liberación
+  fqu303 | UNIDADES DE MEDIDA
+    fq303u01 | g/s
+    fq303u02 | mg/s
+fqp100 | Límite de fluencia (yield stress)
+  fqu100 | UNIDADES DE MEDIDA
+    fq100u01 | Pa
+fqp455 | Llenado
+  fqu455 | UNIDADES DE MEDIDA
+    fq455u01 | % del contenido nominal
+    fq455u02 | g
+    fq455u03 | mL
+fqp183 | Materia absorbida
+  fqu183 | UNIDADES DE MEDIDA
+    fq183u01 | % p/p
+    fq183u02 | % v/p
+fqp252 | Materia insaponificable
+  fqu252 | UNIDADES DE MEDIDA
+    fq252u01 | %
+    fq252u02 | ppm (mg/kg)
+fqp077 | Materia insaturada
+  fqu077 | UNIDADES DE MEDIDA
+    fq077u01 | %
+fqp172 | Materia no volátil
+  fqu172 | UNIDADES DE MEDIDA
+    fq172u01 | % p/p
+    fq172u02 | ppm (mg/kg)
+fqp173 | Materia Residual
+  fqu173 | UNIDADES DE MEDIDA
+    fq173u01 | % p/p
+    fq173u02 | ppm (mg/kg)
+fqp045 | Materia volátil
+  fqu045 | UNIDADES DE MEDIDA
+    fq045u01 | %
+fqp284 | Material disuelto
+  fqu284 | UNIDADES DE MEDIDA
+    fq284u01 | %
+    fq284u02 | ppm (mg/kg o L)
+fqp070 | Metales pesados (As)
+  fqu070 | UNIDADES DE MEDIDA
+    fq070u01 | ppm (mg/kg)
+fqp067 | Metales pesados (Cd)
+  fqu067 | UNIDADES DE MEDIDA
+    fq067u01 | ppm (mg/kg)
+fqp071 | Metales pesados (Cu)
+  fqu071 | UNIDADES DE MEDIDA
+    fq071u01 | ppm (mg/kg)
+    fq071u02 | % p/p
+fqp068 | Metales pesados (Hg)
+  fqu068 | UNIDADES DE MEDIDA
+    fq068u01 | ppm (mg/kg)
+fqp072 | Metales pesados (Ni)
+  fqu072 | UNIDADES DE MEDIDA
+    fq072u01 | ppm (mg/kg)
+fqp066 | Metales pesados (Pb)
+  fqu066 | UNIDADES DE MEDIDA
+    fq066u01 | ppm (mg/kg)
+fqp069 | Metales pesados (Sb)
+  fqu069 | UNIDADES DE MEDIDA
+    fq069u01 | ppm (mg/kg)
+fqp101 | Módulo elástico (G')
+  fqu101 | UNIDADES DE MEDIDA
+    fq101u01 | Pa
+fqp102 | Módulo viscoso (G")
+  fqu102 | UNIDADES DE MEDIDA
+    fq102u01 | Pa
+fqp076 | Nitrosaminas
+  fqu076 | UNIDADES DE MEDIDA
+    fq076u01 | ppm
+fqp309 | Número de perlas por gramo
+  fqu309 | UNIDADES DE MEDIDA
+    fq309u01 | perlas/g
+fqp276 | Opacidad - Porcentaje
+  fqu276 | UNIDADES DE MEDIDA
+    fq276u01 | %
+fqp277 | Opacidad - Relación de contraste
+  fqu277 | UNIDADES DE MEDIDA
+    fq277u01 | %
+fqp342 | Osmolalidad
+  fqu342 | UNIDADES DE MEDIDA
+    fq342u01 | mOsm/Kg
+fqp064 | Oxígeno activo
+  fqu064 | UNIDADES DE MEDIDA
+    fq064u01 | ppm (mg/kg)
+    fq064u02 | %
+fqp318 | Partículas respirables (<10 µm)
+  fqu318 | UNIDADES DE MEDIDA
+    fq318u01 | %
+    fq318u02 | ppm (mg/kg o L)
+fqp238 | Patrón de pulverización - Diámetro
+  fqu238 | UNIDADES DE MEDIDA
+    fq238u01 | mm
+    fq238u02 | cm
+fqp239 | Patrón de pulverización - Relación  de ovalidad
+  fqu239 | UNIDADES DE MEDIDA
+    fq239u01 | mm
+    fq239u02 | cm
+fqp456 | Pérdida de masa
+  fqu456 | UNIDADES DE MEDIDA
+    fq456u01 | %
+    fq456u02 | g
+fqp301 | Pérdida por secado
+  fqu301 | UNIDADES DE MEDIDA
+    fq301u01 | %
+    fq301u02 | g
+fqp274 | Permeabilidad al oxígeno - Transmisión
+  fqu274 | UNIDADES DE MEDIDA
+    fq274u01 | cm³/m²/día
+fqp273 | Permeabilidad al vapor de agua - Tasa de transmisión
+  fqu273 | UNIDADES DE MEDIDA
+    fq273u01 | g/m²/día
+fqp286 | Peso de mina
+  fqu286 | UNIDADES DE MEDIDA
+    fq286u01 | g
+fqp267 | Peso por unidad de área
+  fqu267 | UNIDADES DE MEDIDA
+    fq267u01 | g/cm²
+    fq267u02 | mg/cm²
+fqp171 | Peso seco
+  fqu171 | UNIDADES DE MEDIDA
+    fq171u01 | g
+    fq171u02 | mg
+fqp294 | Peso unitario
+  fqu294 | UNIDADES DE MEDIDA
+    fq294u01 | g/unidad
+ph | pH
+  umph | UNIDADES DE MEDIDA
+    unidad | Unidades de pH
+fqp457 | pH (liberación)
+  fqu457 | UNIDADES DE MEDIDA
+    fq457u01 | Adimensional
+fqp179 | pH en dispersión o en solución
+  fqu179 | UNIDADES DE MEDIDA
+    fq179u01 | Adimensional
+fqp080 | Plazo después de abierto PAO
+  fqu080 | UNIDADES DE MEDIDA
+    fq080u01 | Meses
+    fq080u02 | Años
+fqp331 | Poder aclarante - Escala de tonos
+  fqu331 | UNIDADES DE MEDIDA
+    fq331u01 | Adimensional
+fqp330 | Poder aclarante - Reducción de pigmento
+  fqu330 | UNIDADES DE MEDIDA
+    fq330u01 | %
+fqp332 | Poder colorante - Escala de tonos
+  fqu332 | UNIDADES DE MEDIDA
+    fq332u01 | Adimensional
+fqp149 | Poder detergente - % Remoción (de suciedad)
+  fqu149 | UNIDADES DE MEDIDA
+    fq149u01 | %
+fqp145 | Poder espumante - Altura de espuma
+  fqu145 | UNIDADES DE MEDIDA
+    fq145u01 | mm
+fqp147 | Poder espumante - Estabilidad de espuma (Tiempo)
+  fqu147 | UNIDADES DE MEDIDA
+    fq147u01 | min
+fqp146 | Poder espumante - Volumen de espuma
+  fqu146 | UNIDADES DE MEDIDA
+    fq146u01 | mL
+    fq146u02 | cm³
+fqp065 | Poder oxidante
+  fqu065 | UNIDADES DE MEDIDA
+    fq065u01 | meq/L
+fqp326 | Poder tintóreo - Deposición de color
+  fqu326 | UNIDADES DE MEDIDA
+    fq326u01 | %
+fqp327 | Poder tintóreo - Rendimiento de coloración
+  fqu327 | UNIDADES DE MEDIDA
+    fq327u01 | %
+fqp321 | Potencial redox
+  fqu321 | UNIDADES DE MEDIDA
+    fq321u01 | mV
+fqp113 | Potencial Z
+  fqu113 | UNIDADES DE MEDIDA
+    fq113u01 | mV
+fqp458 | Presión de equilibrio
+  fqu458 | UNIDADES DE MEDIDA
+    fq458u01 | bar
+    fq458u02 | psi
+fqp459 | Presión de vacío
+  fqu459 | UNIDADES DE MEDIDA
+    fq459u01 | kPa
+    fq459u02 | mbar
+    fq459u03 | mmHg
+fqp092 | Presión de vapor
+  fqu092 | UNIDADES DE MEDIDA
+    fq092u01 | Pa
+    fq092u02 | KPa
+fqp227 | Presión interna en el envase
+  fqu227 | UNIDADES DE MEDIDA
+    fq227u01 | kPa
+fqp346 | Protección solar - Factor SPF
+  fqu346 | UNIDADES DE MEDIDA
+    fq346u01 | Adimensional
+fqp347 | Protección solar - Factor UVA-PF
+  fqu347 | UNIDADES DE MEDIDA
+    fq347u01 | Adimensional
+fqp349 | Protección solar - Longitud de onda crítica
+  fqu349 | UNIDADES DE MEDIDA
+    fq349u01 | nm
+fqp348 | Protección solar - Relación UVA/UVB
+  fqu348 | UNIDADES DE MEDIDA
+    fq348u01 | Adimensional
+fqp350 | Protección solar - SPF despues de inmersión en agua
+  fqu350 | UNIDADES DE MEDIDA
+    fq350u01 | Adimensional
+fqp460 | Prueba de caída
+  fqu460 | UNIDADES DE MEDIDA
+    fq460u01 | %
+fqp188 | Prueba de caída - Altura de caída soportada
+  fqu188 | UNIDADES DE MEDIDA
+    fq188u01 | cm
+    fq188u02 | m
+fqp189 | Prueba de caída - Número de ciclos o caídas soportadas
+  fqu189 | UNIDADES DE MEDIDA
+    fq189u01 | Adimensional
+fqp190 | Prueba de caída - Pérdida de peso tras la caída
+  fqu190 | UNIDADES DE MEDIDA
+    fq190u01 | %
+    fq190u02 | g
+    fq190u03 | mg
+fqp191 | Prueba de caída - Resistencia al impacto
+  fqu191 | UNIDADES DE MEDIDA
+    fq191u01 | N
+fqp461 | Prueba de cizallamiento (Shear Test) - Esfuerzo de cizalla
+  fqu461 | UNIDADES DE MEDIDA
+    fq461u01 | KPa
+    fq461u02 | Pa
+    fq461u03 | g
+fqp462 | Prueba de cizallamiento (Shear Test) - Fuerza de cizalla
+  fqu462 | UNIDADES DE MEDIDA
+    fq462u01 | g
+    fq462u02 | N
+fqp463 | Prueba de cizallamiento (Shear Test) - Resistencia al corte
+  fqu463 | UNIDADES DE MEDIDA
+    fq463u01 | N
+fqp464 | Prueba de corte / ruptura (Cutting or Break Test) - Deformación
+  fqu464 | UNIDADES DE MEDIDA
+    fq464u01 | mm
+fqp465 | Prueba de corte / ruptura (Cutting or Break Test) - Energía de ruptura
+  fqu465 | UNIDADES DE MEDIDA
+    fq465u01 | N*mm
+fqp466 | Prueba de corte / ruptura (Cutting or Break Test) - Esfuerzo cortante
+  fqu466 | UNIDADES DE MEDIDA
+    fq466u01 | KPa
+    fq466u02 | Pa
+fqp467 | Prueba de corte / ruptura (Cutting or Break Test) - Fuerza de Ruptura
+  fqu467 | UNIDADES DE MEDIDA
+    fq467u01 | g
+    fq467u02 | gf
+    fq467u03 | N
+fqp468 | Prueba de fragilidad estática (Static Brittleness Test) - Deformación
+  fqu468 | UNIDADES DE MEDIDA
+    fq468u01 | mm
+fqp469 | Prueba de fragilidad estática (Static Brittleness Test) - Fuerza aplicada
+  fqu469 | UNIDADES DE MEDIDA
+    fq469u01 | kgf
+    fq469u02 | N
+fqp470 | Prueba de fragilidad estática (Static Brittleness Test) - Tiempo hasta fractura
+  fqu470 | UNIDADES DE MEDIDA
+    fq470u01 | min
+    fq470u02 | s
+fqp194 | Prueba de transferencia de producto - Índice de pay-off
+  fqu194 | UNIDADES DE MEDIDA
+    fq194u01 | mg
+    fq194u02 | g
+    fq194u03 | Adimensional
+fqp192 | Prueba de transferencia de producto - Masa transferida
+  fqu192 | UNIDADES DE MEDIDA
+    fq192u01 | g
+    fq192u02 | mg
+fqp193 | Prueba de transferencia de producto - Porcentaje de producto transferido
+  fqu193 | UNIDADES DE MEDIDA
+    fq193u01 | %
+fqp195 | Prueba de transferencia de producto - Uniformidad de depósito
+  fqu195 | UNIDADES DE MEDIDA
+    fq195u01 | mg/cm²
+fqp030 | Punto de ablandamiento
+  fqu030 | UNIDADES DE MEDIDA
+    fq030u01 | °C
+fqp032 | Punto de deslizamiento
+  fqu032 | UNIDADES DE MEDIDA
+    fq032u01 | °C
+puntod | PUNTO DE EBULLICIÒN
+  umpunt | UNIDADES DE MEDIDA
+    c | °C
+    f | °F
+    k | °K
+punto1 | PUNTO DE FUSIÒN
+  umpun1 | UNIDADES DE MEDIDA
+    c1 | °C
+    f1 | °F
+    k1 | °K
+fqp029 | Punto de goteo
+  fqu029 | UNIDADES DE MEDIDA
+    fq029u01 | °C
+fqp031 | Punto de inflamación
+  fqu031 | UNIDADES DE MEDIDA
+    fq031u01 | °C
+fqp028 | Punto de nube o enturbiamiento
+  fqu028 | UNIDADES DE MEDIDA
+    fq028u01 | °C
+fqp027 | Punto de sublimación
+  fqu027 | UNIDADES DE MEDIDA
+    fq027u01 | °C
+fqp231 | Pureza
+  fqu231 | UNIDADES DE MEDIDA
+    fq231u01 | %
+fqp232 | Pureza de ingrediente
+  fqu232 | UNIDADES DE MEDIDA
+    fq232u01 | %
+fqp471 | Rango de fusión
+  fqu471 | UNIDADES DE MEDIDA
+    fq471u01 | °C
+fqp325 | Redispersabilidad - Eficiencia de redispersión
+  fqu325 | UNIDADES DE MEDIDA
+    fq325u01 | %
+fqp323 | Redispersabilidad - Número  inversiones, agitaciones, revoluciones requeridas
+  fqu323 | UNIDADES DE MEDIDA
+    fq323u01 | Adimensional
+fqp324 | Redispersabilidad - Tiempo de redispersión
+  fqu324 | UNIDADES DE MEDIDA
+    fq324u01 | s
+    fq324u02 | min
+fqp334 | Reducción del olor
+  fqu334 | UNIDADES DE MEDIDA
+    fq334u01 | %
+fqp299 | Relación impregnado/soporte
+  fqu299 | UNIDADES DE MEDIDA
+    fq299u01 | g/g
+fqp305 | Resistencia a la compresión
+  fqu305 | UNIDADES DE MEDIDA
+    fq305u01 | KPa
+fqp296 | Resistencia a la perforación
+  fqu296 | UNIDADES DE MEDIDA
+    fq296u01 | N
+fqp197 | Resistencia a la rotura
+  fqu197 | UNIDADES DE MEDIDA
+    fq197u01 | N
+fqp295 | Resistencia a la tracción
+  fqu295 | UNIDADES DE MEDIDA
+    fq295u01 | N
+fqp509 | Resistencia a la tracción longitudinal en húmedo
+  fqu509 | UNIDADES DE MEDIDA
+    fq509u01 | N/m
+fqp508 | Resistencia a la tracción transversal
+  fqu508 | UNIDADES DE MEDIDA
+    fq508u01 | N/m
+fqp202 | Resistencia al agua - Materia retenida despues de la inmersión
+  fqu202 | UNIDADES DE MEDIDA
+    fq202u01 | %
+fqp203 | Resistencia al agua - SPF
+  fqu203 | UNIDADES DE MEDIDA
+    fq203u01 | Adimensional
+fqp291 | Resistencia al agua - Tiempo de exposición
+  fqu291 | UNIDADES DE MEDIDA
+    fq291u01 | min
+    fq291u02 | h
+fqp515 | Resistencia al calor
+  fqu515 | UNIDADES DE MEDIDA
+    fq515u01 | °C
+fqp516 | Resistencia al frío
+  fqu516 | UNIDADES DE MEDIDA
+    fq516u01 | °C
+fqp261 | Resistencia al rayado
+  fqu261 | UNIDADES DE MEDIDA
+    fq261u01 | N
+fqp297 | Resistencia en húmedo
+  fqu297 | UNIDADES DE MEDIDA
+    fq297u01 | N
+fqp279 | Resistencia mecánica
+  fqu279 | UNIDADES DE MEDIDA
+    fq279u01 | MPa
+fqp268 | Resistencia tensil
+  fqu268 | UNIDADES DE MEDIDA
+    fq268u01 | MPa
+fqp281 | Retiro de película - Residuos remanentes
+  fqu281 | UNIDADES DE MEDIDA
+    fq281u01 | %
+fqp280 | Retiro de película - Tiempo de desprendimiento  (peel off)
+  fqu280 | UNIDADES DE MEDIDA
+    fq280u01 | min
+fqp472 | Reto antimicrobiano para preservantes - Concentración del inóculo inicial
+  fqu472 | UNIDADES DE MEDIDA
+    fq472u01 | UFC/mL
+fqp473 | Reto antimicrobiano para preservantes - Recuento de sobrevivientes
+  fqu473 | UNIDADES DE MEDIDA
+    fq473u01 | UFC/mL
+fqp474 | Reto antimicrobiano para preservantes - Reducción logarítmica
+  fqu474 | UNIDADES DE MEDIDA
+    fq474u01 | Adimensional
+fqp475 | Reto antimicrobiano para preservantes - Reducción microbiana
+  fqu475 | UNIDADES DE MEDIDA
+    fq475u01 | %
+fqp476 | Reto antimicrobiano para preservantes - Tiempo de muestreo
+  fqu476 | UNIDADES DE MEDIDA
+    fq476u01 | Días
+fqp477 | Reto antimicrobiano para preservantes - Volumen de inóculo añadido
+  fqu477 | UNIDADES DE MEDIDA
+    fq477u01 | mL
+fqp167 | Retracción (sweating)
+  fqu167 | UNIDADES DE MEDIDA
+    fq167u01 | %
+fqp108 | Sedimentación - Altura de sedimento
+  fqu108 | UNIDADES DE MEDIDA
+    fq108u01 | mm
+fqp107 | Sedimentación - Índice de sedimentación
+  fqu107 | UNIDADES DE MEDIDA
+    fq107u01 | Adimensional
+fqp022 | Sedimentación - Porcentaje
+  fqu022 | UNIDADES DE MEDIDA
+    fq022u01 | %
+fqp109 | Sedimentación - Tiempo de sedimentación
+  fqu109 | UNIDADES DE MEDIDA
+    fq109u01 | s
+    fq109u02 | min
+    fq109u03 | h
+    fq109u04 | día
+fqp021 | Sedimentación - Velocidad
+  fqu021 | UNIDADES DE MEDIDA
+    fq021u01 | mm/día
+    fq021u02 | cm/día
+    fq021u03 | mm/h
+    fq021u04 | m/s
+fqp478 | Sellabilidad (transferencia al aplicador)
+  fqu478 | UNIDADES DE MEDIDA
+    fq478u01 | Adimensional
+fqp020 | Separación de fases
+  fqu020 | UNIDADES DE MEDIDA
+    fq020u01 | %
+fqp517 | SO3 Catiónico
+  fqu517 | UNIDADES DE MEDIDA
+    fq517u01 | %
+fqp518 | SO3 Combinado
+  fqu518 | UNIDADES DE MEDIDA
+    fq518u01 | %
+fqp143 | Sólidos disueltos
+  fqu143 | UNIDADES DE MEDIDA
+    fq143u01 | %
+    fq143u02 | ppm (mg/kg)
+    fq143u03 | mg/L
+    fq143u04 | g/L
+fqp213 | Solubilidad
+  fqu213 | UNIDADES DE MEDIDA
+    fq213u01 | %
+    fq213u02 | g/L
+fqp235 | Solventes residuales
+  fqu235 | UNIDADES DE MEDIDA
+    fq235u01 | ppm
+fqp205 | SPF
+  fqu205 | UNIDADES DE MEDIDA
+    fq205u01 | Número
+fqp511 | Suavidad
+  fqu511 | UNIDADES DE MEDIDA
+    fq511u01 | m/N
+fqp317 | Suspensibilidad
+  fqu317 | UNIDADES DE MEDIDA
+    fq317u01 | %
+    fq317u02 | mg/L
+    fq317u03 | ppm
+    fq317u04 | mg/m³
+fqp033 | Tamaño de partícula
+  fqu033 | UNIDADES DE MEDIDA
+    fq033u01 | µm
+    fq033u02 | nm
+fqp187 | Tamaño de pigmento
+  fqu187 | UNIDADES DE MEDIDA
+    fq187u01 | µm
+fqp206 | Tamaño partículas (ZnO, TiO₂)
+  fqu206 | UNIDADES DE MEDIDA
+    fq206u01 | nm
+fqp034 | Tamño de gota
+  fqu034 | UNIDADES DE MEDIDA
+    fq034u01 | µm
+    fq034u02 | nm
+fqp228 | Tasa de descarga (aerosol)
+  fqu228 | UNIDADES DE MEDIDA
+    fq228u01 | g/s
+    fq228u02 | g/min
+fqp215 | Temperatura de transición
+  fqu215 | UNIDADES DE MEDIDA
+    fq215u01 | °C
+fqp026 | Tensión superficial
+  fqu026 | UNIDADES DE MEDIDA
+    fq026u01 | mN/m
+    fq026u02 | N/m
+fqp216 | Termogravimetria avanzada (TGA) - Pérdida de peso
+  fqu216 | UNIDADES DE MEDIDA
+    fq216u01 | %
+fqp282 | Tiempo de disolución
+  fqu282 | UNIDADES DE MEDIDA
+    fq282u01 | s
+    fq282u02 | min
+fqp283 | Tiempo de dispersión
+  fqu283 | UNIDADES DE MEDIDA
+    fq283u01 | s
+    fq283u02 | min
+fqp255 | Tiempo de flujo - Viscosimetro Brookfield
+  fqu255 | UNIDADES DE MEDIDA
+    fq255u01 | s
+fqp256 | Tiempo de flujo - Viscosimetro Ford
+  fqu256 | UNIDADES DE MEDIDA
+    fq256u01 | s
+fqp257 | Tiempo de flujo - Viscosimetro Zahn
+  fqu257 | UNIDADES DE MEDIDA
+    fq257u01 | s
+fqp315 | Tiempo de ruptura
+  fqu315 | UNIDADES DE MEDIDA
+    fq315u01 | s
+    fq315u02 | min
+fqp200 | Tiempo de secado
+  fqu200 | UNIDADES DE MEDIDA
+    fq200u01 | s
+    fq200u02 | min
+fqp201 | Tiempo de secado superficial
+  fqu201 | UNIDADES DE MEDIDA
+    fq201u01 | s
+    fq201u02 | min
+fqp099 | Tixotropía (Área de histéresis)
+  fqu099 | UNIDADES DE MEDIDA
+    fq099u01 | Pa/s
+fqp019 | Transmitancia - Transparencia / turbidez
+  fqu019 | UNIDADES DE MEDIDA
+    fq019u01 | NTU
+    fq019u02 | FTU
+    fq019u03 | %
+fqp479 | Tripolifosfato
+  fqu479 | UNIDADES DE MEDIDA
+    fq479u01 | %
+    fq479u02 | ppm (mg/kg)
+fqp266 | Uniformidad de película - Variación de espesor
+  fqu266 | UNIDADES DE MEDIDA
+    fq266u01 | %
+fqp104 | Velocidad de corte
+  fqu104 | UNIDADES DE MEDIDA
+    fq104u01 | s⁻¹
+fqp079 | Vida útil (shelf life)
+  fqu079 | UNIDADES DE MEDIDA
+    fq079u01 | Meses
+    fq079u02 | Años
+viscos | VISCOSIDAD
+  umvisc | UNIDADES DE MEDIDA
+    centip | centipoise
+    gcms | g/(cm.s)
+    kgms | Kg/(m.s)
+    m2s | m2/s
+    mpa | mPa·s
+    p | P
+    pas | Pa.s
+    st | St
+    ud1 | UD
+fqp512 | Viscosidad (Contraves-Rheomat) - Spindle/Mobile
+  fqu512 | UNIDADES DE MEDIDA
+    fq512u01 | mPa·s (cP)
+    fq512u02 | Pa·s
+    fq512u03 | Kg/m·s
+    fq512u04 | g/cm·s
+    fq512u05 | UD
+fqp095 | Viscosidad aparente
+  fqu095 | UNIDADES DE MEDIDA
+    fq095u03 | cP
+    fq095u02 | mPa·s
+    fq095u01 | Pa·s
+fqp097 | Viscosidad cinemática
+  fqu097 | UNIDADES DE MEDIDA
+    fq097u03 | cP
+    fq097u01 | mm²/s
+    fq097u02 | m²/s
+fqp096 | Viscosidad dinámica
+  fqu096 | UNIDADES DE MEDIDA
+    fq096u03 | cP
+    fq096u02 | mPa·s
+    fq096u01 | Pa·s
+fqp480 | Viscosimetría capilar (Cannon-Fenske) - Código/Tamaño/Tipo de tubo
+  fqu480 | UNIDADES DE MEDIDA
+    fq480u01 | Estándar
+fqp481 | Viscosimetría capilar (Ostwald o Pinkevitch) - Diámetro interno de tubo
+  fqu481 | UNIDADES DE MEDIDA
+    fq481u01 | mm
+fqp482 | Viscosimetría capilar (Ubbelohde) - Código/Tamaño/Tipo de tubo
+  fqu482 | UNIDADES DE MEDIDA
+    fq482u01 | B
+    fq482u02 | C
+    fq482u03 | Estándar
+fqp483 | Viscosimetría de bola - Ángulo de inclinación de tubo
+  fqu483 | UNIDADES DE MEDIDA
+    fq483u01 | °
+fqp484 | Viscosimetría de bola - Tiempo de descenso o caída
+  fqu484 | UNIDADES DE MEDIDA
+    fq484u01 | s
+fqp485 | Viscosimetría de bola en caída (Höppler) - Número de bola
+  fqu485 | UNIDADES DE MEDIDA
+    fq485u01 | Estándar
+fqp486 | Viscosimetría de bola rodante (Microvisc. Lovis) - Número/Tamaño de tubo
+  fqu486 | UNIDADES DE MEDIDA
+    fq486u01 | mm
+fqp487 | Viscosimetría de copa (Ford o Zahn o Shell) - Número de copa
+  fqu487 | UNIDADES DE MEDIDA
+    fq487u01 | Estándar
+fqp488 | Viscosimetría de copa (ISO o DIN o AFNOR) - Número/Tamaño de orificio de copa
+  fqu488 | UNIDADES DE MEDIDA
+    fq488u01 | mm
+fqp489 | Viscosimetría de copa - Tiempo de eflujo o vaciado
+  fqu489 | UNIDADES DE MEDIDA
+    fq489u01 | s
+fqp490 | Viscosimetría o Reometría - Temperatura de ensayo o de muestra
+  fqu490 | UNIDADES DE MEDIDA
+    fq490u01 | °C
+fqp491 | Viscosimetría rotacional - Geometría con paleta (Vane) - Código de Paleta
+  fqu491 | UNIDADES DE MEDIDA
+    fq491u01 | V (Código estándar)
+fqp492 | Viscosimetría rotacional - Geometría con paleta (Vane) - N° de Paletas
+  fqu492 | UNIDADES DE MEDIDA
+    fq492u01 | Adimensional
+fqp493 | Viscosimetría rotacional - Geometría husillo en T - Código de husillo (Helipath o T)
+  fqu493 | UNIDADES DE MEDIDA
+    fq493u01 | T (Código estándar)
+fqp494 | Viscosimetría rotacional - N° Husillo o aguja - Estándar (Brookfield y Fungilab)
+  fqu494 | UNIDADES DE MEDIDA
+    fq494u01 | HA (Alta viscosidad)
+    fq494u02 | HB (Ultra alta viscosidad)
+    fq494u03 | LV (Baja viscosidad)
+    fq494u04 | RV (Mediana viscosidad)
+fqp495 | Viscosimetría rotacional - Porcentaje de Torque
+  fqu495 | UNIDADES DE MEDIDA
+    fq495u01 | %
+fqp496 | Viscosimetría rotacional - Sistema Cono y Placa - Ángulo de cono
+  fqu496 | UNIDADES DE MEDIDA
+    fq496u01 | °
+fqp497 | Viscosimetría rotacional - Sistema Cono y Placa - Código de Placa
+  fqu497 | UNIDADES DE MEDIDA
+    fq497u01 | CAP (Código estándar de alta cizalla)
+    fq497u02 | CP (Código estándar)
+fqp498 | Viscosimetría rotacional - Sistema Placas paralelas - Código de Placa
+  fqu498 | UNIDADES DE MEDIDA
+    fq498u01 | PP (Código estándar)
+fqp499 | Viscosimetría rotacional - Sistema Placas paralelas - Separación entre placas
+  fqu499 | UNIDADES DE MEDIDA
+    fq499u01 | mm
+fqp500 | Viscosimetría rotacional - Sistemas Couette o Searle - Altura de cilindro  (L)
+  fqu500 | UNIDADES DE MEDIDA
+    fq500u01 | mm
+fqp501 | Viscosimetría rotacional - Sistemas Couette o Searle - Código de cilindro
+  fqu501 | UNIDADES DE MEDIDA
+    fq501u01 | CC (Código estándar)
+    fq501u02 | DG (Código estándar)
+    fq501u03 | SC4 (Código estándar)
+fqp502 | Viscosimetría rotacional - Sistemas Couette o Searle - Radio cilindro externo (Re)
+  fqu502 | UNIDADES DE MEDIDA
+    fq502u01 | mm
+fqp503 | Viscosimetría rotacional - Sistemas Couette o Searle - Radio cilindro interno (Ri)
+  fqu503 | UNIDADES DE MEDIDA
+    fq503u01 | mm
+fqp504 | Viscosimetría rotacional - SSA (Small Sample Adapter) - Código de cámara
+  fqu504 | UNIDADES DE MEDIDA
+    fq504u01 | SC4 (Código estándar)
+fqp505 | Viscosimetría rotacional - Tasa de cizallamiento
+  fqu505 | UNIDADES DE MEDIDA
+    fq505u01 | s⁻¹
+fqp506 | Viscosimetría rotacional - Tiempo de agitación o rotación previo a la lectura
+  fqu506 | UNIDADES DE MEDIDA
+    fq506u01 | min
+    fq506u02 | s
+fqp507 | Viscosimetría rotacional -  Velocidad de rotación o angular
+  fqu507 | UNIDADES DE MEDIDA
+    fq507u01 | rpm
+fqp211 | Volatilidad - Índice de evaporación
+  fqu211 | UNIDADES DE MEDIDA
+    fq211u01 | Adimensional
+fqp208 | Volatilidad - Materia volátil
+  fqu208 | UNIDADES DE MEDIDA
+    fq208u01 | %
+fqp209 | Volatilidad - Pérdida de masa
+  fqu209 | UNIDADES DE MEDIDA
+    fq209u01 | %
+fqp212 | Volatilidad - Tasa de evaporación
+  fqu212 | UNIDADES DE MEDIDA
+    fq212u01 | g/s
+    fq212u02 | mg/s
+fqp210 | Volatilidad - Tiempo de evaporación
+  fqu210 | UNIDADES DE MEDIDA
+    fq210u01 | min
+    fq210u02 | h
+fqp336 | Volumen aplicado
+  fqu336 | UNIDADES DE MEDIDA
+    fq336u01 | mL/aplicación
+===  appArea Area de Aplicacion 16
+produc | Productos para uso en área de ojos
+  fasepr | FASE ETAREA
+    fasep1 | Productos para uso en infantes (hasta 3 años)
+    fasep2 | Productos para uso en personas y niños mayores de 3 años
+produ1 | Productos que entran en contacto con las membranas mucosas
+  fasep3 | FASE ETAREA
+    fasep4 | Productos para uso en infantes (hasta 3 años)
+    fasep5 | Productos para uso en personas y niños mayores de 3 años
+demasp | Demás productos cosméticos susceptibles de contaminación microbiológica
+  fasede | FASE ETAREA
+    fased1 | Productos para uso en infantes (hasta 3 años)
+    fased2 | Productos para uso en personas y niños mayores de 3 años
+produ2 | Productos a ser utilizados en los órganos genitales externos
+  fasep6 | FASE ETAREA
+    fasep7 | Productos para uso en infantes (hasta 3 años)
+    fasep8 | Productos para uso en personas y niños mayores de 3 años
