@@ -250,7 +250,8 @@ def write_excel(planilla: dict, folder: Path, out_path: Path, cat: Catalog, resu
     ws = wb.create_sheet("2 Composición")
     cols = ["#", "Nombre INCI", "N° CAS", "Tipo de ingrediente", "Función (catálogo InvimÁgil)", "Código función", "Listado de referencia", "Cantidad", "Unidad", "¿Nanomaterial?", "Función según COCC", "Estado", "Nota / decisión"]
     sw = SheetWriter(ws, [6, 44, 14, 16, 42, 14, 18, 14, 10, 14, 24, 12, 60])
-    sw.title("Paso 2 · Composición", "Ingredientes en nomenclatura INCI, en el orden del COCC. En la plataforma se escriben uno a uno con el autocompletado.")
+    pref = " > ".join(r["name"] for r in (meta.get("criterios") or {}).get("listados_referencia_prioridad") or []) or "Union Europea (UE) > PCPC > FDA"
+    sw.title("Paso 2 · Composición", f"Ingredientes en nomenclatura INCI, en el orden del COCC. Listado de referencia: preferir {pref}; si la plataforma no ofrece el primero para un INCI, tomar el siguiente.")
     ingredients = (planilla.get("composition") or {}).get("ingredients") or []
     first = sw.row + 7
     last = first + max(len(ingredients), 1) - 1

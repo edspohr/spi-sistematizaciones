@@ -48,6 +48,12 @@ def _cost(usage: dict) -> float:
     ) / 1e6
 
 
+def _criterios_publicos() -> dict:
+    """SPI criteria copied into planilla._meta so the browser add-on can apply them (e.g. reference list order)."""
+    c = json.loads((RECURSOS / "criterios_spi.json").read_text(encoding="utf-8"))
+    return {k: v for k, v in c.items() if not k.startswith("_") and k != "notas"}
+
+
 def _safe_name(s: str) -> str:
     bad = '<>:"/\\|?*'
     out = "".join("-" if c in bad else c for c in (s or "producto")).strip(" .")
@@ -138,6 +144,7 @@ def cmd_generar(folder: Path, con: Console) -> Path:
         con.detail(f"    · {w}")
     planilla.setdefault("_meta", {})["generado"] = f"{dt.datetime.now():%Y-%m-%d %H:%M} · InvimÁgil Base {__version__}"
     planilla["_meta"]["inventario"] = inventory_table(docs)
+    planilla["_meta"]["criterios"] = _criterios_publicos()
 
     pj = out / "planilla.json"
     if pj.exists():

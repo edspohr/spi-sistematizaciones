@@ -41,7 +41,9 @@ def _criterios_text() -> str:
         f"- Representante legal / apoderado: {c.get('representante_legal') or 'pendiente (decisión)'}",
         f"- Responsable técnico: {c.get('responsable_tecnico') or 'no definido: dejar como decisión'}",
         f"- Unidad de composición: {c['unidad_composicion']['slug']} | {c['unidad_composicion']['name']}",
-        f"- Listado de referencia: {c['listado_referencia']['slug']} | {c['listado_referencia']['name']}",
+        "- Listado de referencia, en orden de preferencia: "
+        + " > ".join(f"{r['slug']} | {r['name']}" for r in c["listados_referencia_prioridad"])
+        + ". En la planilla se escribe el primero; el add-on elegirá en pantalla el primero que la plataforma ofrezca para ese INCI.",
         f"- Tipo de fabricante por defecto: {c.get('fabricante_tipo_por_defecto', 'tercero')}",
         f"- Tamaño máximo por adjunto: {c.get('tamano_maximo_adjunto_mb', 10)} MB",
     ]

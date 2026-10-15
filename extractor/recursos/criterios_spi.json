@@ -3,12 +3,29 @@
   "titular_nso": "SERVICIOS DE PROPIEDAD INDUSTRIAL S.A.S.",
   "representante_legal": "ALVARO E. RINCON MAUTNER",
   "responsable_tecnico": null,
-  "unidad_composicion": {"slug": "wwcom", "name": "% (w/w)"},
-  "listado_referencia": {"slug": "LREF-PCPC", "name": "PCPC"},
+  "unidad_composicion": {
+    "slug": "wwcom",
+    "name": "% (w/w)"
+  },
+  "listados_referencia_prioridad": [
+    {
+      "slug": "LREF-UE",
+      "name": "Union Europea (UE)"
+    },
+    {
+      "slug": "LREF-PCPC",
+      "name": "PCPC"
+    },
+    {
+      "slug": "LREF-FDA",
+      "name": "FDA"
+    }
+  ],
   "fabricante_tipo_por_defecto": "tercero",
   "tamano_maximo_adjunto_mb": 10,
   "notas": [
     "Si el COCC trae cantidades en % p/p o %Wt/Wt se usa wwcom | % (w/w).",
-    "El responsable técnico se elige en la plataforma de la lista de SPI; si está vacío aquí queda como decisión."
+    "El responsable técnico se elige en la plataforma de la lista de SPI; si está vacío aquí queda como decisión.",
+    "Listado de referencia: se prefiere UE; si la plataforma no lo ofrece para un INCI, PCPC; si tampoco, FDA (Laura Arévalo, 2026-10-15). El add-on aplica este orden en pantalla según lo que ofrezca InvimÁgil por ingrediente."
   ]
 }
