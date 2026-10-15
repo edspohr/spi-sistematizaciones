@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<title>Mock InvimÁgil (Ant Design) — Composición</title>
+<style>
+  body { font: 14px system-ui; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #222; }
+  .ant-form-item { margin: 10px 0; }
+  .ant-form-item-label label { display: block; font-size: 13px; margin-bottom: 4px; }
+  input, textarea { padding: 6px; font: 13px system-ui; width: 320px; }
+  .ant-select { display: inline-block; width: 320px; position: relative; }
+  .ant-select-selector { border: 1px solid #999; padding: 4px 8px; min-height: 22px; background: #fff; cursor: pointer; }
+  .ant-select-selection-item { display: inline-block; margin-right: 6px; }
+  .ant-select-selection-search-input { border: none; outline: none; width: 90%; }
+  .ant-select-dropdown { position: absolute; z-index: 10; background: #fff; border: 1px solid #999; width: 320px; max-height: 200px; overflow: auto; }
+  .ant-select-dropdown-hidden { display: none; }
+  .ant-select-item-option { padding: 4px 8px; cursor: pointer; }
+  .ant-select-item-option:hover { background: #e6f4ff; }
+  .ant-select-item-empty { padding: 6px 8px; color: #999; }
+  .ant-switch { display: inline-block; width: 44px; height: 22px; border-radius: 11px; background: #bbb; cursor: pointer; border: none; }
+  .ant-switch-checked { background: #1677ff; }
+  .ant-modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; }
+  .ant-modal-content { background: #fff; padding: 16px; width: 420px; }
+  .ant-modal-footer { text-align: right; margin-top: 12px; }
+  .ant-table-tbody td { border: 1px solid #ddd; padding: 4px 8px; }
+  button { padding: 6px 12px; margin: 4px; }
+  .nav { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 12px; }
+  .ant-form-item-explain-error { color: #a8071a; font-size: 12px; }
+</style>
+</head>
+<body>
+<h2>Notificación Sanitaria Obligatoria (NSO) de Cosméticos - Composición</h2>
+<p>Réplica local de la mecánica Ant Design para probar el motor del inyector. Sin red.</p>
+
+<div class="ant-form-item"><div class="ant-form-item-label"><label for="name">Nombre del producto</label></div><input id="name"></div>
+<div class="ant-form-item"><div class="ant-form-item-label"><label>¿Declara grupos cosméticos?</label></div><button id="declaresCosmeticGroups" role="switch" aria-checked="false" class="ant-switch"></button></div>
+<div class="ant-form-item"><div class="ant-form-item-label"><label>Forma cosmética</label></div><div class="ant-select" id="cosmeticForm" data-options="ACEITE,AEROSOL,BARRA,CREMA GEL,EMULSIÓN,GEL,LOCIÓN,POLVO"></div></div>
+
+<button id="btn-add">+ Agregar ingrediente</button>
+<table class="ant-table"><tbody class="ant-table-tbody" id="tbody"></tbody></table>
+
+<div class="nav"><button>Anterior</button><button id="siguiente" onclick="window.__clickedNext=true;alert('¡Siguiente pulsado! El inyector NO debe llegar aquí.')">Siguiente</button></div>
+
+<script>
+// --- minimal Ant Design Select emulation (single / multiple / remote search) ---
+let ddCounter = 0;
+function makeSelect(root, opts) {
+  const { options, remote, multiple } = opts;
+  root.classList.add('ant-select');
+  const id = 'rc_select_' + (++ddCounter);
+  root.innerHTML = `<div class="ant-select-selector"><span class="sel-items"></span><input class="ant-select-selection-search-input" role="combobox" aria-controls="${id}_list" autocomplete="off"></div>`;
+  const dd = document.createElement('div'); dd.className = 'ant-select-dropdown ant-select-dropdown-hidden'; dd.innerHTML = `<div id="${id}_list" role="listbox"></div>`;
+  root.appendChild(dd);
+  const list = dd.firstChild, input = root.querySelector('input'), items = root.querySelector('.sel-items');
+  root.value = multiple ? [] : null;
+  function render(filter) {
+    const q = (filter || '').toLowerCase();
+    const show = () => {
+      const found = options.filter((o) => o.toLowerCase().includes(q));
+      list.innerHTML = found.length ? found.map((o) => `<div class="ant-select-item ant-select-item-option" role="option"><div class="ant-select-item-option-content">${o}</div></div>`).join('') : '<div class="ant-select-item-empty">Sin datos</div>';
+      list.querySelectorAll('.ant-select-item-option').forEach((el) => el.addEventListener('click', () => choose(el.textContent)));
+      dd.classList.remove('ant-select-dropdown-hidden');
+    };
+    if (remote && q) { list.innerHTML = '<div class="ant-select-item-empty"><span class="ant-spin"></span> Buscando…</div>'; dd.classList.remove('ant-select-dropdown-hidden'); setTimeout(show, 600); }
+    else show();
+  }
+  function choose(text) {
+    if (multiple) { if (!root.value.includes(text)) root.value.push(text); }
+    else { root.value = text; dd.classList.add('ant-select-dropdown-hidden'); }
+    input.value = '';
+    items.innerHTML = (multiple ? root.value : [root.value]).map((v) => `<span class="ant-select-selection-item" title="${v}">${v}</span>`).join('');
+    root.dispatchEvent(new CustomEvent('antchange', { detail: root.value }));
+  }
+  root.querySelector('.ant-select-selector').addEventListener('mousedown', (e) => { e.preventDefault(); input.focus(); render(input.value); });
+  input.addEventListener('input', () => render(input.value));
+  input.addEventListener('keydown', (e) => { if (e.key === 'Escape') dd.classList.add('ant-select-dropdown-hidden'); });
+  document.addEventListener('mousedown', (e) => { if (!root.contains(e.target)) dd.classList.add('ant-select-dropdown-hidden'); });
+  root.clear = () => { root.value = multiple ? [] : null; items.innerHTML = ''; };
+  return root;
+}
+document.querySelectorAll('.ant-select[data-options]').forEach((el) => makeSelect(el, { options: el.dataset.options.split(',') }));
+document.querySelectorAll('.ant-switch').forEach((sw) => sw.addEventListener('click', () => { const on = sw.getAttribute('aria-checked') !== 'true'; sw.setAttribute('aria-checked', on); sw.classList.toggle('ant-switch-checked', on); }));
+// React-style controlled input: revert if no proper input event (simulates the platform's state)
+document.querySelectorAll('input:not(.ant-select-selection-search-input)').forEach((inp) => { let state = ''; inp.addEventListener('input', () => { state = inp.value; }); inp.addEventListener('blur', () => { inp.value = state; }); });
+
+// --- ingredient modal with remote INCI search and per-ingredient reference lists ---
+const INCI = {
+  'WATER/AQUA': ['Union Europea (UE)', 'PCPC'], 'PETROLATUM': ['PCPC'], 'GLYCERIN': ['Union Europea (UE)', 'PCPC', 'FDA'],
+  'STEARIC ACID': ['Union Europea (UE)'], 'PERFUME/FRAGRANCE': ['FDA'], 'GLYCERYL STEARATE': ['PCPC', 'FDA'], 'WATER': ['PCPC'],
+};
+const FUNCIONES = ['SOLVENTE', 'HUMECTANTE', 'ACONDICIONADOR CUTÁNEO - EMOLIENTE', 'ACONDICIONADOR CUTÁNEO COSMÉTICO', 'FRAGANCIA', 'TENSOACTIVO - EMULSIFICANTE'];
+let rows = 0;
+document.getElementById('btn-add').addEventListener('click', () => {
+  const m = document.createElement('div'); m.className = 'ant-modal'; m.innerHTML = `<div class="ant-modal-content" role="dialog">
+    <h3>Agregar ingrediente</h3>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>Ingrediente</label></div><div id="ingredient"></div></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>Tipo</label></div><div id="itemType"></div></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>Función</label></div><div id="functions"></div></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>Listado de referencia</label></div><div id="referenceList"></div></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label for="quantity">Cantidad</label></div><input id="quantity" type="number" step="any"></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>Unidad</label></div><div id="unit"></div></div>
+    <div class="ant-form-item"><div class="ant-form-item-label"><label>¿Nanomaterial?</label></div><button id="isNanomaterial" role="switch" aria-checked="false" class="ant-switch"></button></div>
+    <div class="ant-modal-footer"><button class="cancel">Cancelar</button><button class="save" disabled>Guardar</button></div></div>`;
+  document.body.appendChild(m);
+  const ing = makeSelect(m.querySelector('#ingredient'), { options: Object.keys(INCI), remote: true });
+  makeSelect(m.querySelector('#itemType'), { options: ['basic', 'secondary'] });
+  makeSelect(m.querySelector('#functions'), { options: FUNCIONES, multiple: true });
+  const ref = makeSelect(m.querySelector('#referenceList'), { options: [] });
+  makeSelect(m.querySelector('#unit'), { options: ['% (w/w)', '% (v/v)', 'mg/g'] });
+  m.querySelector('#isNanomaterial').addEventListener('click', (e) => { const sw = e.currentTarget; const on = sw.getAttribute('aria-checked') !== 'true'; sw.setAttribute('aria-checked', on); sw.classList.toggle('ant-switch-checked', on); });
+  ing.addEventListener('antchange', (e) => { const lists = INCI[e.detail] || []; makeSelect(ref, { options: lists }); m.querySelector('.save').disabled = false; });
+  let qty = ''; const q = m.querySelector('#quantity'); q.addEventListener('input', () => { qty = q.value; }); q.addEventListener('blur', () => { q.value = qty; });
+  m.querySelector('.cancel').addEventListener('click', () => m.remove());
+  m.querySelector('.save').addEventListener('click', () => {
+    if (!ref.value) { const err = document.createElement('div'); err.className = 'ant-form-item-explain-error'; err.textContent = 'Listado de referencia es obligatorio'; m.querySelector('#referenceList').parentElement.appendChild(err); return; }
+    const tr = document.createElement('tr'); tr.className = 'ant-table-row';
+    tr.innerHTML = `<td>${++rows}</td><td>${ing.value}</td><td>${qty}</td><td>${ref.value}</td><td>${(m.querySelector('#functions').value || []).join('; ')}</td>`;
+    document.getElementById('tbody').appendChild(tr); m.remove();
+  });
+});
+</script>
+</body>
+</html>

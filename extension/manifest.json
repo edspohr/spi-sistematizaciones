@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "InvimÁgil Inyector",
+  "version": "0.1.0",
+  "description": "Llena cada pantalla del trámite de NSO en InvimÁgil desde el archivo base (_invimagil/planilla.json) de la carpeta del producto. Nunca avanza ni envía: la analista verifica y pulsa Siguiente.",
+  "default_locale": null,
+  "minimum_chrome_version": "116",
+  "permissions": ["sidePanel", "storage", "scripting", "activeTab"],
+  "host_permissions": ["https://invimagil.invima.gov.co/*"],
+  "action": { "default_title": "InvimÁgil Inyector" },
+  "side_panel": { "default_path": "panel/panel.html" },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://invimagil.invima.gov.co/*"],
+      "js": ["content/engine.js", "content/filler.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://invimagil.invima.gov.co/*"],
+      "js": ["main/apollo-reader.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["mapa-formulario.json"], "matches": ["https://invimagil.invima.gov.co/*"] }
+  ]
+}

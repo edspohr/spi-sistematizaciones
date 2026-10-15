@@ -27,7 +27,7 @@ Two modules share a single field schema:
 tools/     Live-session mapping kit (Slice 0) + package build script
 schema/    Shared field schema (data, not code)
 extractor/ InvimÁgil Base: product folder -> planilla.json + Excel maestro (Slice 2)
-extension/ Chrome MV3 extension (Slices 1 and 3)
+extension/ InvimÁgil Inyector: MV3 side-panel extension, planilla -> form (Slice 3)
 docs/      User-facing documentation, Spanish
 dist/      Hand-off packages (zips are gitignored)
 samples/   Sample dossiers (gitignored, never committed)
@@ -53,6 +53,12 @@ of the Decisiones sheet and regenerates both files.
 - SPI defaults (titular, apoderado, unidad, listado de referencia):
   `extractor/recursos/criterios_spi.json`.
 - Analyst docs: `docs/INSTRUCCIONES-LAURA-BASE.md`.
+
+## Slice 3 — InvimÁgil Inyector (extension)
+
+See `extension/README.md` and the proposal in `docs/PROPUESTA-ADDON-INYECCION.md`.
+Local replica of the Ant Design mechanics for engine tests: `tools/mock-antd.html`
+(serve the repo with `python3 -m http.server 8765`).
 
 
 ## Slice 0 — Live Mapping Kit (this repo, right now)

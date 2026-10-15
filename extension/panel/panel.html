@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<title>InvimÁgil Inyector</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <header>
+    <h1>InvimÁgil Inyector</h1>
+    <p class="muted">Llena la pantalla actual desde el archivo base. Usted verifica y pulsa Siguiente.</p>
+  </header>
+
+  <section id="s-carpeta">
+    <button id="btn-carpeta" class="primary">Elegir carpeta del producto</button>
+    <div id="producto" class="card hidden">
+      <div><b id="p-nombre"></b></div>
+      <div class="muted" id="p-resumen"></div>
+      <div id="p-decisiones" class="warn hidden"></div>
+    </div>
+  </section>
+
+  <section id="s-solicitud" class="hidden">
+    <label>Id de la solicitud en pantalla <input id="req-id" inputmode="numeric" placeholder="p. ej. 107015"></label>
+    <div class="muted">Pestaña: <span id="estado-url">—</span></div>
+    <div>Pantalla detectada: <b id="estado-paso">—</b></div>
+  </section>
+
+  <section id="s-accion" class="hidden">
+    <label class="chk"><input type="checkbox" id="dry"> Solo mostrar (resalta sin escribir)</label>
+    <button id="btn-llenar" class="primary">Llenar esta pantalla</button>
+    <button id="btn-verificar">Verificar con la plataforma</button>
+    <div id="progreso" class="muted"></div>
+  </section>
+
+  <section id="s-resultado" class="hidden">
+    <h2>Verificación</h2>
+    <div id="res-resumen"></div>
+    <table id="res-tabla"><thead><tr><th>Campo</th><th>Maestro</th><th>Plataforma</th><th></th></tr></thead><tbody></tbody></table>
+    <button id="btn-log">Guardar registro en _invimagil</button>
+  </section>
+
+  <footer class="muted">Nunca pulsa Siguiente, Finalizar ni acepta términos. No envía datos a ningún servidor.</footer>
+  <script src="panel.js"></script>
+</body>
+</html>
