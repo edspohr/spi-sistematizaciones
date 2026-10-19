@@ -2,23 +2,30 @@
 from __future__ import annotations
 
 
+# The API limits union-typed parameters (e.g. ["string","null"]) to 16 per schema, so no field is
+# nullable here: an empty string means "sin dato"; tri-state booleans are string enums; optional
+# numbers are strings parsed afterwards (see normalizar_planilla).
 def _s(desc: str = "", nullable: bool = True) -> dict:
-    t = ["string", "null"] if nullable else "string"
-    d: dict = {"type": t}
-    if desc:
-        d["description"] = desc
+    d: dict = {"type": "string"}
+    if nullable:
+        desc = (desc + " " if desc else "") + 'Cadena vacía "" si no hay dato.'
+    d["description"] = desc.strip()
     return d
 
 
 def _n(desc: str = "", nullable: bool = True) -> dict:
-    d: dict = {"type": ["number", "null"] if nullable else "number"}
+    if nullable:
+        return {"type": "string", "description": (desc + " " if desc else "") + 'Número escrito como texto (punto decimal); "" si no aplica.'}
+    d: dict = {"type": "number"}
     if desc:
         d["description"] = desc
     return d
 
 
 def _b(desc: str = "", nullable: bool = True) -> dict:
-    d: dict = {"type": ["boolean", "null"] if nullable else "boolean"}
+    if nullable:
+        return {"type": "string", "enum": ["si", "no", "desconocido"], "description": (desc + " " if desc else "") + "desconocido si los documentos no lo dicen."}
+    d: dict = {"type": "boolean"}
     if desc:
         d["description"] = desc
     return d
@@ -43,14 +50,14 @@ def _obj(props: dict, desc: str = "") -> dict:
     return d
 
 
-DECISION = _s("Si el dato no se puede cerrar con los documentos: explica qué falta y las opciones. null si está resuelto.")
-NOTE = _s("Nota breve de trazabilidad: documento y página de donde sale el dato. null si no aplica.")
+DECISION = _s('Si el dato no se puede cerrar con los documentos: explica qué falta y las opciones; "" si está resuelto.')
+NOTE = _s('Nota breve de trazabilidad: documento y página de donde sale el dato; "" si no aplica.')
 
 
 def cat(list_id: str, desc: str = "") -> dict:
     return _obj(
         {
-            "slug": _s(f"slug exacto de la lista {list_id} del catálogo; null si no se encontró"),
+            "slug": _s(f"slug exacto de la lista {list_id} del catálogo; vacío si no se encontró"),
             "name": _s(f"nombre exacto de la lista {list_id}; si no se encontró, el texto original del documento"),
             "_decision": DECISION,
         },
@@ -93,7 +100,7 @@ def build_schema() -> dict:
             "measureUnit": cat("presUni"),
             "primaryContainer": cat("primCon"),
             "primaryMaterial": cat("primMat"),
-            "secondaryContainer": cat("secoCon", "si no hay envase secundario: slug y name null"),
+            "secondaryContainer": cat("secoCon", "si no hay envase secundario: slug y name vacíos"),
             "secondaryMaterial": cat("secoMat"),
             "observations": _s("otras partes del empaque: bomba, tapa, etiquetas, película"),
             "_decision": DECISION,
@@ -104,7 +111,7 @@ def build_schema() -> dict:
         {
             "order": {"type": "integer", "description": "orden en el COCC"},
             "inci": _s("nombre INCI exacto del COCC", nullable=False),
-            "cas": _s("número CAS; null si el COCC no lo trae"),
+            "cas": _s("número CAS; vacío si el COCC no lo trae"),
             "itemType": {"type": "string", "enum": ["basic", "secondary"]},
             "functionSource": _s("función tal como la escribe el COCC"),
             "functions": _arr(cat("cosmFun")),
@@ -227,7 +234,7 @@ def build_schema() -> dict:
                             "_decision": DECISION,
                         }
                     ),
-                    "shelfLife": _obj({"months": {"type": ["integer", "null"]}, "_note": NOTE, "_decision": DECISION}),
+                    "shelfLife": _obj({"months": {"type": "integer", "description": "meses de vida útil; 0 si no se conoce"}, "_note": NOTE, "_decision": DECISION}),
                 }
             ),
             "mandatoryDocuments": _obj(
@@ -264,3 +271,49 @@ if __name__ == "__main__":
     import json
 
     print(json.dumps(build_schema(), ensure_ascii=False, indent=1)[:3000])
+
+
+def normalizar_planilla(obj):
+    """Undo the no-union encoding: "" -> None, tri-state enums -> bool/None, numeric strings -> float."""
+    TRI = {"si": True, "no": False, "desconocido": None}
+    NUM_KEYS = {"min", "max", "value"}
+    TRI_KEYS = {"isExcepted", "isFinalLabel"}
+
+    def walk(o, key=None):
+        if isinstance(o, dict):
+            return {k: walk(v, k) for k, v in o.items()}
+        if isinstance(o, list):
+            return [walk(v, key) for v in o]
+        if isinstance(o, str):
+            t = o.strip()
+            if key in TRI_KEYS and t.lower() in TRI:
+                return TRI[t.lower()]
+            if key in NUM_KEYS:
+                if t == "":
+                    return None
+                try:
+                    return float(t.replace(",", "."))
+                except ValueError:
+                    return t
+            return None if t == "" else o
+        return o
+
+    out = walk(obj)
+    sl = (out.get("technicalCharacteristics") or {}).get("shelfLife") or {}
+    if sl.get("months") == 0:
+        sl["months"] = None
+    return out
+
+
+def contar_uniones(schema) -> int:
+    """How many parameters use type arrays or anyOf (API limit: 16)."""
+    n = 0
+    if isinstance(schema, dict):
+        if isinstance(schema.get("type"), list) or "anyOf" in schema or "oneOf" in schema:
+            n += 1
+        for v in schema.values():
+            n += contar_uniones(v)
+    elif isinstance(schema, list):
+        for v in schema:
+            n += contar_uniones(v)
+    return n

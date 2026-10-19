@@ -7,7 +7,7 @@ from pathlib import Path
 import anthropic
 
 from .documentos import Doc, build_user_content
-from .esquema import build_schema
+from .esquema import build_schema, normalizar_planilla
 
 MODEL = "claude-opus-5-5"
 EFFORT = "high"
@@ -78,7 +78,7 @@ def _run(client: anthropic.Anthropic, user_content: list[dict], on_progress) -> 
         raise ExtraccionError("La respuesta superó el tamaño máximo; la planilla quedó incompleta. Avise a Edmundo.")
     text = next(b.text for b in message.content if b.type == "text")
     try:
-        data = json.loads(text)
+        data = normalizar_planilla(json.loads(text))
     except json.JSONDecodeError as exc:
         raise ExtraccionError(f"La respuesta no es JSON válido: {exc}") from exc
     u = message.usage

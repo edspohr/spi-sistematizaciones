@@ -18,6 +18,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 IGNORED_DIRS = {"_invimagil", "_referencia", ".git", "__MACOSX"}
+# Sub-folders the analysts use to park superseded material; never read as source documents.
+IGNORED_DIR_PREFIXES = ("no usar", "no_usar", "nousar", "descart", "obsolet", "antig", "old", "borrador")
 IGNORED_FILES = {".DS_Store", "Thumbs.db", "desktop.ini"}
 # outputs of this tool or of earlier manual runs: never fed back as source documents
 IGNORED_PREFIXES = ("MAESTRO NSO", "log-nso", "planilla", "informe-nso", "RESUMEN-")
@@ -42,7 +44,7 @@ class Doc:
 def list_files(folder: Path) -> list[Path]:
     out: list[Path] = []
     for root, dirs, files in os.walk(folder):
-        dirs[:] = sorted(d for d in dirs if d not in IGNORED_DIRS and not d.startswith("."))
+        dirs[:] = sorted(d for d in dirs if d not in IGNORED_DIRS and not d.startswith(".") and not d.strip().lower().startswith(IGNORED_DIR_PREFIXES))
         for f in sorted(files):
             if f in IGNORED_FILES or f.startswith("~$") or f.startswith(".") or f.startswith(IGNORED_PREFIXES):
                 continue
