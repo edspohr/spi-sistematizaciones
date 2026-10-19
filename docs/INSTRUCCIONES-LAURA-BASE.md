@@ -4,7 +4,8 @@ Genera, a partir de la carpeta de documentos de un producto, el **Excel maestro*
 
 ## Instalar (una sola vez, 2 minutos)
 
-1. Descomprime el zip dentro de **Documentos**. Queda una carpeta `InvimagilBase`. **No la muevas ni la borres después.**
+1. **Descomprime el zip antes de abrir nada**: clic derecho sobre el archivo `.zip` → **«Extraer todo…»** → elige **Documentos** → Extraer. Queda la carpeta `Documentos\InvimagilBase`. **No la muevas ni la borres después.**
+   No hagas doble clic dentro del zip: Windows lo abre en una carpeta temporal y la instalación falla.
 2. Doble clic en **`Instalar.bat`**.
    Si Windows muestra «Windows protegió su PC»: clic en *Más información* → *Ejecutar de todas formas*.
 3. Cuando lo pida, pega la **clave** que te envió Edmundo y presiona Enter. No se ve al escribir; es normal.
@@ -40,3 +41,4 @@ Casos frecuentes:
 - **«El Excel está abierto»**: ciérralo y vuelve a intentar.
 - **«No hay respuestas en la columna amarilla»**: escribiste en otra columna o no guardaste el Excel.
 - **La ventana se cierra de inmediato**: la carpeta `InvimagilBase` se movió. Vuelve a ejecutar `Instalar.bat` desde su ubicación nueva.
+- **«Instalación incompleta» o «se está ejecutando desde dentro del .zip»**: extrae el zip con «Extraer todo…» en Documentos y ejecuta `Instalar.bat` desde la carpeta extraída.

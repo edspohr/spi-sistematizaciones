@@ -268,8 +268,37 @@ def cmd_desinstalar(con: Console) -> None:
     message_box("InvimÁgil Base", msg)
 
 
+def _comprobar_instalacion() -> str | None:
+    """Return a Spanish message if the program is running from a temp/zip folder or files are missing."""
+    here = str(HERE).lower()
+    if IS_WIN and ("\\temp\\" in here or ".zip\\" in here):
+        return (
+            "El programa se está ejecutando desde dentro del archivo .zip (carpeta temporal de Windows).\n\n"
+            "Primero descomprímalo: clic derecho sobre el .zip → «Extraer todo…» → elija Documentos.\n"
+            "Luego abra la carpeta extraída y ejecute Instalar.bat desde ahí."
+        )
+    faltan = []
+    for mod, nombre in (("anthropic", "anthropic"), ("openpyxl", "openpyxl"), ("pymupdf", "pymupdf"), ("docx", "python-docx")):
+        try:
+            __import__(mod)
+        except Exception as exc:  # noqa: BLE001
+            faltan.append(f"{nombre} ({type(exc).__name__}: {str(exc)[:80]})")
+    if faltan:
+        return (
+            "Faltan archivos del programa; la carpeta se copió incompleta:\n- " + "\n- ".join(faltan)
+            + "\n\nVuelva a descomprimir el .zip con «Extraer todo…» directamente en Documentos (ruta corta) y ejecute Instalar.bat de nuevo."
+        )
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     setup_console()
+    problema = _comprobar_instalacion()
+    if problema:
+        print(problema)
+        message_box("InvimÁgil Base — instalación incompleta", problema, error=True)
+        _pause(False)
+        return 3
     ap = argparse.ArgumentParser(prog="generar_base", description="InvimÁgil Base")
     ap.add_argument("carpeta", nargs="?", help="carpeta del producto")
     ap.add_argument("--aplicar", action="store_true", help="aplicar las respuestas de la hoja Decisiones")
