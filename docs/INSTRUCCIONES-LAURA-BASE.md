@@ -33,6 +33,10 @@ El Excel tiene una hoja **Decisiones** con lo que la herramienta no pudo cerrar 
 - **No entra a InvimÁgil.** El Excel sirve para copiar, pegar y verificar; el formulario lo llenas y lo envías tú.
 - Cada ejecución queda registrada en `_invimagil/log-nso.md`.
 
+## Cambiar la clave
+
+Si Edmundo te envía una clave nueva: doble clic en `Cambiar-clave.bat`, pega la nueva y Enter. No hay que reinstalar.
+
 ## Si algo falla
 
 Toma una captura de la ventana y escríbele a Edmundo. No intentes arreglarlo. El detalle técnico queda en `_invimagil/ultimo-error.txt`.

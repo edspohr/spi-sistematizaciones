@@ -260,6 +260,16 @@ def cmd_instalar(con: Console) -> None:
     message_box("InvimÁgil Base", msg)
 
 
+def cmd_cambiar_clave(con: Console) -> None:
+    con.banner(f"InvimÁgil Base {__version__} · cambiar clave de API")
+    delete_api_key()
+    os.environ.pop(KEY_ENV, None)
+    _require_key(con)
+    msg = "Clave reemplazada. El menú de clic derecho sigue igual."
+    con.detail(msg)
+    message_box("InvimÁgil Base", msg)
+
+
 def cmd_desinstalar(con: Console) -> None:
     uninstall_context_menu()
     delete_api_key()
@@ -304,6 +314,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--aplicar", action="store_true", help="aplicar las respuestas de la hoja Decisiones")
     ap.add_argument("--instalar", action="store_true")
     ap.add_argument("--desinstalar", action="store_true")
+    ap.add_argument("--cambiar-clave", action="store_true", help="borrar la clave guardada y pedir una nueva")
     ap.add_argument("--sin-pausa", action="store_true", help="no esperar Enter al final")
     args = ap.parse_args(argv)
     con = Console()
@@ -313,6 +324,8 @@ def main(argv: list[str] | None = None) -> int:
             cmd_instalar(con)
         elif args.desinstalar:
             cmd_desinstalar(con)
+        elif args.cambiar_clave:
+            cmd_cambiar_clave(con)
         else:
             folder = Path(args.carpeta).expanduser() if args.carpeta else _ask_folder()
             folder = folder.resolve()
