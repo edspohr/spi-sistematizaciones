@@ -66,6 +66,8 @@ def _excel_path(out: Path, planilla: dict) -> Path:
 
 def _append_log(out: Path, mode: str, planilla: dict, usage: dict, warnings: list[str], elapsed: float, con: Console) -> None:
     log = out / "log-nso.md"
+    for stale in ("ultimo-error.txt", "ultima-respuesta.txt"):  # leftovers of a failed earlier attempt
+        (out / stale).unlink(missing_ok=True)
     stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     n_ing = len((planilla.get("composition") or {}).get("ingredients") or [])
     n_dec = len(planilla.get("decisiones") or [])
