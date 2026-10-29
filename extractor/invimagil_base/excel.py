@@ -126,7 +126,9 @@ def _catfield(sw: SheetWriter, num: str, label: str, node: dict | None):
     sw.line([num, label, valor, "Lista", codigo, estado, nota], pending=pend)
 
 
-def _file_mb(folder: Path, name: str) -> str:
+def _file_mb(folder: Path, name: str | None) -> str:
+    if not name:
+        return "no encontrado"
     p = folder / name
     if p.exists():
         return f"{p.stat().st_size / 1e6:.2f}"

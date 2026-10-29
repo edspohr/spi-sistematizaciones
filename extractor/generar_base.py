@@ -72,7 +72,7 @@ def _append_log(out: Path, mode: str, planilla: dict, usage: dict, warnings: lis
     if not log.exists():
         log.write_text(f"# Log — {planilla.get('_meta', {}).get('producto', '')}\n\n| Fecha | Acción | Resultado | Avisos | Tokens / costo | Duración |\n|---|---|---|---|---|---|\n", encoding="utf-8")
     avisos = "<br>".join(w.replace("|", "/") for w in warnings) or "—"
-    tok = f"{usage.get('input_tokens', 0):,} in / {usage.get('output_tokens', 0):,} out · USD {_cost(usage):.2f}" if usage else "sin llamada a la API"
+    tok = f"{usage.get('input_tokens', 0):,} in / {usage.get('output_tokens', 0):,} out · USD {_cost(usage):.2f} · modo {usage.get('modo', '?')}" if usage else "sin llamada a la API"
     with log.open("a", encoding="utf-8") as f:
         f.write(f"| {stamp} | {mode} | {n_ing} ingredientes, {n_dec} decisiones pendientes | {avisos} | {tok} | {elapsed / 60:.1f} min |\n")
 
@@ -351,6 +351,8 @@ def main(argv: list[str] | None = None) -> int:
             err_file = (err_file / "_invimagil" if err_file.is_dir() else Path.cwd()) / "ultimo-error.txt"
             err_file.parent.mkdir(exist_ok=True)
             err_file.write_text(detail, encoding="utf-8")
+            if getattr(exc, "respuesta", None):
+                (err_file.parent / "ultima-respuesta.txt").write_text(exc.respuesta, encoding="utf-8")
         except Exception:  # noqa: BLE001
             err_file = None
         msg = f"Ocurrió un error inesperado:\n{type(exc).__name__}: {exc}\n\nTome una captura de esta ventana y avise a Edmundo." + (f"\nDetalle guardado en: {err_file}" if err_file else "")

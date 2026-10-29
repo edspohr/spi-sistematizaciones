@@ -45,6 +45,11 @@ and writes to `<folder>/_invimagil/`: `planilla.json`, `MAESTRO NSO - <producto>
 **Aplicar decisiones InvimÁgil**, reads the analyst's answers from the yellow column
 of the Decisiones sheet and regenerates both files.
 
+- Output modes (`extractor/invimagil_base/extraccion.py`): the call first uses
+  structured output; if the API rejects the schema (union-type limit, "compiled grammar
+  is too large", "schema is too complex") it repeats the same request in text mode, with
+  the schema in the system prompt, parses the JSON, fills missing keys and normalises it.
+  `INVIMAGIL_SALIDA=texto|esquema` forces a mode; `log-nso.md` records which one ran.
 - Run locally on macOS/Linux for development:
   `ANTHROPIC_API_KEY=... python3 extractor/generar_base.py "<carpeta>"`
   (`INVIMAGIL_SIMULAR=<planilla.json>` skips the API call; useful for layout work).

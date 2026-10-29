@@ -317,3 +317,39 @@ def contar_uniones(schema) -> int:
         for v in schema:
             n += contar_uniones(v)
     return n
+
+
+def _vacio(schema: dict):
+    """Empty value for a schema node (used to fill keys the model omitted in text mode)."""
+    t = schema.get("type")
+    if t == "object":
+        return {k: _vacio(v) for k, v in schema.get("properties", {}).items()}
+    if t == "array":
+        return []
+    if t == "string":
+        enum = schema.get("enum")
+        if enum:
+            return "desconocido" if "desconocido" in enum else enum[0]
+        return ""
+    if t == "integer":
+        return 0
+    if t == "number":
+        return 0.0
+    if t == "boolean":
+        return False
+    return None
+
+
+def completar_planilla(data, schema: dict):
+    """Fill in missing keys (per the schema) and drop unknown ones, recursively. Values are not coerced."""
+    t = schema.get("type")
+    if t == "object":
+        if not isinstance(data, dict):
+            return _vacio(schema)
+        props = schema.get("properties", {})
+        return {k: completar_planilla(data[k], v) if k in data else _vacio(v) for k, v in props.items()}
+    if t == "array":
+        if not isinstance(data, list):
+            return []
+        return [completar_planilla(x, schema["items"]) for x in data]
+    return data
