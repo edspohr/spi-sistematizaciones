@@ -22,7 +22,7 @@ export default function Usuarios({ soyAdmin }: { soyAdmin: boolean }) {
       <header className="cabecera-pagina">
         <div>
           <h1>Usuarios</h1>
-          <p className="sub">Solo entran las cuentas de Google listadas aquí y activas. Los administradores gestionan usuarios, clientes y criterios.</p>
+          <p className="sub">Solo entran los correos listados aquí y activos, con Google o con correo y clave verificados. Los administradores gestionan usuarios, clientes y criterios.</p>
         </div>
       </header>
       {error ? <div className="aviso-error">{error}</div> : null}
@@ -31,7 +31,7 @@ export default function Usuarios({ soyAdmin }: { soyAdmin: boolean }) {
           <h3>Dar acceso</h3>
           <div className="grid-campos">
             <label className="campo">
-              <span>Correo de Google</span>
+              <span>Correo</span>
               <input type="email" value={nuevo.email} onChange={(e) => setNuevo({ ...nuevo, email: e.target.value.trim().toLowerCase() })} />
             </label>
             <label className="campo">

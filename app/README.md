@@ -31,7 +31,9 @@ firestore.rules, storage.rules, firebase.json
   `extension/mapa-formulario.json` maps to the Sistematización screen.
 - **Audit**: every action writes `tramites/{id}/eventos`.
 
-Access: Google sign-in, and only emails listed in `usuarios/{email}` with `activo: true`.
+Access: Google sign-in or email + password (self sign-up with email verification and password reset),
+and only emails listed in `usuarios/{email}` with `activo: true`. Rules and functions both require
+`email_verified`, so a password account cannot work until its address is confirmed.
 Admins (`rol: admin`) manage users. Planillas and generated files are written only by the functions.
 
 ## Local development (emulators, no cloud)
@@ -60,7 +62,7 @@ npm --prefix app/web run dev         # http://localhost:5173, "Entrar (emulador)
 
 1. Create the Firebase project on the **Blaze** plan. Firestore in **southamerica-east1**
    (same region as the functions, see `REGION` in `functions/main.py` and `web/src/lib/firebase.ts`).
-   Enable Storage and Authentication → Google provider.
+   Enable Storage and Authentication → Google and Email/Password providers.
 2. Google Cloud console of the same project: enable the **Vertex AI API**. Give the functions'
    runtime service account (default compute service account) the role **Vertex AI User**.
 3. Check the model id in Vertex AI Model Garden and set it in `functions/.env`

@@ -72,9 +72,12 @@ def _ahora() -> dt.datetime:
 def _usuario(req: https_fn.CallableRequest) -> dict:
     if not req.auth:
         raise https_fn.HttpsError(Codigo.UNAUTHENTICATED, "Inicie sesión.")
-    email = (req.auth.token or {}).get("email")
+    token = req.auth.token or {}
+    email = (token.get("email") or "").lower()
     if not email:
         raise https_fn.HttpsError(Codigo.PERMISSION_DENIED, "La cuenta no tiene correo.")
+    if not token.get("email_verified"):
+        raise https_fn.HttpsError(Codigo.PERMISSION_DENIED, "Verifique su correo antes de usar la herramienta.")
     doc = _db().collection("usuarios").document(email).get()
     if not doc.exists or not doc.get("activo"):
         raise https_fn.HttpsError(Codigo.PERMISSION_DENIED, f"{email} no tiene acceso a la herramienta.")

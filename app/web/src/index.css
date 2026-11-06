@@ -183,7 +183,11 @@ progress { width: 140px; }
 
 .entrar { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
 .entrar-tarjeta { width: min(420px, 100%); text-align: center; }
-.emulador { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--borde); }
+.form-entrar { display: flex; flex-direction: column; gap: 8px; }
+.separador-o { display: flex; align-items: center; gap: 10px; margin: 18px 0 12px; color: var(--tenue); font-size: 0.82rem; }
+.separador-o::before, .separador-o::after { content: ''; flex: 1; border-top: 1px solid var(--borde); }
+.enlaces-entrar { display: flex; justify-content: center; gap: 12px; margin-top: 8px; }
+.acciones.centrado { justify-content: center; }
 
 @media (max-width: 640px) {
   .pagina { padding: 16px; }
