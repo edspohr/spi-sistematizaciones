@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function autorizado() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && firestore.exists(/databases/(default)/documents/usuarios/$(request.auth.token.email))
+        && firestore.get(/databases/(default)/documents/usuarios/$(request.auth.token.email)).data.activo == true;
+    }
+    // The product folder as uploaded by the analyst. 100 MB per file is far above the 10 MB INVIMA limit
+    // on purpose: originals may be large, the extractor only reads them.
+    match /tramites/{tid}/dossier/{rest=**} {
+      allow read: if autorizado();
+      allow create, update: if autorizado() && request.resource.size < 100 * 1024 * 1024;
+      allow delete: if autorizado();
+    }
+    // Generated files (Excel maestro): written only by Cloud Functions.
+    match /tramites/{tid}/salida/{rest=**} {
+      allow read: if autorizado();
+      allow write: if false;
+    }
+  }
+}

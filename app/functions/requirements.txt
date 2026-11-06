@@ -1,0 +1,5 @@
+firebase-functions==0.6.0
+firebase-admin==7.7.0
+google-genai==3.0.0
+openpyxl==3.1.5
+python-docx==1.2.0

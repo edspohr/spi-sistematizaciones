@@ -30,3 +30,12 @@ extraccion.log
 .env
 .env.local
 dist/.cache/
+
+# Firebase app
+app/functions/nucleo/
+app/functions/.env.local
+app/web/.env.production.local
+app/.firebase/
+app/*-debug.log
+app/emulador-datos/
+!app/functions/.env

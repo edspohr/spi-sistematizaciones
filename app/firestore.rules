@@ -1,0 +1,63 @@
+rules_version = '2';
+// Access: only people listed in usuarios/{email} with activo == true.
+// Planillas are written only by Cloud Functions (Admin SDK bypasses these rules).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function usuario() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data;
+    }
+    function autorizado() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.token.email))
+        && usuario().activo == true;
+    }
+    function admin() {
+      return autorizado() && usuario().rol == 'admin';
+    }
+    // Fields the web app may change on a trámite; everything else belongs to the functions.
+    function camposEditables() {
+      return ['estado', 'responsable', 'clienteId', 'clienteNombre', 'producto', 'productoConfirmado',
+              'nso', 'invimaId', 'resultado', 'aprobacion', 'notas', 'actualizado'];
+    }
+    function estadoValido(e) {
+      return e in ['cargando', 'cargado', 'extrayendo', 'en_revision', 'aprobado', 'inyectado',
+                   'enviado', 'cumple', 'no_cumple', 'error', 'archivado'];
+    }
+
+    match /usuarios/{email} {
+      allow read: if autorizado();
+      allow write: if admin();
+    }
+    match /config/{doc} {
+      allow read: if autorizado();
+      allow write: if admin();
+    }
+    match /clientes/{id} {
+      allow read, create, update: if autorizado();
+      allow delete: if admin();
+    }
+    match /tramites/{id} {
+      allow read: if autorizado();
+      allow create: if autorizado()
+        && request.resource.data.estado in ['cargando', 'cargado']
+        && request.resource.data.creadoPor == request.auth.token.email
+        && !('version' in request.resource.data);
+      allow update: if autorizado()
+        && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(camposEditables())
+            || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['archivos', 'estado', 'actualizado']))
+        && estadoValido(request.resource.data.estado);
+      allow delete: if admin();
+
+      match /planillas/{v} {
+        allow read: if autorizado();
+        allow write: if false;
+      }
+      match /eventos/{e} {
+        allow read: if autorizado();
+        allow create: if autorizado() && request.resource.data.por == request.auth.token.email;
+        allow update, delete: if false;
+      }
+    }
+  }
+}

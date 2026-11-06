@@ -11,15 +11,15 @@ Two modules share a single field schema:
    section at a time. The human approves each section and performs the final
    submission. The extension never submits.
 
-## Non-negotiable constraints
+## Constraints
 
-- The only network traffic allowed is the Anthropic API (organization configured
-  with zero data retention, agreed with SPI on 2026-09-15). No other cloud services,
-  no telemetry. The mapping kit (`tools/`) stays fully offline.
+- Since 2026-11-06 the extraction can run in the cloud: Firebase + Gemini on Vertex AI (`app/`).
+  The earlier rule "only the Anthropic API, zero data retention" (agreed with SPI on 2026-09-15)
+  was lifted by Edmundo; SPI should be told in writing. The Windows extractor still uses Anthropic.
 - The extension fills; the human approves and submits.
 - No credentials. The extension uses the analyst's already-open session.
 - All user-facing text in Spanish (Colombia). Code, comments, commits in English.
-- Runs on Windows 11, no admin rights, one-command setup.
+- The Windows tools run on Windows 11, no admin rights, one-command setup.
 
 ## Repository layout
 
@@ -28,6 +28,7 @@ tools/     Live-session mapping kit (Slice 0) + package build script
 schema/    Shared field schema (data, not code)
 extractor/ InvimÁgil Base: product folder -> planilla.json + Excel maestro (Slice 2)
 extension/ InvimÁgil Inyector: MV3 side-panel extension, planilla -> form (Slice 3)
+app/       SPI Sistematización web app: Firebase + Gemini, batch extraction and review (Slice 4)
 docs/      User-facing documentation, Spanish
 dist/      Hand-off packages (zips are gitignored)
 samples/   Sample dossiers (gitignored, never committed)
@@ -58,6 +59,12 @@ of the Decisiones sheet and regenerates both files.
 - SPI defaults (titular, apoderado, unidad, listado de referencia):
   `extractor/recursos/criterios_spi.json`.
 - Analyst docs: `docs/INSTRUCCIONES-LAURA-BASE.md`.
+
+## Slice 4 — SPI Sistematización web app (Firebase + Gemini)
+
+Batch upload of product folders, extraction with Gemini on Vertex AI, review and decisions in the
+browser, audit log, Excel export and `planilla.json` for the extension. Shares the extractor core
+(`extractor/invimagil_base/prompts.py`, schema, catalog, Excel writer). See `app/README.md`.
 
 ## Slice 3 — InvimÁgil Inyector (extension)
 

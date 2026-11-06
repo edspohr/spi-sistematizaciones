@@ -1,6 +1,44 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "static", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "8765", "--bind", "127.0.0.1"], "port": 8765 }
+    {
+      "name": "static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "--bind",
+        "127.0.0.1"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "emuladores",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "/Users/espohr/Documents/spi-sistematizacion/app/scripts/emuladores.sh"
+      ],
+      "port": 4000,
+      "cwd": "/Users/espohr/Documents/spi-sistematizacion/app"
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/espohr/Documents/spi-sistematizacion/app/web",
+        "run",
+        "dev",
+        "--",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "5173",
+        "--strictPort"
+      ],
+      "port": 5173,
+      "cwd": "/Users/espohr/Documents/spi-sistematizacion/app/web"
+    }
   ]
 }
