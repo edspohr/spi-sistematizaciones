@@ -131,12 +131,15 @@ function Nodo({ k, v, nivel }: { k: string; v: any; nivel: number }) {
 
 function Composicion({ c }: { c: Record<string, any> }) {
   const ing: any[] = c?.ingredients ?? []
-  const suma = ing.reduce((s, i) => s + (typeof i.quantity === 'number' ? i.quantity : 0), 0)
+  const cant = (i: any) => (typeof i.quantity === 'number' ? i.quantity : parseFloat(String(i.quantity ?? '').replace(',', '.')) || 0)
+  const suma = ing.filter((i) => i.itemType !== 'secondary').reduce((s, i) => s + cant(i), 0)
+  const sumaSec = ing.filter((i) => i.itemType === 'secondary').reduce((s, i) => s + cant(i), 0)
   const conDecision = ing.filter((i) => i._decision).length
   return (
     <div>
       <p className="resumen-linea">
-        {ing.length} ingredientes · suma de cantidades <strong>{suma.toFixed(4)}</strong>
+        {ing.length} ingredientes · suma de básicos <strong className={Math.abs(suma - 100) > 0.5 ? 'alerta' : ''}>{suma.toFixed(4)} %</strong>
+        {sumaSec ? <span className="sub"> · secundarios (alérgenos) {sumaSec.toFixed(6)} %</span> : null}
         {conDecision ? <span className="alerta"> · {conDecision} con decisión pendiente</span> : null}
       </p>
       {c?._checks ? <Nodo k="Comprobaciones" v={c._checks} nivel={1} /> : null}

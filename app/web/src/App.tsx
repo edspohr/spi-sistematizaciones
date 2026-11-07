@@ -1,3 +1,4 @@
+import Logo from './components/Logo'
 import { useEffect, useState } from 'react'
 import {
   createUserWithEmailAndPassword,
@@ -85,8 +86,11 @@ function Entrar() {
   return (
     <div className="entrar">
       <div className="tarjeta entrar-tarjeta">
-        <h1>SPI Sistematización</h1>
-        <p className="sub">Sistematización de NSO de cosméticos en InvimÁgil.</p>
+        <div className="entrar-logo">
+          <Logo alto={56} />
+        </div>
+        <h1>Sistematización NSO</h1>
+        <p className="sub">De la carpeta del producto al trámite en InvimÁgil.</p>
         <button
           className="primario grande"
           disabled={ocupado}
@@ -150,6 +154,9 @@ function VerificarCorreo({ user }: { user: User }) {
   return (
     <div className="entrar">
       <div className="tarjeta entrar-tarjeta">
+        <div className="entrar-logo">
+          <Logo alto={44} />
+        </div>
         <h1>Verifique su correo</h1>
         <p>
           Enviamos un enlace a <strong>{user.email}</strong>. Ábralo y luego pulse «Ya lo verifiqué». Revise también la carpeta de spam.
@@ -214,6 +221,9 @@ export default function App() {
     return (
       <div className="entrar">
         <div className="tarjeta entrar-tarjeta">
+          <div className="entrar-logo">
+            <Logo alto={44} />
+          </div>
           <h1>Sin acceso</h1>
           <p>
             La cuenta <strong>{user.email}</strong> no está habilitada. Pida a un administrador que la agregue en Usuarios.
@@ -228,7 +238,8 @@ export default function App() {
     <>
       <nav className="barra">
         <a href="#/" className="marca">
-          SPI Sistematización
+          <Logo alto={26} />
+          <span className="marca-producto">Sistematización NSO</span>
         </a>
         <a href="#/" className={ruta === '#/' ? 'activo' : ''}>
           Trámites
