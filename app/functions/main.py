@@ -4,10 +4,10 @@ Callables used by the web app:
     extraer_tramite(tramiteId)                     dossier in Storage -> planilla (Gemini)
     aplicar_decisiones(tramiteId, respuestas[])    analyst answers -> new planilla version
     exportar_excel(tramiteId)                      planilla -> MAESTRO NSO xlsx in Storage
+    preparar_documentos(tramiteId)                 one merged, compressed PDF per upload slot
 
 Data model (see app/README.md):
     usuarios/{email}                 {nombre, rol: admin|analista, activo}
-    clientes/{id}                    {nombre, titular_nso, representante_legal, responsable_tecnico}
     config/criterios                 overrides of extractor/recursos/criterios_spi.json
     tramites/{id}                    state, summary, NSO vigente, INVIMA result
     tramites/{id}/planillas/v{n}     {json, version, origen, por, creado}
@@ -99,18 +99,11 @@ def _evento(ref, tipo: str, por: str, detalle: str = "") -> None:
 
 
 def _criterios(tramite: dict) -> dict:
-    """criterios_spi.json, then config/criterios, then the client's own data."""
+    """criterios_spi.json, then the admin overrides in config/criterios."""
     c = criterios_spi()
     over = _db().collection("config").document("criterios").get()
     if over.exists:
         c.update({k: v for k, v in (over.to_dict() or {}).items() if v not in (None, "")})
-    if tramite.get("clienteId"):
-        cli = _db().collection("clientes").document(tramite["clienteId"]).get()
-        if cli.exists:
-            d = cli.to_dict() or {}
-            for k in ("titular_nso", "representante_legal", "responsable_tecnico"):
-                if d.get(k):
-                    c[k] = d[k]
     return c
 
 
@@ -293,3 +286,46 @@ def exportar_excel(req: https_fn.CallableRequest) -> dict:
         )
     _evento(ref, "excel_exportado", u["email"], f"v{t.get('version')} · {nombre}")
     return {"ruta": destino, "nombre": nombre}
+
+
+@https_fn.on_call(timeout_sec=540, memory=options.MemoryOption.GB_2, cpu=2)
+def preparar_documentos(req: https_fn.CallableRequest) -> dict:
+    """One PDF per InvimÁgil upload slot (merged, compressed under 10 MB) in salida/documentos/,
+    listed on the trámite as `documentos` for the extension."""
+    from spi import dossier
+    from spi.documentos_pdf import casillas, nombre_archivo, resolver, unir
+
+    u = _usuario(req)
+    ref, t = _tramite((req.data or {}).get("tramiteId"))
+    planilla = _planilla_actual(ref, t)
+    bucket = _bucket()
+    prefix = f"tramites/{ref.id}/dossier/"
+    blobs = {b.name[len(prefix):]: b for b in bucket.list_blobs(prefix=prefix) if not b.name.endswith("/")}
+    disponibles = [r for r in blobs if not dossier.ignorar(r)]
+    oficial = ((t.get("nso") or {}).get("documento") or "").strip() or None
+    salida = f"tramites/{ref.id}/salida/documentos/"
+    for b in bucket.list_blobs(prefix=salida):  # a previous run's files would be stale
+        b.delete()
+    lista, faltantes = [], []
+    for c in casillas(planilla, oficial):
+        partes, avisos = [], []
+        for a in c.archivos:
+            r = resolver(a, disponibles)
+            if not r:
+                avisos.append(f"«{a}» no está en la carpeta del trámite.")
+                faltantes.append(a)
+                continue
+            partes.append((r, blobs[r].download_as_bytes()))
+        pdf, av, paginas = unir(partes) if partes else (b"", [], 0)
+        avisos += av
+        item = {"clave": c.clave, "titulo": c.titulo, "archivos": [p[0] for p in partes], "avisos": avisos, "paginas": paginas, "mb": round(len(pdf) / 1e6, 2)}
+        if pdf:
+            nombre = nombre_archivo(c)
+            ruta = salida + nombre
+            bucket.blob(ruta).upload_from_string(pdf, content_type="application/pdf")
+            item.update({"ruta": ruta, "nombre": nombre})
+        lista.append(item)
+    ref.update({"documentos": lista, "documentosVersion": t.get("version"), "documentosFecha": _ahora(), "actualizado": _ahora()})
+    listos = sum(1 for x in lista if x.get("ruta"))
+    _evento(ref, "documentos_preparados", u["email"], f"v{t.get('version')} · {listos} casillas" + (f" · faltan: {', '.join(faltantes)}" if faltantes else ""))
+    return {"documentos": lista}

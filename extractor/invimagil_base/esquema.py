@@ -140,6 +140,52 @@ def build_schema() -> dict:
         }
     )
 
+    componente = _obj(
+        {
+            "inci": _s("INCI del componente", nullable=False),
+            "cas": _s(),
+            "percentage": _n("porcentaje del componente dentro de la mezcla, si el documento lo trae"),
+            "quantity": _n("cantidad en el producto terminado, como en el COCC"),
+        }
+    )
+    blend = _obj(
+        {
+            "name": _s("nombre comercial o código de la materia prima que es mezcla", nullable=False),
+            "supplier": _s("proveedor de la mezcla"),
+            "basicInci": _s("INCI con el que la mezcla figura en el COCC (p. ej. PARFUM)", nullable=False),
+            "components": _arr(componente),
+            "_note": NOTE,
+            "_decision": DECISION,
+        }
+    )
+    si_no = {"type": "string", "enum": ["si", "no", "no_aplica", "desconocido"]}
+    preguntas = {
+        "q1": "¿El producto cumple la definición de producto cosmético?",
+        "q2": "¿Se atribuye prevención, tratamiento o diagnóstico de enfermedades?",
+        "q3": "¿Se ingiere, inhala, inyecta o implanta?",
+        "q4": "¿Todos los ingredientes están en los listados de referencia?",
+        "q5": "¿Contiene ingredientes prohibidos?",
+        "q6": "¿Contiene ingredientes restringidos (anexos de restricción, conservantes, colorantes o filtros con límite)?",
+        "q7": "Si q6 es sí: ¿los restringidos están dentro de los límites? (no_aplica si q6 es no)",
+        "q8": "¿Las funciones de los ingredientes están dentro del alcance cosmético?",
+        "q9": "¿Tiene proclamas no cosméticas?",
+        "q10": "¿Tiene proclamas que impliquen riesgo si no son veraces?",
+        "q11": "¿Se allegan estudios de soporte de las proclamas?",
+        "q12": "¿El nombre o la marca no son acordes con la naturaleza cosmética?",
+        "q13": "¿Contiene ingredientes derivados de cannabis?",
+        "q14": "Si q13 es sí: ¿cumple la normativa de cannabis? (no_aplica si q13 es no)",
+        "q15": "¿Es un jabón o limpiador enjuagable?",
+        "q16": "Si q15 es sí: ¿cumple la Res. 0689 de 2016 / 1770? (no_aplica si q15 es no)",
+        "q17": "¿La NSO ampara grupos cosméticos?",
+    }
+    inicio = _obj(
+        {
+            "answers": _obj({k: {**si_no, "description": v} for k, v in preguntas.items()}),
+            "_note": _s("por qué se respondió así cada pregunta que no sea obvia (ingredientes restringidos, proclamas)"),
+            "_decision": DECISION,
+        }
+    )
+
     decision = _obj(
         {
             "id": _s("D1, D2, ...", nullable=False),
@@ -163,6 +209,7 @@ def build_schema() -> dict:
                 }
             ),
             "archivos": _arr(archivo, "un elemento por archivo de la carpeta, todos"),
+            "initialValidation": inicio,
             "general": _obj(
                 {
                     "responsibles": _obj(
@@ -197,6 +244,7 @@ def build_schema() -> dict:
             "composition": _obj(
                 {
                     "ingredients": _arr(ingredient, "una entrada por línea del COCC, en el orden del COCC"),
+                    "blends": _arr(blend, "materias primas que son mezcla de varios INCI y deben crearse antes en Administración de Ingredientes → Mezclas"),
                     "_checks": _obj(
                         {
                             "sumaBasicos": _n(nullable=False),

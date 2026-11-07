@@ -92,7 +92,7 @@ def _llamar(client: genai.Client, parts: list[types.Part], con_esquema: bool) ->
             raise ExtraccionError(f"La respuesta no es JSON válido: {exc}", text) from exc
     else:
         raw = extraer_json(text)
-    data = normalizar_planilla(completar_planilla(raw, schema))
+    data = _recalcular_checks(normalizar_planilla(completar_planilla(raw, schema)))
     u = resp.usage_metadata
     uso = {
         "input_tokens": getattr(u, "prompt_token_count", 0) or 0,
@@ -103,6 +103,25 @@ def _llamar(client: genai.Client, parts: list[types.Part], con_esquema: bool) ->
         "modo": "esquema" if con_esquema else "texto",
     }
     return Resultado(data, uso)
+
+
+def _recalcular_checks(p: dict) -> dict:
+    """The model's own sums are not reliable (seen: 99.9616 for lines that add up to 100.0)."""
+    comp = p.get("composition") or {}
+    ing = comp.get("ingredients") or []
+
+    def num(x):
+        try:
+            return float(str(x).replace(",", "."))
+        except (TypeError, ValueError):
+            return 0.0
+
+    checks = comp.get("_checks") or {}
+    checks["sumaBasicos"] = round(sum(num(i.get("quantity")) for i in ing if i.get("itemType") == "basic"), 6)
+    checks["sumaSecundarios"] = round(sum(num(i.get("quantity")) for i in ing if i.get("itemType") == "secondary"), 6)
+    checks["n"] = len(ing)
+    comp["_checks"] = checks
+    return p
 
 
 def generar(parts: list[types.Part], on_progress=lambda m: None) -> Resultado:

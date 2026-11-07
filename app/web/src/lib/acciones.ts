@@ -29,6 +29,30 @@ export async function guardarCampos(t: Tramite, campos: Record<string, unknown>,
   await evento(t.id, tipo, Object.keys(campos).join(', '))
 }
 
+// One more file into the trámite's dossier (e.g. the NSO's last official document).
+export async function agregarAlDossier(t: Tramite, file: File): Promise<string> {
+  const rel = file.name
+  await uploadBytesResumable(sref(storage, `tramites/${t.id}/dossier/${rel}`), file)
+  const archivos = [...(t.archivos ?? []).filter((a) => a.rel !== rel), { rel, mb: mb(file.size) }]
+  await updateDoc(doc(db, 'tramites', t.id), { archivos, actualizado: serverTimestamp() })
+  await evento(t.id, 'archivo_agregado', rel)
+  return rel
+}
+
+export async function prepararDocumentos(t: Tramite) {
+  await fn.prepararDocumentos({ tramiteId: t.id })
+}
+
+// Download links for the prepared PDFs, so the extension can fetch them (token URLs).
+export async function documentosParaExtension(t: Tramite) {
+  const out = []
+  for (const d of t.documentos ?? []) {
+    if (!d.ruta) continue
+    out.push({ clave: d.clave, titulo: d.titulo, nombre: d.nombre, mb: d.mb, mime: 'application/pdf', url: await getDownloadURL(sref(storage, d.ruta)) })
+  }
+  return out
+}
+
 // ---- Upload ------------------------------------------------------------------------------
 export interface Avance {
   carpeta: string
@@ -43,7 +67,7 @@ export interface Avance {
 
 export async function crearYSubir(
   carpeta: CarpetaLocal,
-  cliente: { id?: string; nombre?: string },
+  cliente: string,
   lote: string,
   onAvance: (a: Avance) => void,
 ): Promise<string> {
@@ -54,8 +78,7 @@ export async function crearYSubir(
   await setDoc(ref, {
     carpeta: carpeta.nombre,
     producto: carpeta.nombre,
-    clienteId: cliente.id ?? null,
-    clienteNombre: cliente.nombre ?? null,
+    clienteNombre: cliente || null,
     lote,
     estado: 'cargando',
     creadoPor: yo(),

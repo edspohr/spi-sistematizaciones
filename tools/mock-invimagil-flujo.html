@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<title>Mock InvimÁgil — asistente completo</title>
+<style>
+  body { font: 14px system-ui; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #222; }
+  .ant-form-item { margin: 10px 0; }
+  .ant-form-item-label label { display: block; font-size: 13px; margin-bottom: 4px; }
+  input:not([type=file]), textarea { padding: 6px; font: 13px system-ui; width: 320px; }
+  .ant-select { display: inline-block; width: 320px; position: relative; }
+  .ant-select-selector { border: 1px solid #999; padding: 4px 8px; min-height: 22px; background: #fff; cursor: pointer; }
+  .ant-select-selection-item { display: inline-block; margin-right: 6px; }
+  .ant-select-selection-search-input { border: none; outline: none; width: 90%; }
+  .ant-select-dropdown { position: absolute; z-index: 10; background: #fff; border: 1px solid #999; width: 320px; max-height: 200px; overflow: auto; }
+  .ant-select-dropdown-hidden { display: none; }
+  .ant-select-item-option { padding: 4px 8px; cursor: pointer; }
+  .ant-switch { display: inline-block; width: 44px; height: 22px; border-radius: 11px; background: #bbb; cursor: pointer; border: none; }
+  .ant-switch-checked { background: #1677ff; }
+  .ant-modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; }
+  .ant-modal-content { background: #fff; padding: 16px; width: 460px; max-height: 90vh; overflow: auto; }
+  .ant-modal-footer { text-align: right; margin-top: 12px; }
+  .ant-table-tbody td { border: 1px solid #ddd; padding: 2px 6px; font-size: 12px; }
+  .ant-form-item-explain-error { color: #a8071a; font-size: 12px; }
+  .ant-upload-list-item { font-size: 12px; color: #1677ff; } .ant-upload-list-item-error { color: #a8071a; }
+  button { padding: 6px 12px; margin: 4px; }
+  .nav { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 12px; }
+</style>
+</head>
+<body>
+<h2 id="hdr">Notificación Sanitaria Obligatoria (NSO) de Cosméticos - Sistematización</h2>
+<p>Réplica local del asistente (sin red). Ids con prefijo de formulario y etiquetas que no coinciden exacto con el mapa, a propósito.</p>
+<main id="main"></main>
+<div class="nav"><button id="anterior">Anterior</button><button id="siguiente">Siguiente</button><button id="radicar" onclick="window.__radicado=true">Radicar</button></div>
+<script>
+const log = (window.__log = []);
+let dd = 0;
+function makeSelect(root, { options, remote, multiple }) {
+  root.classList.add('ant-select'); if (multiple) root.classList.add('ant-select-multiple');
+  const id = 'rc_select_' + (++dd), fid = root.dataset.fid;
+  root.innerHTML = `<div class="ant-select-selector"><span class="sel-items"></span><input class="ant-select-selection-search-input" ${fid ? `id="${fid}"` : ''} role="combobox" aria-controls="${id}_list" autocomplete="off"></div>`;
+  const ddEl = document.createElement('div'); ddEl.className = 'ant-select-dropdown ant-select-dropdown-hidden'; ddEl.innerHTML = `<div id="${id}_list" role="listbox"></div>`; root.appendChild(ddEl);
+  const list = ddEl.firstChild, input = root.querySelector('input'), items = root.querySelector('.sel-items');
+  root.value = multiple ? [] : null;
+  function render(q) { q = (q || '').toLowerCase();
+    const show = () => { const f = options.filter((o) => o.toLowerCase().includes(q));
+      list.innerHTML = f.length ? f.map((o) => `<div class="ant-select-item ant-select-item-option" role="option"><div class="ant-select-item-option-content">${o}</div></div>`).join('') : '<div class="ant-select-item-empty">Sin datos</div>';
+      list.querySelectorAll('.ant-select-item-option').forEach((el) => el.addEventListener('click', () => choose(el.textContent))); ddEl.classList.remove('ant-select-dropdown-hidden'); };
+    if (remote && q) { list.innerHTML = '<div class="ant-select-item-empty"><span class="ant-spin"></span></div>'; ddEl.classList.remove('ant-select-dropdown-hidden'); setTimeout(show, 300); } else show(); }
+  function choose(t) { if (multiple) { if (!root.value.includes(t)) root.value.push(t); } else { root.value = t; ddEl.classList.add('ant-select-dropdown-hidden'); }
+    input.value = ''; items.innerHTML = (multiple ? root.value : [root.value]).map((v) => `<span class="ant-select-selection-item" title="${v}">${v}</span>`).join(''); root.dispatchEvent(new CustomEvent('antchange', { detail: root.value })); }
+  root.querySelector('.ant-select-selector').addEventListener('mousedown', (e) => { e.preventDefault(); input.focus(); render(input.value); });
+  input.addEventListener('input', () => render(input.value));
+  input.addEventListener('keydown', (e) => { if (e.key === 'Escape') ddEl.classList.add('ant-select-dropdown-hidden'); });
+  document.addEventListener('mousedown', (e) => { if (!root.contains(e.target)) ddEl.classList.add('ant-select-dropdown-hidden'); });
+  return root;
+}
+const item = (label, ctl, req) => `<div class="ant-form-item"><div class="ant-form-item-label"><label class="${req ? 'ant-form-item-required' : ''}">${label}</label></div>${ctl}</div>`;
+const sw = (fid) => `<button id="${fid}" role="switch" aria-checked="false" class="ant-switch"></button>`;
+const sel = (fid, opts, extra = '') => `<div data-fid="${fid}" data-options="${opts}" ${extra}></div>`;
+const upload = (fid, texto) => `<div class="ant-form-item"><div class="ant-form-item-label"><label>${texto}</label></div><span class="ant-upload-wrapper"><span class="ant-upload"><input type="file" id="${fid}" accept=".pdf" style="display:none"><button type="button">Subir archivo</button></span><div class="ant-upload-list"></div></span></div>`;
+function wire(root) {
+  root.querySelectorAll('[data-options]').forEach((el) => makeSelect(el, { options: el.dataset.options.split('|'), multiple: el.hasAttribute('data-multiple'), remote: el.hasAttribute('data-remote') }));
+  root.querySelectorAll('.ant-switch').forEach((s) => s.addEventListener('click', () => { const on = s.getAttribute('aria-checked') !== 'true'; s.setAttribute('aria-checked', on); s.classList.toggle('ant-switch-checked', on); }));
+  root.querySelectorAll('input[type=file]').forEach((f) => f.addEventListener('change', () => { const list = f.closest('.ant-upload-wrapper').querySelector('.ant-upload-list'); const file = f.files[0];
+    const it = document.createElement('div'); it.className = 'ant-upload-list-item ant-upload-list-item-uploading'; it.textContent = file.name; list.innerHTML = ''; list.appendChild(it);
+    setTimeout(() => { it.classList.remove('ant-upload-list-item-uploading'); if (file.size > 10e6) it.classList.add('ant-upload-list-item-error'); log.push('upload:' + f.id + ':' + file.name); }, 400); }));
+  // React-like controlled inputs: keep only values that came through an input event
+  root.querySelectorAll('input:not(.ant-select-selection-search-input):not([type=file]), textarea').forEach((inp) => { let st = ''; inp.addEventListener('input', () => { st = inp.value; }); inp.addEventListener('blur', () => { inp.value = st; }); });
+}
+function tabla(id) { return `<table class="ant-table"><tbody class="ant-table-tbody" id="${id}"></tbody></table>`; }
+function modal(titulo, cuerpo, onSave) {
+  const m = document.createElement('div'); m.className = 'ant-modal';
+  m.innerHTML = `<div class="ant-modal-content" role="dialog"><div class="ant-modal-title">${titulo}</div>${cuerpo}<div class="ant-modal-footer"><button class="cancel">Cancelar</button><button class="save">Guardar</button></div></div>`;
+  document.body.appendChild(m); wire(m);
+  m.querySelector('.cancel').onclick = () => m.remove();
+  m.querySelector('.save').onclick = () => { if (onSave(m) !== false) m.remove(); };
+  return m;
+}
+const fila = (tb, cols) => { const tr = document.createElement('tr'); tr.className = 'ant-table-row'; tr.innerHTML = cols.map((c) => `<td>${c ?? ''}</td>`).join(''); document.getElementById(tb).appendChild(tr); };
+const INCI = ['WATER/AQUA','PETROLATUM','GLYCERIN','STEARIC ACID','ISOPROPYL PALMITATE','PERFUME/FRAGRANCE','LINALOOL','COUMARIN','VANILLIN'];
+const PASOS = {
+  'Sistematización': () => item('¿Desea sistematizar una NSO existente?', sw('nsoForm_wantsToSystematize')) + item('¿Tiene trámites en curso en la Oficina Virtual?', sw('nsoForm_hasOngoingProcedures')) +
+    item('Número de la NSO', '<input id="nsoForm_nsoNumber">', 1) + item('Fecha de expedición', '<span class="ant-picker"><input id="nsoForm_issueDate" placeholder="DD/MM/YYYY"></span>', 1) +
+    item('Fecha de vencimiento', '<span class="ant-picker"><input id="nsoForm_expirationDate" placeholder="DD/MM/YYYY"></span>', 1) + upload('nsoForm_officialDocument', 'Adjunte el último acto administrativo oficial de la NSO (PDF)'),
+  'Información General': () => item('Origen', sel('generalForm_origin', 'Importado|Nacional'), 1) + item('Nombre del producto cosmético', '<input id="generalForm_productName">', 1) +
+    item('Denominación genérica', '<input id="generalForm_genericName">') + item('Forma cosmética', sel('generalForm_cosmeticForm', 'CREMA|EMULSIÓN|LOCIÓN|GEL'), 1) +
+    '<button id="addPres">+ Agregar presentación</button>' + tabla('tbPres'),
+  'Composición': () => '<button id="addIng">+ Agregar ingrediente</button>' + tabla('tbIng'),
+  'Documentos obligatorios': () => upload('docs_animal', 'Declaración de no experimentación en animales') + upload('docs_benef', 'Soporte de los beneficios cosméticos atribuidos') +
+    upload('docs_label', 'Arte de la etiqueta y sticker complementario') + upload('docs_lotes', 'Codificación de lotes del fabricante'),
+  'Documentos complementarios': () => '<button id="addDoc">+ Agregar documento</button>' + tabla('tbDoc'),
+  'Términos y Condiciones': () => '<label><input type="checkbox" id="acepto"> Acepto los términos y condiciones</label>',
+};
+const ORDEN = Object.keys(PASOS);
+let actual = 0;
+function mostrar(i) {
+  actual = i; document.getElementById('hdr').textContent = 'Notificación Sanitaria Obligatoria (NSO) de Cosméticos - ' + ORDEN[i];
+  const main = document.getElementById('main'); main.innerHTML = PASOS[ORDEN[i]](); wire(main); log.push('paso:' + ORDEN[i]);
+  const ap = document.getElementById('addPres'); if (ap) ap.onclick = () => modal('Agregar presentación', item('Contenido neto', '<input id="pres_netContent" type="number">', 1) + item('Unidad de medida', sel('pres_measureUnit', 'mL|g|L')) + item('Tipo de envase primario', sel('pres_primaryContainer', 'Botella con tapa abatible|Botella con dispensador de bomba / bomba dosificadora.|Tubo')),
+    (m) => fila('tbPres', [m.querySelector('#pres_netContent').value, m.querySelector('[data-fid=pres_measureUnit]').value]));
+  const ai = document.getElementById('addIng'); if (ai) ai.onclick = () => modal('Agregar ingrediente', item('Ingrediente', sel('ing_ingredient', INCI.join('|'), 'data-remote'), 1) + item('Tipo', sel('ing_itemType', 'Básico|Secundario')) +
+      item('Función', sel('ing_functions', 'SOLVENTE|HUMECTANTE|FRAGANCIA|ACONDICIONADOR CUTÁNEO - EMOLIENTE|ACONDICIONADOR CUTÁNEO COSMÉTICO', 'data-multiple')) + item('Listado de referencia', sel('ing_referenceList', 'Union Europea (UE)|PCPC|FDA')) +
+      item('Concentración (%)', '<input id="ing_quantity" type="number" step="any">', 1) + item('Unidad', sel('ing_unit', '% (w/w)|% (v/v)')) + item('¿Es nanomaterial?', sw('ing_isNanomaterial')),
+    (m) => { const ing = m.querySelector('[data-fid=ing_ingredient]').value; if (!ing) return false; fila('tbIng', [ing, m.querySelector('#ing_quantity').value, m.querySelector('[data-fid=ing_itemType]').value, m.querySelector('[data-fid=ing_referenceList]').value]); });
+  const ad = document.getElementById('addDoc'); if (ad) ad.onclick = () => modal('Agregar documento', item('Nombre del documento', '<input id="doc_description">') + upload('doc_file', 'Archivo'),
+    (m) => { const f = m.querySelector('input[type=file]').files[0]; if (!f) return false; fila('tbDoc', [m.querySelector('#doc_description').value, f.name]); });
+}
+document.getElementById('siguiente').onclick = () => {
+  document.querySelectorAll('.ant-form-item-explain-error').forEach((e) => e.remove());
+  const faltan = [...document.querySelectorAll('#main .ant-form-item')].filter((it) => it.querySelector('.ant-form-item-required') && !(it.querySelector('input:not([type=file]):not(.ant-select-selection-search-input)')?.value || it.querySelector('.ant-select')?.value));
+  if (faltan.length) { faltan.forEach((it) => { const e = document.createElement('div'); e.className = 'ant-form-item-explain-error'; e.textContent = 'Campo obligatorio'; it.appendChild(e); }); return; }
+  if (ORDEN[actual] === 'Composición' && !document.querySelectorAll('#tbIng tr').length) return;
+  setTimeout(() => mostrar(Math.min(actual + 1, ORDEN.length - 1)), 500);
+};
+function mezclas() {
+  document.getElementById('hdr').textContent = 'Administración de Ingredientes';
+  document.querySelector('.nav').remove();
+  document.getElementById('main').innerHTML = '<h3>Mezclas</h3><button id="addMez">+ Crear mezcla</button>' + tabla('tbMez');
+  document.getElementById('addMez').onclick = () => {
+    const m = modal('Crear mezcla', item('Nombre de la mezcla', '<input id="mez_name">', 1) + '<button id="addComp">+ Agregar ingrediente</button>' + tabla('tbComp'), (mm) => {
+      fila('tbMez', [mm.querySelector('#mez_name').value, mm.querySelectorAll('#tbComp tr').length + ' componentes']); log.push('mezcla:' + mm.querySelector('#mez_name').value + ':' + mm.querySelectorAll('#tbComp tr').length);
+    });
+    m.querySelector('#addComp').onclick = () => modal('Agregar ingrediente a la mezcla', item('Ingrediente', sel('comp_ingredient', INCI.join('|'), 'data-remote'), 1) + item('Porcentaje', '<input id="comp_percentage" type="number" step="any">'),
+      (c) => fila('tbComp', [c.querySelector('[data-fid=comp_ingredient]').value, c.querySelector('#comp_percentage').value]));
+  };
+}
+if (location.search.includes('mezclas')) mezclas(); else mostrar(0);
+</script>
+</body>
+</html>

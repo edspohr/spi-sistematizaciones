@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react'
 import { collection, doc, limit, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { auth, db, fn } from '../lib/firebase'
 import {
+  agregarAlDossier,
+  prepararDocumentos,
   cambiarEstado,
   descargar,
   encolarExtraccion,
+  evento,
   exportarExcel,
   guardarCampos,
   leerPlanilla,
   planillaParaExtension,
 } from '../lib/acciones'
-import type { Evento, Planilla, Tramite } from '../lib/tipos'
+import type { Evento, Inyeccion, Planilla, Tramite } from '../lib/tipos'
+import { enviarAExtension, useExtension } from '../lib/extension'
 import PlanillaVista from '../components/PlanillaVista'
 import { BadgeEstado } from './Tablero'
 
@@ -31,19 +35,25 @@ function Paso({ n, titulo, hecho, actual, children }: { n: number; titulo: strin
 function DatosNso({ t }: { t: Tramite }) {
   const [nso, setNso] = useState(t.nso ?? {})
   const [invimaId, setInvimaId] = useState(t.invimaId ?? '')
+  const [cliente, setCliente] = useState(t.clienteNombre ?? '')
   const [guardado, setGuardado] = useState(false)
   useEffect(() => {
     setNso(t.nso ?? {})
     setInvimaId(t.invimaId ?? '')
-  }, [t.nso, t.invimaId])
-  const cambio = JSON.stringify(nso) !== JSON.stringify(t.nso ?? {}) || invimaId !== (t.invimaId ?? '')
+    setCliente(t.clienteNombre ?? '')
+  }, [t.nso, t.invimaId, t.clienteNombre])
+  const cambio = JSON.stringify(nso) !== JSON.stringify(t.nso ?? {}) || invimaId !== (t.invimaId ?? '') || cliente !== (t.clienteNombre ?? '')
   return (
     <section className="tarjeta">
-      <h3>NSO vigente a sistematizar</h3>
-      <p className="sub">Van en la pantalla «Sistematización» de InvimÁgil. Debe coincidir con el último documento oficial.</p>
+      <h3>Datos del trámite</h3>
+      <p className="sub">La NSO y sus fechas van en la pantalla «Sistematización» de InvimÁgil y deben coincidir con el último documento oficial.</p>
       <div className="grid-campos">
         <label className="campo">
-          <span>Número de NSO</span>
+          <span>Cliente</span>
+          <input value={cliente} onChange={(e) => setCliente(e.target.value)} />
+        </label>
+        <label className="campo">
+          <span>Número de NSO vigente</span>
           <input value={nso.numero ?? ''} onChange={(e) => setNso({ ...nso, numero: e.target.value.trim() })} placeholder="NSOC12345-23CO" />
         </label>
         <label className="campo">
@@ -58,6 +68,27 @@ function DatosNso({ t }: { t: Tramite }) {
           <span>Id de la solicitud en InvimÁgil</span>
           <input value={invimaId} onChange={(e) => setInvimaId(e.target.value.trim())} placeholder="106983" />
         </label>
+        <label className="campo">
+          <span>Último documento oficial de la NSO (PDF ≤ 10 MB)</span>
+          <select value={nso.documento ?? ''} onChange={(e) => setNso({ ...nso, documento: e.target.value || undefined })}>
+            <option value="">— Elija un archivo de la carpeta —</option>
+            {(t.archivos ?? []).map((a) => (
+              <option key={a.rel} value={a.rel}>
+                {a.rel} ({a.mb} MB)
+              </option>
+            ))}
+          </select>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={async (e) => {
+              const f = e.target.files?.[0]
+              if (!f) return
+              const rel = await agregarAlDossier(t, f)
+              setNso({ ...nso, documento: rel })
+            }}
+          />
+        </label>
       </div>
       {nso.vencimiento && new Date(nso.vencimiento) < new Date() ? (
         <div className="aviso-error">La NSO está vencida: INVIMA no permite sistematizarla.</div>
@@ -65,7 +96,7 @@ function DatosNso({ t }: { t: Tramite }) {
       <button
         disabled={!cambio}
         onClick={async () => {
-          await guardarCampos(t, { nso, invimaId }, 'nso_editada')
+          await guardarCampos(t, { nso, invimaId, clienteNombre: cliente.trim() || null }, 'datos_editados')
           setGuardado(true)
           setTimeout(() => setGuardado(false), 2000)
         }}
@@ -161,6 +192,154 @@ function Resultado({ t }: { t: Tramite }) {
           Finalización no exitosa
         </button>
       </div>
+    </section>
+  )
+}
+
+function Documentos({ t }: { t: Tramite }) {
+  const [trabajando, setTrabajando] = useState(false)
+  const [error, setError] = useState('')
+  const docs = t.documentos ?? []
+  const viejos = docs.length > 0 && t.documentosVersion !== t.version
+  return (
+    <section className="tarjeta">
+      <div className="cabecera-tarjeta">
+        <h3>Documentos para InvimÁgil</h3>
+        <button
+          disabled={trabajando}
+          onClick={async () => {
+            setTrabajando(true)
+            setError('')
+            try {
+              await prepararDocumentos(t)
+            } catch (e: any) {
+              setError(e.message)
+            } finally {
+              setTrabajando(false)
+            }
+          }}
+        >
+          {trabajando ? 'Preparando…' : docs.length ? 'Volver a preparar' : 'Preparar documentos'}
+        </button>
+      </div>
+      <p className="sub">
+        Un PDF por casilla: une los archivos que la planilla asigna a cada una y comprime lo que pase de 10 MB. La extensión los carga en «Sistematización», «Documentos» y «Complementarios».
+      </p>
+      {!t.nso?.documento ? <p className="alerta">Falta elegir el último documento oficial de la NSO (en Datos del trámite).</p> : null}
+      {viejos ? <p className="alerta">Se prepararon con la planilla v{t.documentosVersion}; la actual es v{t.version}. Vuelva a prepararlos.</p> : null}
+      {error ? <div className="aviso-error">{error}</div> : null}
+      {docs.length ? (
+        <table className="tabla compacta">
+          <thead>
+            <tr>
+              <th>Casilla</th>
+              <th>Archivos unidos</th>
+              <th className="num">Págs.</th>
+              <th className="num">MB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {docs.map((d) => (
+              <tr key={d.clave} className={d.avisos.length || !d.ruta ? 'con-decision' : ''}>
+                <td>
+                  {d.titulo}
+                  {d.avisos.map((a, i) => (
+                    <div key={i} className="alerta sub">
+                      {a}
+                    </div>
+                  ))}
+                </td>
+                <td className="sub">{d.archivos.join(' · ') || '—'}</td>
+                <td className="num">{d.paginas}</td>
+                <td className={`num ${d.mb > 10 ? 'alerta' : ''}`}>{d.mb}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+    </section>
+  )
+}
+
+function Inyeccion({ t, planilla }: { t: Tramite; planilla: Planilla }) {
+  const version = useExtension()
+  const [items, setItems] = useState<Inyeccion[]>([])
+  const [msg, setMsg] = useState('')
+  useEffect(
+    () =>
+      onSnapshot(query(collection(db, 'tramites', t.id, 'inyecciones'), orderBy('fecha', 'desc'), limit(100)), (s) =>
+        setItems(s.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Inyeccion, 'id'>) }))),
+      ),
+    [t.id],
+  )
+  // latest real (not simulated) fill per screen
+  const porPaso = new Map<string, Inyeccion>()
+  for (const i of items) if (!i.simulado && i.paso && !porPaso.has(i.paso)) porPaso.set(i.paso, i)
+  const enviar = async () => {
+    setMsg('')
+    try {
+      await enviarAExtension(t, planilla)
+      await evento(t.id, 'enviado_a_extension', `planilla v${t.version} · solicitud ${t.invimaId || '?'}`)
+      setMsg(`Enviado con ${(t.documentos ?? []).filter((d) => d.ruta).length} documentos. Abra InvimÁgil en la solicitud ${t.invimaId || '(Id pendiente)'}, abra el panel de la extensión y pulse «Llenar todo hasta Términos».`)
+    } catch (e: any) {
+      setMsg(e.message)
+    }
+  }
+  return (
+    <section className="tarjeta">
+      <div className="cabecera-tarjeta">
+        <h3>Llenado con la extensión</h3>
+        <span className={version ? 'ok' : 'alerta'}>{version ? `InvimÁgil Inyector v${version} conectado` : 'Extensión no detectada'}</span>
+      </div>
+      {!t.invimaId ? <p className="alerta">Falta el Id de la solicitud en InvimÁgil (en Datos del trámite): la extensión lo usa para no llenar otra solicitud.</p> : null}
+      {t.estado !== 'aprobado' && t.estado !== 'inyectado' ? <p className="sub">Se recomienda enviar a la extensión solo la planilla aprobada.</p> : null}
+      <div className="acciones">
+        <button className="primario" disabled={!version} onClick={enviar}>
+          Enviar a la extensión
+        </button>
+        {!version ? <span className="sub">Instale o active la extensión y recargue esta página.</span> : null}
+      </div>
+      {msg ? <p className={msg.startsWith('Enviado') ? 'ok' : 'alerta'}>{msg}</p> : null}
+      {porPaso.size ? (
+        <table className="tabla compacta">
+          <thead>
+            <tr>
+              <th>Pantalla</th>
+              <th className="num">Correctos</th>
+              <th className="num">Con problema</th>
+              <th className="num">Sin dato</th>
+              <th>Cuándo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...porPaso.values()].map((i) => (
+              <tr key={i.id} className={i.mal ? 'con-decision' : ''}>
+                <td>
+                  {i.titulo ?? i.paso}
+                  {i.problemas?.length ? (
+                    <details>
+                      <summary className="sub">{i.problemas.length} campos a revisar</summary>
+                      <ul className="resueltas">
+                        {i.problemas.map((p, n) => (
+                          <li key={n}>
+                            <strong>{p.campo}</strong> {p.detalle || p.estado}
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : null}
+                </td>
+                <td className="num ok">{i.ok}</td>
+                <td className="num alerta">{i.mal}</td>
+                <td className="num">{i.pend}</td>
+                <td className="sub">{new Date(i.fecha).toLocaleString('es-CO')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p className="sub">Aún no hay pantallas llenadas con la extensión.</p>
+      )}
     </section>
   )
 }
@@ -295,7 +474,7 @@ export default function TramiteVista({ id }: { id: string }) {
               <Paso n={3} titulo="Llenado en InvimÁgil" hecho={idx > 5} actual={idx === 4 || idx === 5}>
                 {t.estado === 'aprobado' ? (
                   <>
-                    Descargue la planilla para la extensión InvimÁgil Inyector, cree antes las mezclas en «Administración de Ingredientes».{' '}
+                    Envíe la planilla a la extensión (más abajo) y cree antes en InvimÁgil las mezclas que use el producto.{' '}
                     <button onClick={() => accion('inyectado', () => cambiarEstado(t, 'inyectado'))}>Marcar como llenado</button>{' '}
                     <button className="link" onClick={() => accion('revision', () => cambiarEstado(t, 'en_revision', { aprobacion: null }))}>
                       volver a revisión
@@ -312,6 +491,8 @@ export default function TramiteVista({ id }: { id: string }) {
           </section>
 
           {t.estado === 'enviado' ? <Resultado t={t} /> : null}
+          {planilla && ['aprobado', 'inyectado', 'en_revision'].includes(t.estado) ? <Documentos t={t} /> : null}
+          {planilla && ['aprobado', 'inyectado', 'en_revision'].includes(t.estado) ? <Inyeccion t={t} planilla={planilla} /> : null}
           {planilla ? <Decisiones t={t} planilla={planilla} /> : null}
           {planilla ? (
             <section className="tarjeta">

@@ -22,7 +22,7 @@ export default function Usuarios({ soyAdmin }: { soyAdmin: boolean }) {
       <header className="cabecera-pagina">
         <div>
           <h1>Usuarios</h1>
-          <p className="sub">Solo entran los correos listados aquí y activos, con Google o con correo y clave verificados. Los administradores gestionan usuarios, clientes y criterios.</p>
+          <p className="sub">Solo entran los correos listados aquí y activos, con Google o con correo y clave verificados. Los administradores gestionan los usuarios.</p>
         </div>
       </header>
       {error ? <div className="aviso-error">{error}</div> : null}

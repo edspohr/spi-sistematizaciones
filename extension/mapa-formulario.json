@@ -1,119 +1,1027 @@
 {
-  "_comentario": "Mapa pantalla → controles. `control` se resuelve por id, luego selector, luego texto de etiqueta. `mapeado:false` = id tomado del request.content, pendiente de confirmar en vivo. Rutas relativas a planilla.json (dentro de un modal, relativas a la fila).",
-  "version": "0.1.0",
-  "pasos": [
+ "_comentario": "Mapa pantalla → controles. `control` se resuelve por id (también con el prefijo del formulario de Ant Design, «form_id»), luego selector, etiqueta exacta, `alias`, aria/placeholder y, por último, etiqueta aproximada (todas las palabras de la etiqueta en una sola etiqueta de la pantalla; queda marcado para revisión). `mapeado:false` = sin confirmar en vivo. Rutas relativas a la planilla (dentro de un modal, relativas a la fila). `archivo`: `documento` es la clave del documento preparado en la app; `claves` son grupos de palabras que deben aparecer junto a la casilla de carga. `equivalencias`: valor de la planilla → textos aceptables en la plataforma. `fueraDelTramite`: pantalla fuera del asistente (se detecta por título).",
+ "version": "0.3.0",
+ "pasos": [
+  {
+   "id": "mezclas",
+   "titulo": "Mezclas (Administración de Ingredientes)",
+   "encabezado": "Mezclas",
+   "fueraDelTramite": true,
+   "mapeado": false,
+   "campos": [
     {
-      "id": "sistematizacion", "titulo": "Sistematización", "encabezado": "Sistematización", "mapeado": true,
-      "campos": [
-        { "ruta": "sistematizacion.wantsToSystematize", "etiqueta": "¿Desea sistematizar una NSO existente?", "tipo": "switch", "control": { "id": "wantsToSystematize" } },
-        { "ruta": "sistematizacion.hasOngoingProcedures", "etiqueta": "¿Trámites en curso en Oficina Virtual?", "tipo": "switch", "control": { "id": "hasOngoingProcedures" } },
-        { "ruta": "sistematizacion.nsoNumber", "etiqueta": "Número de NSO", "tipo": "text", "control": { "id": "nsoNumber" } },
-        { "ruta": "sistematizacion.issueDate", "etiqueta": "Fecha de emisión / última renovación", "tipo": "date", "control": { "id": "issueDate" } },
-        { "ruta": "sistematizacion.expirationDate", "etiqueta": "Fecha de vencimiento", "tipo": "date", "control": { "id": "expirationDate" } }
-      ]
+     "ruta": "composition.blends",
+     "etiqueta": "Mezcla",
+     "rotulo": "name",
+     "tipo": "tabla",
+     "agregar": [
+      "Crear mezcla",
+      "Agregar mezcla",
+      "Nueva mezcla",
+      "Crear"
+     ],
+     "modal": [
+      {
+       "ruta": "name",
+       "etiqueta": "Nombre de la mezcla",
+       "tipo": "text",
+       "control": {
+        "id": "name",
+        "label": "Nombre de la mezcla",
+        "alias": [
+         "Nombre comercial",
+         "Nombre"
+        ]
+       }
+      },
+      {
+       "ruta": "supplier",
+       "etiqueta": "Proveedor",
+       "tipo": "text",
+       "opcional": true,
+       "control": {
+        "id": "supplier",
+        "label": "Proveedor",
+        "alias": [
+         "Fabricante de la mezcla",
+         "Fabricante"
+        ]
+       }
+      },
+      {
+       "ruta": "components",
+       "etiqueta": "Componente",
+       "rotulo": "inci",
+       "tipo": "tabla",
+       "agregar": [
+        "Agregar ingrediente",
+        "Agregar componente",
+        "Agregar"
+       ],
+       "modal": [
+        {
+         "ruta": "inci",
+         "etiqueta": "Ingrediente (INCI)",
+         "tipo": "select",
+         "control": {
+          "id": "ingredient",
+          "label": "Ingrediente",
+          "alias": [
+           "INCI",
+           "Nombre INCI"
+          ]
+         }
+        },
+        {
+         "ruta": "percentage",
+         "etiqueta": "Porcentaje en la mezcla",
+         "tipo": "number",
+         "opcional": true,
+         "control": {
+          "id": "percentage",
+          "label": "Porcentaje",
+          "alias": [
+           "Concentración",
+           "Porcentaje en la mezcla",
+           "Cantidad"
+          ]
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sistematizacion",
+   "titulo": "Sistematización",
+   "encabezado": "Sistematización",
+   "mapeado": true,
+   "campos": [
+    {
+     "ruta": "sistematizacion.wantsToSystematize",
+     "etiqueta": "¿Desea sistematizar una NSO existente?",
+     "tipo": "switch",
+     "control": {
+      "id": "wantsToSystematize"
+     }
     },
     {
-      "id": "inicio", "titulo": "Inicio (17 preguntas)", "encabezado": "Inicio", "mapeado": false,
-      "campos": [
-        { "ruta": "initialValidation.answers.q1", "etiqueta": "q1 ¿Cumple la definición de cosmético?", "tipo": "radio", "control": { "id": "q1" } },
-        { "ruta": "initialValidation.answers.q2", "etiqueta": "q2 ¿Prevención, tratamiento o diagnóstico?", "tipo": "radio", "control": { "id": "q2" } },
-        { "ruta": "initialValidation.answers.q3", "etiqueta": "q3 ¿Ingerido, inhalado, inyectado o implantado?", "tipo": "radio", "control": { "id": "q3" } },
-        { "ruta": "initialValidation.answers.q4", "etiqueta": "q4 ¿Ingredientes en listados de referencia?", "tipo": "radio", "control": { "id": "q4" } },
-        { "ruta": "initialValidation.answers.q5", "etiqueta": "q5 ¿Ingredientes prohibidos?", "tipo": "radio", "control": { "id": "q5" } },
-        { "ruta": "initialValidation.answers.q6", "etiqueta": "q6 ¿Ingredientes restringidos?", "tipo": "radio", "control": { "id": "q6" } },
-        { "ruta": "initialValidation.answers.q7", "etiqueta": "q7 ¿Restringidos dentro de límites?", "tipo": "radio", "control": { "id": "q7" } },
-        { "ruta": "initialValidation.answers.q8", "etiqueta": "q8 ¿Funciones dentro del alcance cosmético?", "tipo": "radio", "control": { "id": "q8" } },
-        { "ruta": "initialValidation.answers.q9", "etiqueta": "q9 ¿Proclamas no cosméticas?", "tipo": "radio", "control": { "id": "q9" } },
-        { "ruta": "initialValidation.answers.q10", "etiqueta": "q10 ¿Proclamas con riesgo si no son veraces?", "tipo": "radio", "control": { "id": "q10" } },
-        { "ruta": "initialValidation.answers.q11", "etiqueta": "q11 ¿Allega estudios de soporte?", "tipo": "radio", "control": { "id": "q11" } },
-        { "ruta": "initialValidation.answers.q12", "etiqueta": "q12 ¿Nombre o marca no acorde?", "tipo": "radio", "control": { "id": "q12" } },
-        { "ruta": "initialValidation.answers.q13", "etiqueta": "q13 ¿Ingredientes de cannabis?", "tipo": "radio", "control": { "id": "q13" } },
-        { "ruta": "initialValidation.answers.q14", "etiqueta": "q14 ¿Cumple normativa cannabis?", "tipo": "radio", "control": { "id": "q14" } },
-        { "ruta": "initialValidation.answers.q15", "etiqueta": "q15 ¿Jabón o limpiador enjuagable?", "tipo": "radio", "control": { "id": "q15" } },
-        { "ruta": "initialValidation.answers.q16", "etiqueta": "q16 ¿Cumple Res. 0689/1770?", "tipo": "radio", "control": { "id": "q16" } },
-        { "ruta": "initialValidation.answers.q17", "etiqueta": "q17 ¿Ampara grupos cosméticos?", "tipo": "radio", "control": { "id": "q17" } }
-      ]
+     "ruta": "sistematizacion.hasOngoingProcedures",
+     "etiqueta": "¿Trámites en curso en Oficina Virtual?",
+     "tipo": "switch",
+     "control": {
+      "id": "hasOngoingProcedures"
+     }
     },
     {
-      "id": "general", "titulo": "Información General", "encabezado": "Información General", "mapeado": false,
-      "campos": [
-        { "ruta": "general.responsibles.technical.name", "etiqueta": "Responsable técnico", "tipo": "select", "control": { "id": "technical", "label": "Responsable técnico" } },
-        { "ruta": "general.responsibles.legal.name", "etiqueta": "Representante legal / apoderado", "tipo": "select", "control": { "id": "legal", "label": "Representante legal" } },
-        { "ruta": "general.origin.value", "etiqueta": "Origen del producto", "tipo": "select", "control": { "id": "origin", "label": "Origen" } },
-        { "ruta": "general.manufacturer.type", "etiqueta": "Tipo de fabricante", "tipo": "select-multiple", "control": { "id": "typeSlugs", "label": "Tipo de fabricante" } },
-        { "ruta": "general.manufacturer.thirds", "etiqueta": "Fabricante tercero", "tipo": "tabla", "agregar": "Agregar fabricante",
-          "modal": [
-            { "ruta": "company.name", "etiqueta": "Razón social", "tipo": "select", "control": { "id": "company", "label": "Fabricante" } }
-          ] },
-        { "ruta": "general.product.name", "etiqueta": "Nombre del producto", "tipo": "text", "control": { "id": "name", "label": "Nombre del producto" } },
-        { "ruta": "general.product.genericName", "etiqueta": "Denominación genérica", "tipo": "text", "control": { "id": "genericName", "label": "Denominación genérica" } },
-        { "ruta": "general.product.declaresCosmeticGroups", "etiqueta": "¿Declara grupos cosméticos?", "tipo": "switch", "control": { "id": "declaresCosmeticGroups" } },
-        { "ruta": "general.product.brands", "etiqueta": "Marcas", "tipo": "select-multiple", "control": { "id": "brands", "label": "Marca" } },
-        { "ruta": "general.product.cosmeticForm", "etiqueta": "Forma cosmética", "tipo": "select", "control": { "id": "cosmeticForm", "label": "Forma cosmética" } },
-        { "ruta": "general.product.productCategory", "etiqueta": "Categoría del producto", "tipo": "select", "control": { "id": "productCategory", "label": "Categoría" } },
-        { "ruta": "general.presentations", "etiqueta": "Presentación", "tipo": "tabla", "agregar": "Agregar presentación",
-          "modal": [
-            { "ruta": "netContent", "etiqueta": "Contenido neto", "tipo": "number", "control": { "id": "netContent", "label": "Contenido neto" } },
-            { "ruta": "measureUnit", "etiqueta": "Unidad de medida", "tipo": "select", "control": { "id": "measureUnit", "label": "Unidad de medida" } },
-            { "ruta": "primaryContainer", "etiqueta": "Envase primario", "tipo": "select", "control": { "id": "primaryContainer", "label": "Tipo de envase primario" } },
-            { "ruta": "primaryMaterial", "etiqueta": "Material primario", "tipo": "select", "control": { "id": "primaryMaterial", "label": "Material del envase primario" } },
-            { "ruta": "secondaryContainer", "etiqueta": "Envase secundario", "tipo": "select", "control": { "id": "secondaryContainer", "label": "Tipo de envase secundario" } },
-            { "ruta": "secondaryMaterial", "etiqueta": "Material secundario", "tipo": "select", "control": { "id": "secondaryMaterial", "label": "Material del envase secundario" } },
-            { "ruta": "observations", "etiqueta": "Observaciones", "tipo": "textarea", "control": { "id": "observations", "label": "Observaciones" } }
-          ] }
-      ]
+     "ruta": "sistematizacion.nsoNumber",
+     "etiqueta": "Número de NSO",
+     "tipo": "text",
+     "control": {
+      "id": "nsoNumber"
+     }
     },
     {
-      "id": "composicion", "titulo": "Composición", "encabezado": "Composición", "mapeado": false,
-      "campos": [
-        { "ruta": "composition.ingredients", "etiqueta": "Ingrediente", "tipo": "tabla", "agregar": "Agregar ingrediente",
-          "modal": [
-            { "ruta": "inci", "etiqueta": "Ingrediente (INCI)", "tipo": "select", "control": { "id": "ingredient", "label": "Ingrediente" } },
-            { "ruta": "itemType", "etiqueta": "Tipo", "tipo": "select", "control": { "id": "itemType", "label": "Tipo" } },
-            { "ruta": "functions", "etiqueta": "Función", "tipo": "select-multiple", "control": { "id": "functions", "label": "Función" } },
-            { "ruta": "referenceList", "etiqueta": "Listado de referencia", "tipo": "select", "preferencia": "listadoReferencia", "control": { "id": "referenceList", "label": "Listado de referencia" } },
-            { "ruta": "quantity", "etiqueta": "Cantidad", "tipo": "number", "control": { "id": "quantity", "label": "Cantidad" } },
-            { "ruta": "unit", "etiqueta": "Unidad", "tipo": "select", "control": { "id": "unit", "label": "Unidad" } },
-            { "ruta": "isNanomaterial", "etiqueta": "¿Nanomaterial?", "tipo": "switch", "control": { "id": "isNanomaterial" } }
-          ] }
-      ]
+     "ruta": "sistematizacion.issueDate",
+     "etiqueta": "Fecha de emisión / última renovación",
+     "tipo": "date",
+     "control": {
+      "id": "issueDate"
+     }
     },
     {
-      "id": "uso", "titulo": "Información de Uso", "encabezado": "Información de Uso", "mapeado": false,
-      "campos": [
-        { "ruta": "useInformation.instructions", "etiqueta": "Modo de uso / instrucciones", "tipo": "textarea", "control": { "id": "instructions", "label": "Instrucciones" } },
-        { "ruta": "useInformation.warnings", "etiqueta": "Advertencias", "tipo": "textarea", "control": { "id": "warnings", "label": "Advertencias" } }
-      ]
+     "ruta": "sistematizacion.expirationDate",
+     "etiqueta": "Fecha de vencimiento",
+     "tipo": "date",
+     "control": {
+      "id": "expirationDate"
+     }
     },
     {
-      "id": "tecnicas", "titulo": "Características Técnicas", "encabezado": "Características Técnicas", "mapeado": false,
-      "campos": [
-        { "ruta": "technicalCharacteristics.organolepticRows", "etiqueta": "Organoléptica", "tipo": "tabla", "agregar": "Agregar característica organoléptica",
-          "modal": [
-            { "ruta": "color", "etiqueta": "Color", "tipo": "text", "control": { "id": "color", "label": "Color" } },
-            { "ruta": "odor", "etiqueta": "Olor", "tipo": "text", "control": { "id": "odor", "label": "Olor" } },
-            { "ruta": "taste", "etiqueta": "Sabor", "tipo": "text", "control": { "id": "taste", "label": "Sabor" } }
-          ] },
-        { "ruta": "technicalCharacteristics.otherOrganoleptic", "etiqueta": "Otra organoléptica", "tipo": "tabla", "agregar": "Agregar otra característica",
-          "modal": [
-            { "ruta": "characteristic", "etiqueta": "Característica", "tipo": "text", "control": { "id": "characteristic", "label": "Característica" } },
-            { "ruta": "value", "etiqueta": "Valor", "tipo": "text", "control": { "id": "value", "label": "Valor" } }
-          ] },
-        { "ruta": "technicalCharacteristics.physicochemical", "etiqueta": "Parámetro fisicoquímico", "tipo": "tabla", "agregar": "Agregar parámetro",
-          "modal": [
-            { "ruta": "parameterTypeName", "etiqueta": "Tipo de parámetro", "tipo": "select", "control": { "id": "parameterTypeSlug", "label": "Tipo de parámetro" } },
-            { "ruta": "isRange", "etiqueta": "¿Es rango?", "tipo": "switch", "control": { "id": "isRange" } },
-            { "ruta": "min", "etiqueta": "Mínimo", "tipo": "number", "control": { "id": "min", "label": "Mínimo" } },
-            { "ruta": "max", "etiqueta": "Máximo", "tipo": "number", "control": { "id": "max", "label": "Máximo" } },
-            { "ruta": "value", "etiqueta": "Valor", "tipo": "number", "control": { "id": "quantity", "label": "Valor" } },
-            { "ruta": "unitName", "etiqueta": "Unidad", "tipo": "select", "control": { "id": "unitSlug", "label": "Unidad" } }
-          ] },
-        { "ruta": "technicalCharacteristics.microbiological.isExcepted", "etiqueta": "¿Exceptuado de análisis microbiológico?", "tipo": "switch", "control": { "id": "isExcepted" } },
-        { "ruta": "technicalCharacteristics.microbiological.justification", "etiqueta": "Justificación", "tipo": "textarea", "control": { "id": "justification", "label": "Justificación" } }
+     "tipo": "archivo",
+     "etiqueta": "Último documento oficial de la NSO",
+     "documento": "sistematizacion",
+     "claves": [
+      [
+       "oficial",
+       "resolucion",
+       "notificacion",
+       "acto administrativo",
+       "documento"
       ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "inicio",
+   "titulo": "Inicio (17 preguntas)",
+   "encabezado": "Inicio",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "initialValidation.answers.q1",
+     "etiqueta": "q1 ¿Cumple la definición de cosmético?",
+     "tipo": "radio",
+     "control": {
+      "id": "q1"
+     },
+     "opcional": true
     },
-    { "id": "documentos", "titulo": "Documentos soporte", "encabezado": "Documentos", "mapeado": false, "campos": [] },
-    { "id": "complementarios", "titulo": "Documentos complementarios", "encabezado": "Complementarios", "mapeado": false, "campos": [] },
-    { "id": "terminos", "titulo": "Términos y Condiciones", "encabezado": "Términos y Condiciones", "mapeado": true, "soloLectura": true, "campos": [] }
-  ]
+    {
+     "ruta": "initialValidation.answers.q2",
+     "etiqueta": "q2 ¿Prevención, tratamiento o diagnóstico?",
+     "tipo": "radio",
+     "control": {
+      "id": "q2"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q3",
+     "etiqueta": "q3 ¿Ingerido, inhalado, inyectado o implantado?",
+     "tipo": "radio",
+     "control": {
+      "id": "q3"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q4",
+     "etiqueta": "q4 ¿Ingredientes en listados de referencia?",
+     "tipo": "radio",
+     "control": {
+      "id": "q4"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q5",
+     "etiqueta": "q5 ¿Ingredientes prohibidos?",
+     "tipo": "radio",
+     "control": {
+      "id": "q5"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q6",
+     "etiqueta": "q6 ¿Ingredientes restringidos?",
+     "tipo": "radio",
+     "control": {
+      "id": "q6"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q7",
+     "etiqueta": "q7 ¿Restringidos dentro de límites?",
+     "tipo": "radio",
+     "control": {
+      "id": "q7"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q8",
+     "etiqueta": "q8 ¿Funciones dentro del alcance cosmético?",
+     "tipo": "radio",
+     "control": {
+      "id": "q8"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q9",
+     "etiqueta": "q9 ¿Proclamas no cosméticas?",
+     "tipo": "radio",
+     "control": {
+      "id": "q9"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q10",
+     "etiqueta": "q10 ¿Proclamas con riesgo si no son veraces?",
+     "tipo": "radio",
+     "control": {
+      "id": "q10"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q11",
+     "etiqueta": "q11 ¿Allega estudios de soporte?",
+     "tipo": "radio",
+     "control": {
+      "id": "q11"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q12",
+     "etiqueta": "q12 ¿Nombre o marca no acorde?",
+     "tipo": "radio",
+     "control": {
+      "id": "q12"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q13",
+     "etiqueta": "q13 ¿Ingredientes de cannabis?",
+     "tipo": "radio",
+     "control": {
+      "id": "q13"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q14",
+     "etiqueta": "q14 ¿Cumple normativa cannabis?",
+     "tipo": "radio",
+     "control": {
+      "id": "q14"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q15",
+     "etiqueta": "q15 ¿Jabón o limpiador enjuagable?",
+     "tipo": "radio",
+     "control": {
+      "id": "q15"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q16",
+     "etiqueta": "q16 ¿Cumple Res. 0689/1770?",
+     "tipo": "radio",
+     "control": {
+      "id": "q16"
+     },
+     "opcional": true
+    },
+    {
+     "ruta": "initialValidation.answers.q17",
+     "etiqueta": "q17 ¿Ampara grupos cosméticos?",
+     "tipo": "radio",
+     "control": {
+      "id": "q17"
+     },
+     "opcional": true
+    }
+   ]
+  },
+  {
+   "id": "general",
+   "titulo": "Información General",
+   "encabezado": "Información General",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "general.responsibles.technical.name",
+     "etiqueta": "Responsable técnico",
+     "tipo": "select",
+     "control": {
+      "id": "technical",
+      "label": "Responsable técnico",
+      "alias": [
+       "Responsable técnico",
+       "Director técnico",
+       "Químico farmacéutico responsable"
+      ]
+     }
+    },
+    {
+     "ruta": "general.responsibles.legal.name",
+     "etiqueta": "Representante legal / apoderado",
+     "tipo": "select",
+     "control": {
+      "id": "legal",
+      "label": "Representante legal",
+      "alias": [
+       "Representante legal / apoderado",
+       "Apoderado",
+       "Representante legal o apoderado"
+      ]
+     }
+    },
+    {
+     "ruta": "general.origin.value",
+     "etiqueta": "Origen del producto",
+     "tipo": "select",
+     "control": {
+      "id": "origin",
+      "label": "Origen",
+      "alias": [
+       "Origen del producto",
+       "Origen"
+      ]
+     }
+    },
+    {
+     "ruta": "general.manufacturer.type",
+     "etiqueta": "Tipo de fabricante",
+     "tipo": "select-multiple",
+     "control": {
+      "id": "typeSlugs",
+      "label": "Tipo de fabricante",
+      "alias": [
+       "Tipo de fabricante",
+       "Tipo de fabricación"
+      ]
+     }
+    },
+    {
+     "ruta": "general.manufacturer.thirds",
+     "etiqueta": "Fabricante tercero",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar fabricante",
+      "Agregar tercero",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "company.name",
+       "etiqueta": "Razón social",
+       "tipo": "select",
+       "control": {
+        "id": "company",
+        "label": "Fabricante"
+       }
+      }
+     ],
+     "rotulo": "company.name"
+    },
+    {
+     "ruta": "general.product.name",
+     "etiqueta": "Nombre del producto",
+     "tipo": "text",
+     "control": {
+      "id": "name",
+      "label": "Nombre del producto",
+      "alias": [
+       "Nombre del producto"
+      ]
+     }
+    },
+    {
+     "ruta": "general.product.genericName",
+     "etiqueta": "Denominación genérica",
+     "tipo": "text",
+     "control": {
+      "id": "genericName",
+      "label": "Denominación genérica",
+      "alias": [
+       "Denominación genérica",
+       "Nombre genérico"
+      ]
+     }
+    },
+    {
+     "ruta": "general.product.declaresCosmeticGroups",
+     "etiqueta": "¿Declara grupos cosméticos?",
+     "tipo": "switch",
+     "control": {
+      "id": "declaresCosmeticGroups"
+     }
+    },
+    {
+     "ruta": "general.product.brands",
+     "etiqueta": "Marcas",
+     "tipo": "select-multiple",
+     "control": {
+      "id": "brands",
+      "label": "Marca",
+      "alias": [
+       "Marca",
+       "Marcas"
+      ]
+     }
+    },
+    {
+     "ruta": "general.product.cosmeticForm",
+     "etiqueta": "Forma cosmética",
+     "tipo": "select",
+     "control": {
+      "id": "cosmeticForm",
+      "label": "Forma cosmética",
+      "alias": [
+       "Forma cosmética"
+      ]
+     }
+    },
+    {
+     "ruta": "general.product.productCategory",
+     "etiqueta": "Categoría del producto",
+     "tipo": "select",
+     "control": {
+      "id": "productCategory",
+      "label": "Categoría",
+      "alias": [
+       "Categoría del producto",
+       "Grupo cosmético"
+      ]
+     }
+    },
+    {
+     "ruta": "general.presentations",
+     "etiqueta": "Presentación",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar presentación",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "netContent",
+       "etiqueta": "Contenido neto",
+       "tipo": "number",
+       "control": {
+        "id": "netContent",
+        "label": "Contenido neto"
+       }
+      },
+      {
+       "ruta": "measureUnit",
+       "etiqueta": "Unidad de medida",
+       "tipo": "select",
+       "control": {
+        "id": "measureUnit",
+        "label": "Unidad de medida"
+       }
+      },
+      {
+       "ruta": "primaryContainer",
+       "etiqueta": "Envase primario",
+       "tipo": "select",
+       "control": {
+        "id": "primaryContainer",
+        "label": "Tipo de envase primario"
+       }
+      },
+      {
+       "ruta": "primaryMaterial",
+       "etiqueta": "Material primario",
+       "tipo": "select",
+       "control": {
+        "id": "primaryMaterial",
+        "label": "Material del envase primario"
+       }
+      },
+      {
+       "ruta": "secondaryContainer",
+       "etiqueta": "Envase secundario",
+       "tipo": "select",
+       "control": {
+        "id": "secondaryContainer",
+        "label": "Tipo de envase secundario"
+       },
+       "opcional": true
+      },
+      {
+       "ruta": "secondaryMaterial",
+       "etiqueta": "Material secundario",
+       "tipo": "select",
+       "control": {
+        "id": "secondaryMaterial",
+        "label": "Material del envase secundario"
+       },
+       "opcional": true
+      },
+      {
+       "ruta": "observations",
+       "etiqueta": "Observaciones",
+       "tipo": "textarea",
+       "control": {
+        "id": "observations",
+        "label": "Observaciones"
+       },
+       "opcional": true
+      }
+     ],
+     "rotulo": "netContent"
+    }
+   ]
+  },
+  {
+   "id": "composicion",
+   "titulo": "Composición",
+   "encabezado": "Composición",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "composition.ingredients",
+     "etiqueta": "Ingrediente",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar ingrediente",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "inci",
+       "etiqueta": "Ingrediente (INCI)",
+       "tipo": "select",
+       "control": {
+        "id": "ingredient",
+        "label": "Ingrediente",
+        "alias": [
+         "INCI",
+         "Nombre INCI",
+         "Ingrediente (INCI)"
+        ]
+       }
+      },
+      {
+       "ruta": "itemType",
+       "etiqueta": "Tipo",
+       "tipo": "select",
+       "control": {
+        "id": "itemType",
+        "label": "Tipo",
+        "alias": [
+         "Tipo de ingrediente",
+         "Tipo de componente"
+        ]
+       },
+       "equivalencias": {
+        "basic": [
+         "Básico",
+         "Basico",
+         "Principal",
+         "basic"
+        ],
+        "secondary": [
+         "Secundario",
+         "secondary"
+        ]
+       }
+      },
+      {
+       "ruta": "functions",
+       "etiqueta": "Función",
+       "tipo": "select-multiple",
+       "control": {
+        "id": "functions",
+        "label": "Función",
+        "alias": [
+         "Funciones",
+         "Función cosmética"
+        ]
+       }
+      },
+      {
+       "ruta": "referenceList",
+       "etiqueta": "Listado de referencia",
+       "tipo": "select",
+       "preferencia": "listadoReferencia",
+       "control": {
+        "id": "referenceList",
+        "label": "Listado de referencia",
+        "alias": [
+         "Lista de referencia",
+         "Listado"
+        ]
+       }
+      },
+      {
+       "ruta": "quantity",
+       "etiqueta": "Cantidad",
+       "tipo": "number",
+       "control": {
+        "id": "quantity",
+        "label": "Cantidad",
+        "alias": [
+         "Concentración",
+         "Porcentaje",
+         "Cantidad (%)"
+        ]
+       }
+      },
+      {
+       "ruta": "unit",
+       "etiqueta": "Unidad",
+       "tipo": "select",
+       "control": {
+        "id": "unit",
+        "label": "Unidad",
+        "alias": [
+         "Unidad de medida"
+        ]
+       }
+      },
+      {
+       "ruta": "isNanomaterial",
+       "etiqueta": "¿Nanomaterial?",
+       "tipo": "switch",
+       "control": {
+        "id": "isNanomaterial",
+        "label": "¿Es nanomaterial?",
+        "alias": [
+         "Nanomaterial"
+        ]
+       }
+      }
+     ],
+     "rotulo": "inci"
+    }
+   ]
+  },
+  {
+   "id": "uso",
+   "titulo": "Información de Uso",
+   "encabezado": "Información de Uso",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "useInformation.instructions",
+     "etiqueta": "Modo de uso / instrucciones",
+     "tipo": "textarea",
+     "control": {
+      "id": "instructions",
+      "label": "Instrucciones",
+      "alias": [
+       "Modo de uso",
+       "Instrucciones de uso",
+       "Modo de empleo"
+      ]
+     }
+    },
+    {
+     "ruta": "useInformation.warnings",
+     "etiqueta": "Advertencias",
+     "tipo": "textarea",
+     "control": {
+      "id": "warnings",
+      "label": "Advertencias",
+      "alias": [
+       "Advertencias",
+       "Precauciones",
+       "Advertencias y precauciones"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tecnicas",
+   "titulo": "Características Técnicas",
+   "encabezado": "Características Técnicas",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "technicalCharacteristics.organolepticRows",
+     "etiqueta": "Organoléptica",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar característica organoléptica",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "color",
+       "etiqueta": "Color",
+       "tipo": "text",
+       "control": {
+        "id": "color",
+        "label": "Color"
+       }
+      },
+      {
+       "ruta": "odor",
+       "etiqueta": "Olor",
+       "tipo": "text",
+       "control": {
+        "id": "odor",
+        "label": "Olor"
+       }
+      },
+      {
+       "ruta": "taste",
+       "etiqueta": "Sabor",
+       "tipo": "text",
+       "control": {
+        "id": "taste",
+        "label": "Sabor"
+       },
+       "opcional": true
+      }
+     ],
+     "rotulo": "color"
+    },
+    {
+     "ruta": "technicalCharacteristics.otherOrganoleptic",
+     "etiqueta": "Otra organoléptica",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar otra característica",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "characteristic",
+       "etiqueta": "Característica",
+       "tipo": "text",
+       "control": {
+        "id": "characteristic",
+        "label": "Característica"
+       }
+      },
+      {
+       "ruta": "value",
+       "etiqueta": "Valor",
+       "tipo": "text",
+       "control": {
+        "id": "value",
+        "label": "Valor"
+       },
+       "opcional": true
+      }
+     ],
+     "opcional": true
+    },
+    {
+     "ruta": "technicalCharacteristics.physicochemical",
+     "etiqueta": "Parámetro fisicoquímico",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar parámetro",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "parameterTypeName",
+       "etiqueta": "Tipo de parámetro",
+       "tipo": "select",
+       "control": {
+        "id": "parameterTypeSlug",
+        "label": "Tipo de parámetro"
+       }
+      },
+      {
+       "ruta": "isRange",
+       "etiqueta": "¿Es rango?",
+       "tipo": "switch",
+       "control": {
+        "id": "isRange"
+       }
+      },
+      {
+       "ruta": "min",
+       "etiqueta": "Mínimo",
+       "tipo": "number",
+       "control": {
+        "id": "min",
+        "label": "Mínimo"
+       },
+       "opcional": true
+      },
+      {
+       "ruta": "max",
+       "etiqueta": "Máximo",
+       "tipo": "number",
+       "control": {
+        "id": "max",
+        "label": "Máximo"
+       },
+       "opcional": true
+      },
+      {
+       "ruta": "value",
+       "etiqueta": "Valor",
+       "tipo": "number",
+       "control": {
+        "id": "quantity",
+        "label": "Valor"
+       },
+       "opcional": true
+      },
+      {
+       "ruta": "unitName",
+       "etiqueta": "Unidad",
+       "tipo": "select",
+       "control": {
+        "id": "unitSlug",
+        "label": "Unidad"
+       }
+      }
+     ],
+     "rotulo": "parameterTypeName"
+    },
+    {
+     "ruta": "technicalCharacteristics.microbiological.isExcepted",
+     "etiqueta": "¿Exceptuado de análisis microbiológico?",
+     "tipo": "switch",
+     "control": {
+      "id": "isExcepted",
+      "alias": [
+       "Exceptuado de análisis microbiológico",
+       "¿Está exceptuado?"
+      ]
+     }
+    },
+    {
+     "ruta": "technicalCharacteristics.microbiological.justification",
+     "etiqueta": "Justificación",
+     "tipo": "textarea",
+     "control": {
+      "id": "justification",
+      "label": "Justificación"
+     },
+     "opcional": true
+    }
+   ]
+  },
+  {
+   "id": "documentos",
+   "titulo": "Documentos obligatorios",
+   "encabezado": "Documentos",
+   "mapeado": false,
+   "campos": [
+    {
+     "tipo": "archivo",
+     "etiqueta": "Declaración de no experimentación en animales",
+     "documento": "animalTestingDeclaration",
+     "claves": [
+      [
+       "animal"
+      ]
+     ]
+    },
+    {
+     "tipo": "archivo",
+     "etiqueta": "Soporte de beneficios cosméticos",
+     "documento": "cosmeticBenefitsSupport",
+     "claves": [
+      [
+       "beneficio",
+       "proclama",
+       "claim",
+       "atribucion"
+      ]
+     ]
+    },
+    {
+     "ruta": "mandatoryDocuments.label.isFinalLabel",
+     "etiqueta": "¿La etiqueta es la definitiva?",
+     "tipo": "switch",
+     "opcional": true,
+     "control": {
+      "id": "isFinalLabel",
+      "label": "¿Es la etiqueta definitiva?",
+      "alias": [
+       "Etiqueta definitiva",
+       "¿Etiqueta definitiva?"
+      ]
+     }
+    },
+    {
+     "tipo": "archivo",
+     "etiqueta": "Etiqueta / arte",
+     "documento": "label",
+     "claves": [
+      [
+       "etiqueta",
+       "arte",
+       "rotulado"
+      ]
+     ]
+    },
+    {
+     "tipo": "archivo",
+     "etiqueta": "Codificación de lotes",
+     "documento": "lotsCoding",
+     "claves": [
+      [
+       "lote"
+      ]
+     ]
+    },
+    {
+     "tipo": "archivo",
+     "etiqueta": "Contenido de fósforo · certificado analítico",
+     "documento": "phosphorusAnalytical",
+     "claves": [
+      [
+       "fosforo"
+      ],
+      [
+       "analitic",
+       "certificado"
+      ]
+     ]
+    },
+    {
+     "tipo": "archivo",
+     "etiqueta": "Contenido de fósforo · declaración de conformidad",
+     "documento": "phosphorusConformity",
+     "claves": [
+      [
+       "fosforo"
+      ],
+      [
+       "conformidad",
+       "declaracion"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "id": "complementarios",
+   "titulo": "Documentos complementarios",
+   "encabezado": "Complementarios",
+   "mapeado": false,
+   "campos": [
+    {
+     "ruta": "_documentosAdicionales",
+     "etiqueta": "Documento complementario",
+     "rotulo": "descripcion",
+     "tipo": "tabla",
+     "agregar": [
+      "Agregar documento",
+      "Adjuntar documento",
+      "Agregar"
+     ],
+     "modal": [
+      {
+       "ruta": "descripcion",
+       "etiqueta": "Descripción",
+       "tipo": "text",
+       "opcional": true,
+       "control": {
+        "id": "description",
+        "label": "Descripción",
+        "alias": [
+         "Nombre del documento",
+         "Tipo de documento",
+         "Nombre"
+        ]
+       }
+      },
+      {
+       "tipo": "archivo",
+       "etiqueta": "Archivo",
+       "documentoRuta": "clave",
+       "claves": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "terminos",
+   "titulo": "Términos y Condiciones",
+   "encabezado": "Términos y Condiciones",
+   "mapeado": true,
+   "soloLectura": true,
+   "campos": []
+  }
+ ]
 }

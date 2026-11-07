@@ -1,5 +1,6 @@
 // Engine: deterministic, human-paced driving of Ant Design controls. Isolated world.
-// Rules baked in: exact matches only, whitelist of clickable buttons, never navigate.
+// Rules baked in: exact option matches only, whitelist of clickable buttons. The only
+// navigation is E.next() ("Siguiente", called by the autopilot); never submits or signs.
 (() => {
   const E = {};
   const SLEEP = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -33,32 +34,52 @@
   }
   E.visible = visible;
   function scope(root) { return root || document; }
-  // Find by id, then by label text (exact, accent-insensitive), then by aria-label.
-  E.find = (spec, root) => {
+  const CONTROL = 'input:not([type=hidden]), textarea, .ant-select, .ant-switch, .ant-radio-group, .ant-picker, button[role=switch], [role=radiogroup]';
+  const labelText = (lab) => E.norm(lab.textContent).replace(/[:*¿?()]+/g, ' ').replace(/\s+/g, ' ').trim();
+  function controlOfLabel(lab, r) {
+    const forId = lab.getAttribute && lab.getAttribute('for');
+    if (forId) { const t = r.querySelector('#' + CSS.escape(forId)) || document.getElementById(forId); if (t) return t.closest('.ant-select, .ant-picker') || t; }
+    const item = lab.closest('.ant-form-item, .ant-row, .form-group') || lab.parentElement;
+    return item ? item.querySelector(CONTROL) : null;
+  }
+  // Ant Design Form ids are "<formName>_<field>" (and "<form>_<list>_<i>_<field>" in lists).
+  function byId(r, id) {
+    const safe = String(id).replace(/"/g, '');
+    const el = r.querySelector('#' + CSS.escape(id)) || r.querySelector(`[id$="_${safe}"]`) || r.querySelector(`[name="${safe}"]`);
+    return el ? (el.closest('.ant-select, .ant-picker') || el) : null;
+  }
+  // Words that carry meaning in a label (accents removed, short words dropped).
+  const palabras = (s) => E.norm(s).replace(/[^a-z0-9ñ ]+/g, ' ').split(' ').filter((w) => w.length > 2 && !['del', 'los', 'las', 'que', 'por', 'para', 'con', 'una'].includes(w));
+  // Find a control. Returns {el, via}: via is how it was found, so the filler can flag
+  // controls located by an approximate label for human review.
+  E.findEx = (spec, root) => {
     const r = scope(root);
-    if (!spec) return null;
-    if (spec.id) {
-      const el = r.querySelector('#' + CSS.escape(spec.id)) || r.querySelector('[id="' + spec.id + '"]');
-      if (el) return el;
+    if (!spec) return { el: null };
+    if (spec.id) { const el = byId(r, spec.id); if (el && visible(el)) return { el, via: 'id' }; }
+    if (spec.selector) { const el = r.querySelector(spec.selector); if (el) return { el, via: 'selector' }; }
+    const labels = [spec.label, ...(spec.alias || [])].filter(Boolean);
+    const labs = [...r.querySelectorAll('.ant-form-item-label label, .ant-form-item-label, label')].filter(visible);
+    for (const want of labels) {
+      const w = labelText({ textContent: want });
+      for (const lab of labs) if (labelText(lab) === w) { const el = controlOfLabel(lab, r); if (el) return { el, via: 'etiqueta' }; }
     }
-    if (spec.selector) {
-      const el = r.querySelector(spec.selector);
-      if (el) return el;
+    for (const want of labels) for (const el of r.querySelectorAll('[aria-label], [placeholder]')) {
+      if (E.norm(el.getAttribute('aria-label') || el.getAttribute('placeholder')) === E.norm(want) && visible(el)) return { el: el.closest('.ant-select, .ant-picker') || el, via: 'aria' };
     }
-    if (spec.label) {
-      const want = E.norm(spec.label);
-      for (const lab of r.querySelectorAll('label, .ant-form-item-label > label, .ant-form-item-label')) {
-        if (E.norm(lab.textContent).replace(/[:*]+$/, '').trim() !== want.replace(/[:*]+$/, '').trim()) continue;
-        const forId = lab.getAttribute('for');
-        if (forId) { const t = r.querySelector('#' + CSS.escape(forId)); if (t) return t; }
-        const item = lab.closest('.ant-form-item, .ant-row, .form-group') || lab.parentElement;
-        const ctl = item && item.querySelector('input, textarea, .ant-select, .ant-switch, .ant-radio-group, .ant-picker, button[role=switch]');
-        if (ctl) return ctl;
+    // Approximate: every meaningful word of the label (or alias) appears in a single label.
+    if (spec.aproximado !== false) {
+      for (const want of labels) {
+        const ws = palabras(want);
+        if (!ws.length) continue;
+        const hits = labs.filter((lab) => { const t = labelText(lab); return ws.every((x) => t.includes(x)); });
+        const ctls = [...new Set(hits.map((lab) => controlOfLabel(lab, r)).filter(Boolean))];
+        if (ctls.length === 1) return { el: ctls[0], via: 'etiqueta-aproximada', etiqueta: hits[0].textContent.trim() };
       }
-      for (const el of r.querySelectorAll('[aria-label]')) if (E.norm(el.getAttribute('aria-label')) === want) return el;
     }
-    return null;
+    if (spec.id) { const el = byId(r, spec.id); if (el) return { el, via: 'id-oculto' }; }
+    return { el: null };
   };
+  E.find = (spec, root) => E.findEx(spec, root).el;
 
   // --- primitives --------------------------------------------------------------------------
   function nativeSet(el, value) {
@@ -184,9 +205,23 @@
     return items.length <= 1 ? (items[0] ?? null) : items;
   };
 
+  // The planilla stores YYYY-MM-DD; the picker's placeholder tells the display format when it is
+  // a pattern (DD/MM/YYYY, MM/DD/YYYY, YYYY/MM/DD). Ant's default is YYYY-MM-DD.
+  E.formatDate = (iso, placeholder) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ''));
+    if (!m) return String(iso ?? '');
+    const p = String(placeholder || '').toUpperCase();
+    const f = /^(DD|MM|YYYY)([\/.\-])(DD|MM|YYYY)\2(DD|MM|YYYY)$/.exec(p.trim());
+    if (!f) return `${m[1]}-${m[2]}-${m[3]}`;
+    const parte = { YYYY: m[1], MM: m[2], DD: m[3] };
+    return [f[1], f[3], f[4]].map((k) => parte[k]).join(f[2]);
+  };
   E.setDate = async (el, text) => {
     const input = el.matches('input') ? el : el.querySelector('input');
+    if (!input) throw new Error('el selector de fecha no tiene campo');
+    text = E.formatDate(text, input.getAttribute('placeholder'));
     input.focus();
+    input.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     nativeSet(input, String(text));
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await pace();
@@ -195,34 +230,62 @@
     return { leido: input.value };
   };
 
-  // Files: assign a File to the hidden input; never click the drop zone.
+  // Files: assign a File to the hidden input; never click the drop zone. Then wait for the
+  // upload list to show the file (Ant Upload) and report an upload error if it shows one.
   E.setFile = async (el, file) => {
     const input = el.matches('input[type=file]') ? el : el.querySelector('input[type=file]');
     if (!input) throw new Error('casilla de archivo sin input');
+    const zona = input.closest('.ant-form-item, .ant-upload-wrapper, .ant-card, .ant-row') || input.parentElement;
     const dt = new DataTransfer();
     dt.items.add(file);
     input.files = dt.files;
     input.dispatchEvent(new Event('change', { bubbles: true }));
+    const t0 = Date.now();
+    while (Date.now() - t0 < 60000) {
+      const items = [...(zona || document).querySelectorAll('.ant-upload-list-item')];
+      const mio = items.find((i) => E.norm(i.textContent).includes(E.norm(file.name).slice(0, 25)));
+      if (mio && mio.matches('.ant-upload-list-item-error')) throw new Error('la plataforma rechazó el archivo: ' + (mio.getAttribute('title') || mio.textContent.trim()).slice(0, 160));
+      if (mio && !mio.matches('.ant-upload-list-item-uploading')) { await pace(); return { leido: file.name }; }
+      if (!items.length && Date.now() - t0 > 4000) break; // no Ant list: plain input
+      await SLEEP(250);
+    }
     await pace();
-    return { leido: file.name };
+    return { leido: input.files && input.files[0] ? input.files[0].name : null };
+  };
+  // Upload slot whose surrounding text contains every keyword group (each group: any of its words).
+  E.findUpload = (claves, root) => {
+    const grupos = (claves || []).map((g) => (Array.isArray(g) ? g : [g]).map(E.norm));
+    const cand = [];
+    for (const input of scope(root).querySelectorAll('input[type=file]')) {
+      if (input.closest('.ant-modal') && !root) continue;
+      let zona = input.parentElement;
+      for (let i = 0; i < 6 && zona; i++, zona = zona.parentElement) {
+        const t = E.norm(zona.textContent);
+        if (t.length > 600) break;
+        if (grupos.every((g) => g.some((w) => t.includes(w)))) { cand.push({ input, largo: t.length }); break; }
+      }
+    }
+    cand.sort((a, b) => a.largo - b.largo);
+    return cand.length ? cand[0].input : null;
   };
 
   // Modals: open with an allowed "+ Agregar" button, fill, save with the modal's own save button.
   E.findButton = (texts, root) => {
-    const wants = (Array.isArray(texts) ? texts : [texts]).map(E.norm);
-    for (const b of scope(root).querySelectorAll('button, [role=button]')) {
-      const t = E.norm(b.textContent).replace(/^[+\-\s]+/, '');
-      if (visible(b) && wants.some((w) => t === w || t === '+ ' + w || t.endsWith(w))) return b;
-    }
+    const wants = (Array.isArray(texts) ? texts : [texts]).map((w) => E.norm(w).replace(/^[+\-\s]+/, ''));
+    const botones = [...scope(root).querySelectorAll('button, [role=button]')].filter((b) => visible(b) && !E.isForbiddenButton(b));
+    for (const w of wants) for (const b of botones) { const t = E.norm(b.textContent).replace(/^[+\-\s]+/, ''); if (t === w) return b; }
+    for (const w of wants) for (const b of botones) { const t = E.norm(b.textContent).replace(/^[+\-\s]+/, ''); if (t.endsWith(w) || (w.length > 6 && t.includes(w))) return b; }
     return null;
   };
-  E.openModal = async (buttonText) => {
-    const b = E.findButton(buttonText);
-    if (!b) throw new Error('botón «' + buttonText + '» no encontrado');
+  const modales = () => [...document.querySelectorAll('.ant-modal:not(.ant-zoom-leave) .ant-modal-content, .ant-drawer-content, [role=dialog]')].filter(visible);
+  E.openModal = async (buttonText, root) => {
+    const b = E.findButton(buttonText, root);
+    if (!b) throw new Error('botón «' + [].concat(buttonText).join(' / ') + '» no encontrado');
+    const antes = new Set(modales());
     safeClick(b, 'abrir modal');
     const t0 = Date.now();
     while (Date.now() - t0 < 6000) {
-      const m = [...document.querySelectorAll('.ant-modal:not(.ant-zoom-leave) .ant-modal-content, [role=dialog]')].find(visible);
+      const m = modales().find((x) => !antes.has(x) && !x.contains(b));
       if (m) { await pace(); return m; }
       await SLEEP(100);
     }
@@ -247,6 +310,24 @@
     if (b) { b.click(); await pace(); }
   };
   E.tableRows = (root) => [...scope(root).querySelectorAll('.ant-table-tbody > tr.ant-table-row, table tbody tr')].filter(visible).map((tr) => [...tr.querySelectorAll('td')].map((td) => td.textContent.trim()));
+
+  E.validationErrors = (root) => [...scope(root).querySelectorAll('.ant-form-item-explain-error, .ant-alert-error .ant-alert-message, .ant-message-error, .ant-notification-notice-error .ant-notification-notice-message')]
+    .filter(visible).map((x) => {
+      const item = x.closest('.ant-form-item');
+      const lab = item && item.querySelector('.ant-form-item-label');
+      return (lab ? lab.textContent.trim().replace(/[:*]+$/, '') + ': ' : '') + x.textContent.trim();
+    });
+
+  // --- navigation: only "Siguiente", only from the autopilot --------------------------------
+  E.nextButton = () => [...document.querySelectorAll('button, [role=button]')].find((b) => visible(b) && E.norm(b.textContent) === 'siguiente' && !b.disabled && b.getAttribute('aria-disabled') !== 'true');
+  E.next = async () => {
+    const b = E.nextButton();
+    if (!b) throw new Error('no hay botón «Siguiente» habilitado en la pantalla');
+    b.scrollIntoView({ block: 'center' });
+    b.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    b.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    b.click(); // deliberately not safeClick: "siguiente" stays forbidden everywhere else
+  };
 
   // --- current step detection --------------------------------------------------------------
   E.currentHeader = () => {

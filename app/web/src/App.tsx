@@ -12,10 +12,10 @@ import {
 } from 'firebase/auth'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { auth, db, USA_EMULADORES } from './lib/firebase'
+import { iniciarPuente } from './lib/extension'
 import type { Usuario } from './lib/tipos'
 import Tablero from './pages/Tablero'
 import TramiteVista from './pages/TramiteVista'
-import Clientes from './pages/Clientes'
 import Usuarios from './pages/Usuarios'
 
 function useRuta() {
@@ -195,6 +195,9 @@ export default function App() {
 
   useEffect(() => onAuthStateChanged(auth, setUser), [])
   useEffect(() => {
+    if (perfil?.activo) iniciarPuente() // results from the extension are written with this session
+  }, [perfil?.activo])
+  useEffect(() => {
     if (!user?.email || !user.emailVerified) return setPerfil(user === null ? null : undefined)
     return onSnapshot(
       doc(db, 'usuarios', user.email.toLowerCase()),
@@ -230,9 +233,6 @@ export default function App() {
         <a href="#/" className={ruta === '#/' ? 'activo' : ''}>
           Trámites
         </a>
-        <a href="#/clientes" className={ruta === '#/clientes' ? 'activo' : ''}>
-          Clientes
-        </a>
         <a href="#/usuarios" className={ruta === '#/usuarios' ? 'activo' : ''}>
           Usuarios
         </a>
@@ -245,8 +245,6 @@ export default function App() {
       </nav>
       {tramite ? (
         <TramiteVista id={tramite} />
-      ) : ruta === '#/clientes' ? (
-        <Clientes />
       ) : ruta === '#/usuarios' ? (
         <Usuarios soyAdmin={perfil.rol === 'admin'} />
       ) : (

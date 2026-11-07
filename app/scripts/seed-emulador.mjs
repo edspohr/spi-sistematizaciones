@@ -1,4 +1,4 @@
-// Seeds the local emulators (demo project) with test accounts, users and one client.
+// Seeds the local emulators (demo project) with test accounts and users.
 // Test-only credentials for the emulator; they do not exist anywhere else.
 //   node app/scripts/seed-emulador.mjs
 const PROJECT = 'demo-spi-invimagil'
@@ -34,16 +34,4 @@ for (const c of CUENTAS) {
     body: JSON.stringify(campos({ nombre: c.nombre, rol: c.rol, activo: true })),
   })
 }
-await pedir(`${FS}/clientes/cliente-prueba`, {
-  method: 'PATCH',
-  headers: H,
-  body: JSON.stringify(
-    campos({
-      nombre: 'Cliente de prueba S.A.S.',
-      titular_nso: 'SERVICIOS DE PROPIEDAD INDUSTRIAL S.A.S.',
-      representante_legal: 'ALVARO E. RINCON MAUTNER',
-      responsable_tecnico: '',
-    }),
-  ),
-})
-console.log('usuarios y cliente de prueba listos')
+console.log('usuarios de prueba listos')

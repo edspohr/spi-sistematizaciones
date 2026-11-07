@@ -7,17 +7,25 @@
 </head>
 <body>
   <header>
-    <h1>InvimÁgil Inyector</h1>
-    <p class="muted">Llena la pantalla actual desde el archivo base. Usted verifica y pulsa Siguiente.</p>
+    <h1>InvimÁgil Inyector <span class="muted" id="version"></span></h1>
+    <p class="muted">Llena el trámite con la planilla aprobada, pantalla por pantalla o de corrido hasta Términos. La aceptación de términos y la radicación son suyas.</p>
   </header>
 
-  <section id="s-carpeta">
-    <button id="btn-carpeta" class="primary">Elegir carpeta del producto</button>
+  <section id="s-tramite">
+    <label>Trámite
+      <select id="sel-tramite"><option value="">— Ninguno recibido —</option></select>
+    </label>
+    <p class="muted" id="ayuda-tramite">En <a href="https://spi-sistematizaciones.web.app" target="_blank">SPI Sistematización</a>, abra el trámite aprobado y pulse «Enviar a la extensión».</p>
     <div id="producto" class="card hidden">
       <div><b id="p-nombre"></b></div>
       <div class="muted" id="p-resumen"></div>
       <div id="p-decisiones" class="warn hidden"></div>
+      <div id="p-mezclas" class="warn hidden"></div>
+      <div id="p-documentos" class="muted hidden"></div>
     </div>
+    <details class="muted"><summary>Usar una carpeta local en su lugar</summary>
+      <button id="btn-carpeta">Elegir carpeta con _invimagil/planilla.json</button>
+    </details>
   </section>
 
   <section id="s-solicitud" class="hidden">
@@ -27,20 +35,37 @@
   </section>
 
   <section id="s-accion" class="hidden">
-    <label class="chk"><input type="checkbox" id="dry"> Solo mostrar (resalta sin escribir)</label>
-    <button id="btn-llenar" class="primary">Llenar esta pantalla</button>
-    <button id="btn-verificar">Verificar con la plataforma</button>
+    <button id="btn-todo" class="primary">Llenar todo hasta Términos</button>
+    <label class="chk"><input type="checkbox" id="detener" checked> Detenerse en una pantalla con problemas</label>
+    <button id="btn-pausar" class="hidden">Pausar</button>
+    <div id="auto-estado" class="muted"></div>
+    <ol id="auto-pasos" class="muted"></ol>
+    <details><summary>Una pantalla a la vez</summary>
+      <label class="chk"><input type="checkbox" id="dry"> Solo mostrar (resalta sin escribir)</label>
+      <button id="btn-llenar">Llenar esta pantalla</button>
+      <button id="btn-mezclas">Crear las mezclas (en Administración de Ingredientes → Mezclas)</button>
+      <button id="btn-verificar">Verificar con la plataforma</button>
+    </details>
     <div id="progreso" class="muted"></div>
   </section>
 
   <section id="s-resultado" class="hidden">
     <h2>Verificación</h2>
     <div id="res-resumen"></div>
-    <table id="res-tabla"><thead><tr><th>Campo</th><th>Maestro</th><th>Plataforma</th><th></th></tr></thead><tbody></tbody></table>
-    <button id="btn-log">Guardar registro en _invimagil</button>
+    <table id="res-tabla"><thead><tr><th>Campo</th><th>Planilla</th><th>Plataforma</th><th></th></tr></thead><tbody></tbody></table>
+    <div class="muted" id="res-envio"></div>
   </section>
 
-  <footer class="muted">Nunca pulsa Siguiente, Finalizar ni acepta términos. No envía datos a ningún servidor.</footer>
+  <section id="s-mapeo">
+    <details><summary>Mapeo de pantallas</summary>
+      <p class="muted">Registra los controles visibles de la pantalla (y del modal abierto) sin escribir nada. Se envía a la app para completar el mapa.</p>
+      <button id="btn-capturar">Capturar esta pantalla</button>
+      <div class="muted" id="captura-estado"></div>
+    </details>
+  </section>
+
+  <footer class="muted">Solo pulsa «Siguiente» en el recorrido automático. Nunca acepta términos, radica, firma ni envía. Solo habla con InvimÁgil y con SPI Sistematización.</footer>
+  <script src="autopiloto.js"></script>
   <script src="panel.js"></script>
 </body>
 </html>

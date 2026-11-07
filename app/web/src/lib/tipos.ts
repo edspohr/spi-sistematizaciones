@@ -36,14 +36,6 @@ export interface Usuario {
   activo: boolean
 }
 
-export interface Cliente {
-  id: string
-  nombre: string
-  titular_nso?: string
-  representante_legal?: string
-  responsable_tecnico?: string
-}
-
 export interface Resumen {
   producto: string
   ingredientes: number
@@ -57,7 +49,6 @@ export interface Tramite {
   carpeta: string
   producto: string
   productoConfirmado?: boolean
-  clienteId?: string
   clienteNombre?: string
   lote?: string
   estado: Estado
@@ -72,11 +63,25 @@ export interface Tramite {
   progreso?: string | null
   progresoDesde?: Timestamp
   version?: number
-  nso?: { numero?: string; emision?: string; vencimiento?: string }
+  nso?: { numero?: string; emision?: string; vencimiento?: string; documento?: string }
   invimaId?: string
+  documentos?: DocumentoPreparado[]
+  documentosVersion?: number
+  documentosFecha?: Timestamp
   aprobacion?: { por: string; fecha: Timestamp; version: number } | null
   resultado?: { valor: 'cumple' | 'no_cumple'; observaciones: string; fecha: string; por: string } | null
   notas?: string
+}
+
+export interface DocumentoPreparado {
+  clave: string
+  titulo: string
+  archivos: string[]
+  avisos: string[]
+  paginas: number
+  mb: number
+  ruta?: string
+  nombre?: string
 }
 
 export interface Decision {
@@ -92,6 +97,21 @@ export type Planilla = Record<string, any> & {
   _meta?: Record<string, any>
   decisiones?: Decision[]
   _decisiones_resueltas?: (Decision & { respuesta: string; fecha: string; por?: string })[]
+}
+
+export interface Inyeccion {
+  id: string
+  paso?: string
+  titulo?: string
+  fecha: string
+  requestId?: string
+  version?: number
+  simulado?: boolean
+  ok?: number
+  mal?: number
+  pend?: number
+  problemas?: { campo: string; estado: string; esperado: string; leido: string; detalle: string }[]
+  por?: string
 }
 
 export interface Evento {

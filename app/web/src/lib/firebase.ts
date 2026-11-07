@@ -38,4 +38,5 @@ export const fn = {
     { version: number; sinCerrar: string[]; pendientes: number }
   >(functions, 'aplicar_decisiones', LARGO),
   exportarExcel: httpsCallable<{ tramiteId: string }, { ruta: string; nombre: string }>(functions, 'exportar_excel', { timeout: 5 * 60 * 1000 }),
+  prepararDocumentos: httpsCallable<{ tramiteId: string }, { documentos: unknown[] }>(functions, 'preparar_documentos', { timeout: 9 * 60 * 1000 }),
 }

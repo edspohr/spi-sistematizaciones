@@ -169,7 +169,7 @@ function Composicion({ c }: { c: Record<string, any> }) {
                 <td>{i.referenceList?.name ?? <span className="vacio">—</span>}</td>
                 <td className="num">{i.quantity}</td>
                 <td>{i.unit?.name}</td>
-                <td>{i.isNanomaterial ? 'Sí' : 'No'}</td>
+                <td>{siNo(i.isNanomaterial)}</td>
                 <td className="nota">
                   {i._decision ? <div className="decision">⚠ {i._decision}</div> : null}
                   {i._note ? <div className="fuente">{i._note}</div> : null}
@@ -179,6 +179,78 @@ function Composicion({ c }: { c: Record<string, any> }) {
           </tbody>
         </table>
       </div>
+      <h4>Mezclas (se crean antes, en Administración de Ingredientes → Mezclas)</h4>
+      {(c?.blends ?? []).length ? (
+        (c.blends as any[]).map((b, n) => (
+          <div key={n} className={b._decision ? 'con-decision' : ''}>
+            <p>
+              <strong>{b.name}</strong> · en el COCC como {b.basicInci}
+              {b.supplier ? ` · proveedor ${b.supplier}` : ''}
+            </p>
+            <ul>
+              {(b.components ?? []).map((x: any, k: number) => (
+                <li key={k}>
+                  {x.inci}
+                  {x.percentage != null && x.percentage !== '' ? ` · ${x.percentage} % en la mezcla` : ''}
+                  {x.quantity != null && x.quantity !== '' ? ` · ${x.quantity} en el producto` : ''}
+                </li>
+              ))}
+            </ul>
+            {b._decision ? <div className="decision">⚠ {b._decision}</div> : null}
+            {b._note ? <div className="fuente">{b._note}</div> : null}
+          </div>
+        ))
+      ) : (
+        <p className="vacio">Sin mezclas.</p>
+      )}
+    </div>
+  )
+}
+
+const siNo = (v: unknown) => {
+  const t = String(v ?? '').toLowerCase()
+  return v === true || t === 'si' || t === 'sí' ? 'Sí' : v === false || t === 'no' ? 'No' : t === 'no_aplica' ? 'No aplica' : '—'
+}
+
+const PREGUNTAS: Record<string, string> = {
+  q1: '¿Cumple la definición de producto cosmético?',
+  q2: '¿Se atribuye prevención, tratamiento o diagnóstico?',
+  q3: '¿Se ingiere, inhala, inyecta o implanta?',
+  q4: '¿Todos los ingredientes están en listados de referencia?',
+  q5: '¿Contiene ingredientes prohibidos?',
+  q6: '¿Contiene ingredientes restringidos?',
+  q7: '¿Los restringidos están dentro de los límites?',
+  q8: '¿Las funciones están dentro del alcance cosmético?',
+  q9: '¿Tiene proclamas no cosméticas?',
+  q10: '¿Tiene proclamas con riesgo si no son veraces?',
+  q11: '¿Se allegan estudios de soporte?',
+  q12: '¿El nombre o la marca no son acordes?',
+  q13: '¿Contiene ingredientes de cannabis?',
+  q14: '¿Cumple la normativa de cannabis?',
+  q15: '¿Es jabón o limpiador enjuagable?',
+  q16: '¿Cumple la Res. 0689 / 1770?',
+  q17: '¿Ampara grupos cosméticos?',
+}
+
+function Inicio({ v }: { v: Record<string, any> }) {
+  const a = v?.answers ?? {}
+  return (
+    <div>
+      <table className="tabla compacta">
+        <tbody>
+          {Object.entries(PREGUNTAS).map(([k, q]) => (
+            <tr key={k} className={siNo(a[k]) === '—' ? 'con-decision' : ''}>
+              <td>{k}</td>
+              <td>{q}</td>
+              <td>
+                <strong>{siNo(a[k])}</strong>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {v?._decision ? <div className="decision">⚠ {v._decision}</div> : null}
+      {v?._note ? <div className="fuente">{v._note}</div> : null}
     </div>
   )
 }
@@ -212,6 +284,7 @@ function Archivos({ p }: { p: Planilla }) {
 }
 
 const PESTANAS: { id: string; nombre: string; clave?: string }[] = [
+  { id: 'initialValidation', nombre: 'Inicio', clave: 'initialValidation' },
   { id: 'general', nombre: 'Información general', clave: 'general' },
   { id: 'composition', nombre: 'Composición', clave: 'composition' },
   { id: 'useInformation', nombre: 'Información de uso', clave: 'useInformation' },
@@ -243,7 +316,9 @@ export default function PlanillaVista({ planilla }: { planilla: Planilla }) {
         ))}
       </nav>
       <div className="contenido-pestana">
-        {pest === 'composition' ? (
+        {pest === 'initialValidation' ? (
+          <Inicio v={planilla.initialValidation ?? {}} />
+        ) : pest === 'composition' ? (
           <Composicion c={planilla.composition ?? {}} />
         ) : pest === 'archivos' ? (
           <Archivos p={planilla} />

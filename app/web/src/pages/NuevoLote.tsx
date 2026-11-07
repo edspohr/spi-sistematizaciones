@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
-import { db } from '../lib/firebase'
 import { crearYSubir, encolarExtraccion, type Avance } from '../lib/acciones'
 import { desdeArrastre, desdeInput, mb, type CarpetaLocal } from '../lib/carpetas'
-import type { Cliente } from '../lib/tipos'
 
 export default function NuevoLote({ onCerrar }: { onCerrar: () => void }) {
-  const [clientes, setClientes] = useState<Cliente[]>([])
-  const [clienteId, setClienteId] = useState('')
+  const [cliente, setCliente] = useState('')
   const [carpetas, setCarpetas] = useState<CarpetaLocal[]>([])
   const [extraer, setExtraer] = useState(true)
   const [avances, setAvances] = useState<Record<string, Avance>>({})
@@ -16,13 +12,6 @@ export default function NuevoLote({ onCerrar }: { onCerrar: () => void }) {
   const [error, setError] = useState('')
   const input = useRef<HTMLInputElement>(null)
 
-  useEffect(
-    () =>
-      onSnapshot(query(collection(db, 'clientes'), orderBy('nombre')), (s) =>
-        setClientes(s.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))),
-      ),
-    [],
-  )
   useEffect(() => {
     if (input.current) input.current.setAttribute('webkitdirectory', '')
   }, [])
@@ -48,12 +37,11 @@ export default function NuevoLote({ onCerrar }: { onCerrar: () => void }) {
   const iniciar = async () => {
     setSubiendo(true)
     setError('')
-    const cliente = clientes.find((c) => c.id === clienteId)
     const lote = new Date().toISOString().slice(0, 16).replace('T', ' ')
     const ids: string[] = []
     for (const c of carpetas) {
       try {
-        const id = await crearYSubir(c, { id: cliente?.id, nombre: cliente?.nombre }, lote, (a) =>
+        const id = await crearYSubir(c, cliente.trim(), lote, (a) =>
           setAvances((prev) => ({ ...prev, [c.nombre]: a })),
         )
         ids.push(id)
@@ -75,15 +63,8 @@ export default function NuevoLote({ onCerrar }: { onCerrar: () => void }) {
         <p className="sub">Cada carpeta de producto se convierte en un trámite. Se ignoran las subcarpetas «NO USAR», «_invimagil» y los Excel maestros anteriores.</p>
 
         <label className="campo">
-          <span>Cliente (titular)</span>
-          <select value={clienteId} onChange={(e) => setClienteId(e.target.value)} disabled={subiendo}>
-            <option value="">— Sin cliente / usar criterios de SPI —</option>
-            {clientes.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.nombre}
-              </option>
-            ))}
-          </select>
+          <span>Cliente (opcional, se puede editar después en cada trámite)</span>
+          <input value={cliente} onChange={(e) => setCliente(e.target.value)} disabled={subiendo} placeholder="p. ej. Unilever" />
         </label>
 
         <div
